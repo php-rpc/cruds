@@ -1,0 +1,3 @@
+cruds:
+  resource: .
+  type: cruds

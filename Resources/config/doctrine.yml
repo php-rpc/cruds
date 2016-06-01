@@ -1,0 +1,4 @@
+services:
+  cruds.api.filter.doctrine:
+    class: ScayTrase\Api\Cruds\Adaptors\Doctrine\DoctrineCriteriaConfigurator
+    abstract: true

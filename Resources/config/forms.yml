@@ -1,0 +1,18 @@
+services:
+
+  cruds.api.processor.form:
+    class: ScayTrase\Api\Cruds\Adaptors\Symfony\FormProcessor
+    abstract: true
+    arguments:
+    - "@form.factory"
+
+  cruds.api.processor.mapped_entity_form_factory:
+    class: ScayTrase\Api\Cruds\Adaptors\Symfony\MappedEntityFormFactory
+    abstract: true
+    - "@form.factory"
+
+  cruds.api.processor.auto_form:
+    class: ScayTrase\Api\Cruds\Adaptors\Symfony\AutoFormProcessor
+    abstract: true
+    arguments:
+    - "@form.factory"

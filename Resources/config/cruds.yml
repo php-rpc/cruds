@@ -1,0 +1,40 @@
+services:
+  cruds.api.filter.chain:
+    class: ScayTrase\Api\Cruds\Filter\ChainCriteriaConfigurator
+    abstract: true
+
+  cruds.api.filter.default_data:
+    class: ScayTrase\Api\Cruds\Adaptors\Doctrine\DoctrineCriteriaConfigurator
+    abstract: true
+
+  cruds.api.factory.reflection:
+    class: ScayTrase\Api\Cruds\Factory\ReflectionConstructorFactory
+    abstract: true
+
+  cruds.api.router_loader:
+    class: ScayTrase\Api\Cruds\Routing\EntityRouteLoader
+    tags:
+    - { name: routing.loader }
+
+  cruds.api.param_converter:
+    class: ScayTrase\Api\Cruds\Listener\CrudsParamConverter
+    arguments:
+    - "@router"
+    tags:
+    - { name: kernel.event_listener, event: kernel.request, method: onCrudRequest }
+
+  cruds.api.response_normalizer_listener:
+    class: ScayTrase\Api\Cruds\Listener\ResponseNormalizerListener
+    arguments:
+    - "@serializer"
+    - "@router"
+    tags:
+    - { name: kernel.event_listener, event: kernel.view, method: filterResponse, priority: -100 }
+
+  cruds.api.response_serializer_listener:
+    class: ScayTrase\Api\Cruds\Listener\ResponseFormatterListener
+    arguments:
+    - "@serializer"
+    - "@router"
+    tags:
+    - { name: kernel.event_listener, event: kernel.view, method: filterResponse, priority: -101 }

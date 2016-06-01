@@ -1,0 +1,27 @@
+framework:
+  secret: test
+  router:
+    resource: '%kernel.root_dir%/routing.yml'
+  test: ~
+
+doctrine:
+  orm:
+    auto_mapping: true
+    auto_generate_proxy_classes: true
+  dbal:
+    driver: pdo_sqlite
+    path: '%kernel.cache_dir%/test.db'
+
+cruds:
+  prefix: /api/entity
+  entities:
+    my-entity-0:
+      class: MyBundle:MyEntity
+      prefix: /my-entity
+      actions:
+        create: ~
+        read: ~
+        update: ~
+        delete: ~
+        search: ~
+
