@@ -5,6 +5,7 @@ namespace ScayTrase\Api\Cruds\Tests;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\SchemaValidator;
+use ScayTrase\Api\Cruds\Tests\Fixtures\Entity\MyEntity;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class AccessTest extends WebTestCase
@@ -58,9 +59,11 @@ class AccessTest extends WebTestCase
                 'identifier' => 1,
                 'data'       => [
                     'publicApiField' => 'my-updated-value',
+                    'parent'         => 1,
                 ],
             ]
         );
+
         $this->doRequest('/api/entity/my-entity/search', 'GET', ['criteria' => []]);
         $this->doRequest('/api/entity/my-entity/delete', 'POST', ['identifier' => 1]);
     }

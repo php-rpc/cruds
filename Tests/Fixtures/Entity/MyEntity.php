@@ -2,8 +2,10 @@
 
 namespace ScayTrase\Api\Cruds\Tests\Fixtures\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
  * @ORM\Entity()
@@ -20,7 +22,6 @@ class MyEntity
 
     /**
      * @var string
-     * @Serializer\SerializedName("public_string_field")
      * @ORM\Column(type="string")
      */
     private $publicApiField;
@@ -28,9 +29,19 @@ class MyEntity
     /**
      * @var string
      * @ORM\Column(type="string")
-     * @Serializer\Exclude()
      */
     private $privateField;
+
+    /**
+     * @var MyEntity
+     * @ORM\ManyToOne(targetEntity="MyEntity", inversedBy="children")
+     */
+    private $parent;
+    /**
+     * @var ArrayCollection|MyEntity[]
+     * @ORM\OneToMany(targetEntity="MyEntity", mappedBy="parent", orphanRemoval=false)
+     */
+    private $children;
 
     /**
      * MyEntity constructor.
@@ -40,6 +51,25 @@ class MyEntity
     public function __construct($privateField = 'test')
     {
         $this->privateField = $privateField;
+        $this->children     = new ArrayCollection();
+        $this->parent       = $this;
+        $this->children->add($this);
+    }
+
+    /**
+     * @return MyEntity
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * @param MyEntity $parent
+     */
+    public function setParent(MyEntity $parent = null)
+    {
+        $this->parent = $parent;
     }
 
     /**
@@ -64,13 +94,5 @@ class MyEntity
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
     }
 }

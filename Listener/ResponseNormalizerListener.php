@@ -39,7 +39,9 @@ final class ResponseNormalizerListener
             return null;
         }
 
+        $isArray = true;
         if (!is_array($entities)) {
+            $isArray  = false;
             $entities = [$entities];
         }
 
@@ -47,6 +49,8 @@ final class ResponseNormalizerListener
             $entity = $this->normalizer->normalize($entity);
         }
         unset($entity);
+
+        $entities = $isArray ? $entities : array_shift($entities);
 
         $event->setControllerResult($entities);
     }

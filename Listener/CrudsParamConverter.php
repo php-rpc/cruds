@@ -9,7 +9,7 @@ final class CrudsParamConverter
 {
     use CrudsRequestCheckerTrait;
 
-    const PARAMETER_WHITE_LIST = [
+    private static $whiteList = [
         'identifier',
         'data',
         'criteria',
@@ -38,7 +38,7 @@ final class CrudsParamConverter
         }
 
         $request = $event->getRequest();
-        foreach (self::PARAMETER_WHITE_LIST as $param) {
+        foreach (self::$whiteList as $param) {
             $value = $request->get($param);
             if (null !== $value) {
                 $request->attributes->set($param, $value);
