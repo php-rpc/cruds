@@ -21,6 +21,12 @@ final class SymfonySerializerCompilerPass implements CompilerPassInterface
         }
 
         $class = $container->getDefinition('serializer')->getClass();
+
+        if ('%serializer.class%' === $class) {
+            // 2.x Definition
+            $class = $container->getParameter($class);
+        }
+
         if (!in_array(SerializerInterface::class, class_implements($class), true)) {
 
             return;
