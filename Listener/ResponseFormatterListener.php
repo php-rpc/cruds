@@ -9,7 +9,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class ResponseFormatterListener
 {
-    const FORMAT_MAP = [
+    private static $formatMap = [
         'json' => 'application/json',
         'xml'  => 'application/xml',
     ];
@@ -45,7 +45,7 @@ class ResponseFormatterListener
         $format = $request->get('_format', 'json');
 
         $content = $this->serializer->serialize($response, $format);
-        $format  = array_key_exists($format, self::FORMAT_MAP) ? self::FORMAT_MAP[$format] : 'text/plain';
+        $format  = array_key_exists($format, self::$formatMap) ? self::$formatMap[$format] : 'text/plain';
         $event->setResponse(
             new Response(
                 $content,

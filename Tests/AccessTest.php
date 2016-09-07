@@ -2,15 +2,8 @@
 
 namespace ScayTrase\Api\Cruds\Tests;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Tools\SchemaTool;
-use Doctrine\ORM\Tools\SchemaValidator;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-
-class AccessTest extends WebTestCase
+class AccessTest extends AbstractCrudsWebTest
 {
-    use CrudsTestCaseTrait;
-
     /**
      * @dataProvider getKernelClasses
      *
@@ -18,7 +11,7 @@ class AccessTest extends WebTestCase
      */
     public function testEntityRouting($kernel)
     {
-        self::setKernelClass($kernel);
+        self::createAndBootKernel($kernel);
         self::configureDb();
 
         $this->doRequest('/api/entity/my-entity/create', 'POST', ['data' => ['publicApiField' => 'my-value']]);
@@ -44,11 +37,11 @@ class AccessTest extends WebTestCase
         $client = self::createClient();
         $client->request($method, $path, $args);
 
-        echo ($path);
-        echo (PHP_EOL);
-        echo ((string)$client->getResponse());
-        echo (PHP_EOL);
-        echo (PHP_EOL);
-        echo (PHP_EOL);
+        echo($path);
+        echo(PHP_EOL);
+        echo((string)$client->getResponse());
+        echo(PHP_EOL);
+        echo(PHP_EOL);
+        echo(PHP_EOL);
     }
 }

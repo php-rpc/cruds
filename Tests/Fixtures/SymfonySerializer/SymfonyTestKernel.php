@@ -14,6 +14,7 @@ class SymfonyTestKernel extends CrudsTestKernel
         return $loader->load(__DIR__ . '/config.yml');
     }
 
+    /** {@inheritdoc} */
     protected function buildContainer()
     {
         $container = parent::buildContainer();

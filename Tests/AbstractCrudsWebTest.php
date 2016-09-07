@@ -7,18 +7,10 @@ use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\Tools\SchemaValidator;
 use ScayTrase\Api\Cruds\Tests\Fixtures\JmsSerializer\JmsTestKernel;
 use ScayTrase\Api\Cruds\Tests\Fixtures\SymfonySerializer\SymfonyTestKernel;
-use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-/**
- * @method static bootKernel
- */
-trait CrudsTestCaseTrait
+abstract class AbstractCrudsWebTest extends WebTestCase
 {
-    /** @var  string */
-    static protected $class;
-    /** @var  KernelInterface */
-    static protected $kernel;
-
     public function getKernelClasses()
     {
         return [
@@ -27,12 +19,19 @@ trait CrudsTestCaseTrait
         ];
     }
 
+    protected static function createAndBootKernel($class)
+    {
+        self::$class = $class;
+        self::bootKernel();
+    }
+
     /**
      * @throws \Doctrine\ORM\Tools\ToolsException
      */
     protected static function configureDb()
     {
-        static::bootKernel();
+        self::assertKernelBooted();
+
         /** @var EntityManagerInterface $em */
         $em = static::$kernel->getContainer()->get('doctrine.orm.entity_manager');
 
@@ -57,8 +56,10 @@ trait CrudsTestCaseTrait
         );
     }
 
-    protected static function setKernelClass($kernel)
+    protected static function assertKernelBooted()
     {
-        self::$class = $kernel;
+        if (null === self::$kernel || null === self::$kernel->getContainer()) {
+            self::fail('Kernel is not booted');
+        }
     }
 }

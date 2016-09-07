@@ -15,6 +15,7 @@ class JmsTestKernel extends CrudsTestKernel
         return $loader->load(__DIR__ . '/config.yml');
     }
 
+    /** {@inheritdoc} */
     public function registerBundles()
     {
         return array_merge(
@@ -25,6 +26,7 @@ class JmsTestKernel extends CrudsTestKernel
         );
     }
 
+    /** {@inheritdoc} */
     protected function buildContainer()
     {
         $container = parent::buildContainer();

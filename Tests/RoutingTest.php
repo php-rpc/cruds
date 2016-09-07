@@ -2,14 +2,12 @@
 
 namespace ScayTrase\Api\Cruds\Tests;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\RequestContext;
 
-class RoutingTest extends WebTestCase
+class RoutingTest extends AbstractCrudsWebTest
 {
-    use CrudsTestCaseTrait;
 
     /**
      * @dataProvider getKernelClasses
@@ -18,8 +16,7 @@ class RoutingTest extends WebTestCase
      */
     public function testEntityRouting($kernel)
     {
-        self::setKernelClass($kernel);
-        self::bootKernel();
+        self::createAndBootKernel($kernel);
 
         $this->matchPath('/api/entity/my-entity/create', 'POST');
         $this->matchPath('/api/entity/my-entity/create', 'GET', true);
