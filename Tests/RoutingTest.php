@@ -11,8 +11,14 @@ class RoutingTest extends WebTestCase
 {
     use CrudsTestCaseTrait;
 
-    public function testEntityRouting()
+    /**
+     * @dataProvider getKernelClasses
+     *
+     * @param $kernel
+     */
+    public function testEntityRouting($kernel)
     {
+        self::setKernelClass($kernel);
         self::bootKernel();
 
         $this->matchPath('/api/entity/my-entity/create', 'POST');

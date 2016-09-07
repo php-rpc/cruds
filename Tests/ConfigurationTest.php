@@ -8,8 +8,13 @@ class ConfigurationTest extends KernelTestCase
 {
     use CrudsTestCaseTrait;
 
-    public function testConfigurationParsing()
+    /**
+     * @dataProvider getKernelClasses
+     * @param $kernel
+     */
+    public function testConfigurationParsing($kernel)
     {
+        self::setKernelClass($kernel);
         self::bootKernel();
 
         $container = self::$kernel->getContainer();

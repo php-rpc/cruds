@@ -1,0 +1,19 @@
+imports:
+  - { resource: './../Common/config.yml' }
+
+framework:
+  router:
+    resource: '%kernel.root_dir%/../Common/routing.yml'
+
+jms_serializer:
+  metadata:
+    cache: none
+    debug: true
+    auto_detection: false
+    directories:
+      my-bundle:
+        namespace_prefix: \ScayTrase\Api\Cruds\Tests\Fixtures\Common\Entity
+        path: '%kernel.root_dir%/metadata'
+  visitors:
+    json:
+      options: 128 # pretty print

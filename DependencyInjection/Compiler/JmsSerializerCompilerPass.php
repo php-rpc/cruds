@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
 
-class JmsCompilerPass implements CompilerPassInterface
+final class JmsSerializerCompilerPass implements CompilerPassInterface
 {
     /** {@inheritdoc} */
     public function process(ContainerBuilder $container)
@@ -36,7 +36,7 @@ class JmsCompilerPass implements CompilerPassInterface
         }
 
         $normalizer = $container->getDefinition('cruds.api.response_normalizer_listener');
-        $normalizer->replaceArgument(0, new Reference('cruds.jms_normalizer'));
+        $normalizer->replaceArgument(0, new Reference('cruds.jms_serializer'));
 
         $serializer = $container->getDefinition('cruds.api.response_serializer_listener');
         $serializer->replaceArgument(0, new Reference('cruds.jms_serializer'));

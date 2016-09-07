@@ -36,6 +36,8 @@ That's all, you are ready to go!
 
 ## Configuration
 
+See [Configuration reference](Resources/doc/configuration.md)
+
 ## Dependencies
 
 Currently the main dependency is `doctrine/orm` library which provides the 

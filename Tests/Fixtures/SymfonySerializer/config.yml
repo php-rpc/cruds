@@ -1,0 +1,7 @@
+imports:
+  - { resource: './../Common/config.yml' }
+
+framework:
+  router:
+    resource: '%kernel.root_dir%/../Common/routing.yml'
+  serializer: ~

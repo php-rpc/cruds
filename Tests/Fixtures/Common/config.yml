@@ -1,7 +1,5 @@
 framework:
   secret: test
-  router:
-    resource: '%kernel.root_dir%/routing.yml'
   test: ~
 
 doctrine:
@@ -24,4 +22,3 @@ cruds:
         update: ~
         delete: ~
         search: ~
-

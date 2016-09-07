@@ -4,10 +4,12 @@ namespace ScayTrase\Api\Cruds\Adaptors\Jms;
 
 use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;
+use JMS\Serializer\Serializer;
 use JMS\Serializer\SerializerInterface as JmsSerializer;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
-final class JmsSerializerAdapter implements SerializerInterface
+final class JmsSerializerAdapter implements SerializerInterface, NormalizerInterface
 {
     /** @var  JmsSerializer */
     private $serializer;
@@ -42,5 +44,26 @@ final class JmsSerializerAdapter implements SerializerInterface
         }
 
         $this->serializer->deserialize($data, $type, $format, $jmsContext);
+    }
+
+    /** {@inheritdoc} */
+    public function normalize($object, $format = null, array $context = [])
+    {
+        $jmsContext = SerializationContext::create();
+        if (array_key_exists('groups', $context)) {
+            $jmsContext->setGroups($context['groups']);
+        }
+
+        if ($this->serializer instanceof Serializer) {
+            return $this->serializer->toArray($object, $jmsContext);
+        }
+
+        return json_decode($this->serializer->serialize($object, 'json', $jmsContext), true);
+    }
+
+    /** {@inheritdoc} */
+    public function supportsNormalization($data, $format = null)
+    {
+        return true;
     }
 }
