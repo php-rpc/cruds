@@ -2,7 +2,7 @@
 
 namespace ScayTrase\Api\Cruds\Exception;
 
-class FilterException extends \RuntimeException implements CrudsExceptionInterface
+class CriteriaConfigurationException extends \InvalidArgumentException implements CrudsExceptionInterface
 {
     public static function unknown(array $names)
     {

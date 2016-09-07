@@ -1,8 +1,7 @@
 <?php
 
-namespace ScayTrase\Api\Cruds\Filter;
+namespace ScayTrase\Api\Cruds\Criteria;
 
-use Doctrine\ORM\QueryBuilder;
 use ScayTrase\Api\Cruds\CriteriaConfiguratorInterface;
 
 final class ChainCriteriaConfigurator implements CriteriaConfiguratorInterface
@@ -21,10 +20,10 @@ final class ChainCriteriaConfigurator implements CriteriaConfiguratorInterface
     }
 
     /** {@inheritdoc} */
-    public function configure(QueryBuilder $builder, $criteria)
+    public function configure($fqcn, Criteria $criteria, $arguments)
     {
         foreach ($this->filters as $filter) {
-            $filter->configure($builder, $criteria);
+            $filter->configure($fqcn, $arguments, $arguments);
         }
     }
 }

@@ -3,7 +3,7 @@
 namespace ScayTrase\Api\Cruds\Controller;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Common\Persistence\ObjectRepository;
 use ScayTrase\Api\Cruds\EntityProcessorInterface;
 use ScayTrase\Api\Cruds\Event\CrudEvents;
 use ScayTrase\Api\Cruds\Event\EntityCrudEvent;
@@ -18,7 +18,7 @@ final class UpdateController
     private $manager;
     /** @var  EventDispatcherInterface */
     private $evm;
-    /** @var  EntityRepository */
+    /** @var  ObjectRepository */
     private $repository;
     /** @var  EntityProcessorInterface */
     private $processor;
@@ -26,13 +26,13 @@ final class UpdateController
     /**
      * UpdateController constructor.
      *
-     * @param EntityRepository         $repository
+     * @param ObjectRepository         $repository
      * @param EntityProcessorInterface $processor
      * @param ObjectManager            $manager
      * @param EventDispatcherInterface $evm
      */
     public function __construct(
-        EntityRepository $repository,
+        ObjectRepository $repository,
         EntityProcessorInterface $processor,
         ObjectManager $manager,
         EventDispatcherInterface $evm = null
@@ -51,7 +51,6 @@ final class UpdateController
         $this->evm->dispatch(CrudEvents::PRE_UPDATE, new EntityCrudEvent([$entity]));
         $entity = $this->processor->updateEntity($entity, $data);
         $this->evm->dispatch(CrudEvents::POST_UPDATE, new EntityCrudEvent([$entity]));
-
         $this->manager->flush();
 
         return $entity;

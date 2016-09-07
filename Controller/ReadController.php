@@ -2,7 +2,7 @@
 
 namespace ScayTrase\Api\Cruds\Controller;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Common\Persistence\ObjectRepository;
 use ScayTrase\Api\Cruds\Event\CrudEvents;
 use ScayTrase\Api\Cruds\Event\EntityCrudEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -12,7 +12,7 @@ final class ReadController
 {
     const ACTION = 'getAction';
 
-    /** @var  EntityRepository */
+    /** @var  ObjectRepository */
     private $repository;
     /** @var  EventDispatcherInterface */
     private $evm;
@@ -20,10 +20,10 @@ final class ReadController
     /**
      * ReadController constructor.
      *
-     * @param EntityRepository         $repository
+     * @param ObjectRepository         $repository
      * @param EventDispatcherInterface $evm
      */
-    public function __construct(EntityRepository $repository, EventDispatcherInterface $evm = null)
+    public function __construct(ObjectRepository $repository, EventDispatcherInterface $evm = null)
     {
         $this->repository = $repository;
         $this->evm        = $evm ?: new EventDispatcher();

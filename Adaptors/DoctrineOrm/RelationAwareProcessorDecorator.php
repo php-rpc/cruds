@@ -1,6 +1,6 @@
 <?php
 
-namespace ScayTrase\Api\Cruds\Adaptors\Doctrine;
+namespace ScayTrase\Api\Cruds\Adaptors\DoctrineOrm;
 
 use Doctrine\ORM\EntityManagerInterface;
 use ScayTrase\Api\Cruds\EntityProcessorInterface;

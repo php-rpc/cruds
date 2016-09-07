@@ -4,8 +4,8 @@ namespace ScayTrase\Api\Cruds\DependencyInjection;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
-use ScayTrase\Api\Cruds\Adaptors\Doctrine\DoctrineReflectionFactory;
-use ScayTrase\Api\Cruds\Adaptors\Doctrine\RelationAwareProcessorDecorator;
+use ScayTrase\Api\Cruds\Adaptors\DoctrineOrm\DoctrineReflectionFactory;
+use ScayTrase\Api\Cruds\Adaptors\DoctrineOrm\RelationAwareProcessorDecorator;
 use ScayTrase\Api\Cruds\Adaptors\Symfony\PropertyAccessProcessor;
 use ScayTrase\Api\Cruds\Controller\CreateController;
 use ScayTrase\Api\Cruds\Controller\DeleteController;

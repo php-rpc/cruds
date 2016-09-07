@@ -3,7 +3,7 @@
 namespace ScayTrase\Api\Cruds\Controller;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Common\Persistence\ObjectRepository;
 use ScayTrase\Api\Cruds\Event\CrudEvents;
 use ScayTrase\Api\Cruds\Event\EntityCrudEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -13,7 +13,7 @@ final class DeleteController
 {
     const ACTION = 'deleteAction';
 
-    /** @var  EntityRepository */
+    /** @var  ObjectRepository */
     private $repository;
     /** @var  ObjectManager */
     private $manager;
@@ -23,12 +23,12 @@ final class DeleteController
     /**
      * DeleteController constructor.
      *
-     * @param EntityRepository         $repository
+     * @param ObjectRepository         $repository
      * @param ObjectManager            $manager
      * @param EventDispatcherInterface $evm
      */
     public function __construct(
-        EntityRepository $repository,
+        ObjectRepository $repository,
         ObjectManager $manager,
         EventDispatcherInterface $evm = null
     ) {
@@ -45,9 +45,9 @@ final class DeleteController
     public function deleteAction($identifier)
     {
         $entity = $this->repository->find($identifier);
-        $this->evm->dispatch(CrudEvents::PRE_DELETE, new EntityCrudEvent([$entity]));
         $this->manager->remove($entity);
-        $this->evm->dispatch(CrudEvents::POST_DELETE, new EntityCrudEvent([$entity]));
+
+        $this->evm->dispatch(CrudEvents::DELETE, new EntityCrudEvent([$entity]));
         $this->manager->flush();
     }
 }

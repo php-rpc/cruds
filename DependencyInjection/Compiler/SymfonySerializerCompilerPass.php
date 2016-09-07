@@ -2,7 +2,7 @@
 
 namespace ScayTrase\Api\Cruds\DependencyInjection\Compiler;
 
-use ScayTrase\Api\Cruds\Adaptors\Symfony\CircularReferenceHandler;
+use ScayTrase\Api\Cruds\Adaptors\DoctrineOrm\CircularReferenceHandler;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;

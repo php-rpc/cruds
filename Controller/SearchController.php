@@ -2,41 +2,34 @@
 
 namespace ScayTrase\Api\Cruds\Controller;
 
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\Expr;
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Selectable;
 use ScayTrase\Api\Cruds\CriteriaConfiguratorInterface;
-use ScayTrase\Api\Cruds\Event\CrudEvents;
-use ScayTrase\Api\Cruds\Event\EntityCrudEvent;
-use ScayTrase\Api\Cruds\Exception\FilterException;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use ScayTrase\Api\Cruds\Exception\CriteriaConfigurationException;
 
 final class SearchController
 {
     const ACTION = 'findAction';
 
+    /** @var string */
+    private $fqcn;
     /** @var CriteriaConfiguratorInterface */
     private $filters = [];
-    /** @var  EntityRepository */
+    /** @var  Selectable */
     private $repository;
-    /** @var  EventDispatcherInterface */
-    private $evm;
 
     /**
      * ReadController constructor.
      *
-     * @param EntityRepository                $repository
+     * @param string                          $fqcn
+     * @param Selectable                      $repository
      * @param CriteriaConfiguratorInterface[] $filters
-     * @param EventDispatcherInterface        $evm
      */
-    public function __construct(
-        EntityRepository $repository,
-        array $filters,
-        EventDispatcherInterface $evm = null
-    ) {
+    public function __construct($fqcn, Selectable $repository, array $filters)
+    {
+        $this->fqcn       = $fqcn;
         $this->filters    = $filters;
         $this->repository = $repository;
-        $this->evm        = $evm ?: new EventDispatcher();
     }
 
     /**
@@ -48,33 +41,22 @@ final class SearchController
      * @param int   $offset
      *
      * @return object[]
-     * @throws FilterException
+     * @throws CriteriaConfigurationException
      */
     public function findAction(array $criteria, array $order = [], $limit = 10, $offset = 0)
     {
-        $builder = $this->repository->createQueryBuilder('e');
+        $queryCriteria = new Criteria(null, $order, $offset, $limit);
 
         $unknown = array_diff_key($criteria, $this->filters);
 
         if (count($unknown) > 0) {
-            throw FilterException::unknown(array_keys($unknown));
+            throw CriteriaConfigurationException::unknown(array_keys($unknown));
         }
 
         foreach ($criteria as $filter => $item) {
-            $this->filters[$filter]->configure($builder, $item);
+            $this->filters[$filter]->configure($this->fqcn, $queryCriteria, $item);
         }
 
-        foreach ($order as $key => $value) {
-            $builder->addOrderBy(new Expr\Literal($key), strtolower($value) === 'asc' ? 'ASC' : 'DESC');
-        }
-
-        $builder->setMaxResults($limit);
-        $builder->setFirstResult($offset);
-
-        $entities = $builder->getQuery()->getResult();
-
-        $this->evm->dispatch(CrudEvents::READ, new EntityCrudEvent($entities));
-
-        return $entities;
+        return $this->repository->matching($queryCriteria);
     }
 }

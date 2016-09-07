@@ -2,11 +2,9 @@
 
 namespace ScayTrase\Api\Cruds\Listener;
 
-use ScayTrase\Api\Cruds\Adaptors\Symfony\CircularReferenceHandler;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 final class ResponseNormalizerListener
 {

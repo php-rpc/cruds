@@ -6,10 +6,8 @@ final class CrudEvents
 {
     const READ   = 'read';
     const CREATE = 'create';
+    const DELETE = 'delete';
 
-    const PRE_UPDATE = 'pre_update';
-    const PRE_DELETE = 'pre_delete';
-
+    const PRE_UPDATE  = 'pre_update';
     const POST_UPDATE = 'post_update';
-    const POST_DELETE = 'post_delete';
 }

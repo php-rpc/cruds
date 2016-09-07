@@ -12,6 +12,16 @@ final class JmsPropertyMapper implements PropertyMapperInterface
     /** @var MetadataFactoryInterface */
     private $factory;
 
+    /**
+     * JmsPropertyMapper constructor.
+     *
+     * @param MetadataFactoryInterface $factory
+     */
+    public function __construct(MetadataFactoryInterface $factory)
+    {
+        $this->factory = $factory;
+    }
+
     /** {@inheritdoc} */
     public function getObjectProperty($className, $apiProperty)
     {

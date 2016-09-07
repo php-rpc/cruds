@@ -1,13 +1,13 @@
 services:
-  cruds.api.filter.chain:
-    class: ScayTrase\Api\Cruds\Filter\ChainCriteriaConfigurator
+  cruds.api.criteria.chain:
+    class: ScayTrase\Api\Cruds\Criteria\ChainCriteriaConfigurator
     abstract: true
 
-  cruds.api.filter.default_data:
-    class: ScayTrase\Api\Cruds\Adaptors\Doctrine\DoctrineCriteriaConfigurator
+  cruds.api.criteria.default_data:
+    class: ScayTrase\Api\Cruds\Criteria\DefaultCriteriaConfigurator
     abstract: true
 
-  cruds.api.factory.reflection:
+  cruds.factory.reflection:
     class: ScayTrase\Api\Cruds\Factory\ReflectionConstructorFactory
     abstract: true
 

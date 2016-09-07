@@ -1,6 +1,6 @@
 <?php
 
-namespace ScayTrase\Api\Cruds\Adaptors\Symfony;
+namespace ScayTrase\Api\Cruds\Adaptors\DoctrineOrm;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Symfony\Bridge\Doctrine\RegistryInterface;

@@ -55,9 +55,9 @@ final class CreateController
     {
         $object = $this->factory->createObject($data);
         $entity = $this->processor->updateEntity($object, $data);
-        $this->manager->persist($entity);
 
         $this->evm->dispatch(CrudEvents::READ, new EntityCrudEvent([$entity]));
+        $this->manager->persist($entity);
         $this->manager->flush();
 
         return $entity;

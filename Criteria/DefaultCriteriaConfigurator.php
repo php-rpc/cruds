@@ -1,8 +1,8 @@
 <?php
 
-namespace ScayTrase\Api\Cruds\Filter;
+namespace ScayTrase\Api\Cruds\Criteria;
 
-use Doctrine\ORM\QueryBuilder;
+use Doctrine\Common\Collections\Criteria;
 use ScayTrase\Api\Cruds\CriteriaConfiguratorInterface;
 
 final class DefaultCriteriaConfigurator implements CriteriaConfiguratorInterface
@@ -24,16 +24,10 @@ final class DefaultCriteriaConfigurator implements CriteriaConfiguratorInterface
         $this->defaults     = $defaults;
     }
 
-    /**
-     * Updates builder according to filter configuration
-     *
-     * @param QueryBuilder $builder
-     * @param array        $criteria
-     *
-     */
-    public function configure(QueryBuilder $builder, $criteria)
+    /** {@inheritdoc} */
+    public function configure($fqcn, Criteria $criteria, $arguments)
     {
-        $criteria = array_replace($this->defaults, $criteria);
-        $this->configurator->configure($builder, $criteria);
+        $arguments = array_replace($this->defaults, $arguments);
+        $this->configurator->configure($fqcn, $criteria, $arguments);
     }
 }

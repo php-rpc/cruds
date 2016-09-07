@@ -2,18 +2,19 @@
 
 namespace ScayTrase\Api\Cruds;
 
-use Doctrine\ORM\QueryBuilder;
-use ScayTrase\Api\Cruds\Exception\FilterException;
+use Doctrine\Common\Collections\Criteria;
+use ScayTrase\Api\Cruds\Exception\CriteriaConfigurationException;
 
 interface CriteriaConfiguratorInterface
 {
     /**
      * Updates builder according to filter configuration
      *
-     * @param QueryBuilder $builder
-     * @param mixed        $criteria
+     * @param string   $fqcn
+     * @param Criteria $criteria
+     * @param mixed    $arguments
      *
-     * @throws FilterException
+     * @throws CriteriaConfigurationException
      */
-    public function configure(QueryBuilder $builder, $criteria);
+    public function configure($fqcn, Criteria $criteria, $arguments);
 }

@@ -2,9 +2,12 @@
 
 namespace ScayTrase\Api\Cruds\Event;
 
-final class EntityCrudEvent extends CrudEvent
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+
+class EntityCrudEvent extends CrudEvent
 {
-    /** @var array */
+    /** @var Collection */
     private $entities = [];
 
     /**
@@ -12,24 +15,22 @@ final class EntityCrudEvent extends CrudEvent
      *
      * @param array $entities
      */
-    public function __construct(array $entities)
+    public function __construct($entities)
     {
-        $this->entities = $entities;
+        if ($entities instanceof Collection) {
+            $this->entities = $entities;
+        } elseif (is_array($entities)) {
+            $this->entities = new ArrayCollection($entities);
+        } else {
+            $this->entities = new ArrayCollection([$entities]);
+        }
     }
 
     /**
-     * @return array
+     * @return Collection
      */
     public function getEntities()
     {
         return $this->entities;
-    }
-
-    /**
-     * @param array $entities
-     */
-    public function setEntities($entities)
-    {
-        $this->entities = $entities;
     }
 }
