@@ -2,7 +2,7 @@
 
 namespace ScayTrase\Api\Cruds\Tests;
 
-class AccessTest extends AbstractCrudsWebTest
+class RouteAccessibilityTest extends AbstractCrudsWebTest
 {
     /**
      * @dataProvider getKernelClasses
@@ -23,7 +23,7 @@ class AccessTest extends AbstractCrudsWebTest
                 'identifier' => 1,
                 'data'       => [
                     'publicApiField' => 'my-updated-value',
-                    'parent'         => 1,
+                    'parent'         => null,
                 ],
             ]
         );
@@ -36,12 +36,5 @@ class AccessTest extends AbstractCrudsWebTest
     {
         $client = self::createClient();
         $client->request($method, $path, $args);
-
-        echo($path);
-        echo(PHP_EOL);
-        echo((string)$client->getResponse());
-        echo(PHP_EOL);
-        echo(PHP_EOL);
-        echo(PHP_EOL);
     }
 }

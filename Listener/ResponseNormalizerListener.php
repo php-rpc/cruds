@@ -2,6 +2,7 @@
 
 namespace ScayTrase\Api\Cruds\Listener;
 
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -37,6 +38,10 @@ final class ResponseNormalizerListener
 
         if (null === $entities) {
             return null;
+        }
+
+        if ($entities instanceof Collection) {
+            $entities = $entities->toArray();
         }
 
         $isArray = true;

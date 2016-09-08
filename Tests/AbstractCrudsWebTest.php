@@ -33,7 +33,7 @@ abstract class AbstractCrudsWebTest extends WebTestCase
         self::assertKernelBooted();
 
         /** @var EntityManagerInterface $em */
-        $em = static::$kernel->getContainer()->get('doctrine.orm.entity_manager');
+        $em = self::getEntityManager();
 
         $metadata = $em->getMetadataFactory()->getAllMetadata();
         $tool     = new SchemaTool($em);
@@ -61,5 +61,13 @@ abstract class AbstractCrudsWebTest extends WebTestCase
         if (null === self::$kernel || null === self::$kernel->getContainer()) {
             self::fail('Kernel is not booted');
         }
+    }
+
+    /**
+     * @return EntityManagerInterface|object
+     */
+    protected static function getEntityManager()
+    {
+        return self::$kernel->getContainer()->get('doctrine.orm.entity_manager');
     }
 }

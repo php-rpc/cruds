@@ -2,6 +2,7 @@
 
 namespace ScayTrase\Api\Cruds;
 
+use ScayTrase\Api\Cruds\DependencyInjection\Compiler\DoctrineOrmCompilerPass;
 use ScayTrase\Api\Cruds\DependencyInjection\Compiler\JmsSerializerCompilerPass;
 use ScayTrase\Api\Cruds\DependencyInjection\Compiler\SymfonySerializerCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -14,5 +15,6 @@ class CrudsBundle extends Bundle
         parent::build($container);
         $container->addCompilerPass(new JmsSerializerCompilerPass());
         $container->addCompilerPass(new SymfonySerializerCompilerPass());
+        $container->addCompilerPass(new DoctrineOrmCompilerPass());
     }
 }

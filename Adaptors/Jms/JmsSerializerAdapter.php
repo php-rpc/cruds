@@ -31,6 +31,7 @@ final class JmsSerializerAdapter implements SerializerInterface, NormalizerInter
         if (array_key_exists('groups', $context)) {
             $jmsContext->setGroups($context['groups']);
         }
+        $jmsContext->setSerializeNull(true);
 
         return $this->serializer->serialize($data, $format, $jmsContext);
     }
@@ -42,6 +43,7 @@ final class JmsSerializerAdapter implements SerializerInterface, NormalizerInter
         if (array_key_exists('groups', $context)) {
             $jmsContext->setGroups($context['groups']);
         }
+        $jmsContext->setSerializeNull(true);
 
         $this->serializer->deserialize($data, $type, $format, $jmsContext);
     }
@@ -53,6 +55,7 @@ final class JmsSerializerAdapter implements SerializerInterface, NormalizerInter
         if (array_key_exists('groups', $context)) {
             $jmsContext->setGroups($context['groups']);
         }
+        $jmsContext->setSerializeNull(true);
 
         if ($this->serializer instanceof Serializer) {
             return $this->serializer->toArray($object, $jmsContext);

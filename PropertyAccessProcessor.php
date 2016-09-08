@@ -1,8 +1,7 @@
 <?php
 
-namespace ScayTrase\Api\Cruds\Adaptors\Symfony;
+namespace ScayTrase\Api\Cruds;
 
-use ScayTrase\Api\Cruds\EntityProcessorInterface;
 use ScayTrase\Api\Cruds\Exception\EntityProcessingException;
 use Symfony\Component\PropertyAccess\Exception\ExceptionInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessor;

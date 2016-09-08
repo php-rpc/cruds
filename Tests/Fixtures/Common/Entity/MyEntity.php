@@ -3,42 +3,30 @@
 namespace ScayTrase\Api\Cruds\Tests\Fixtures\Common\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as Serializer;
 
-/**
- * @ORM\Entity()
- */
 class MyEntity
 {
     /**
      * @var int|null
-     * @ORM\Id()
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
      * @var string
-     * @ORM\Column(type="string")
      */
-    private $publicApiField;
+    private $publicApiField = 'defaults';
 
     /**
      * @var string
-     * @ORM\Column(type="string")
      */
     private $privateField;
 
     /**
      * @var MyEntity
-     * @ORM\ManyToOne(targetEntity="MyEntity", inversedBy="children")
      */
     private $parent;
     /**
      * @var ArrayCollection|MyEntity[]
-     * @ORM\OneToMany(targetEntity="MyEntity", mappedBy="parent", orphanRemoval=false)
      */
     private $children;
 
@@ -51,8 +39,6 @@ class MyEntity
     {
         $this->privateField = $privateField;
         $this->children     = new ArrayCollection();
-        $this->parent       = $this;
-        $this->children->add($this);
     }
 
     /**
@@ -68,7 +54,15 @@ class MyEntity
      */
     public function setParent(MyEntity $parent = null)
     {
+        if (null !== $this->parent) {
+            $this->parent->removeChild($this);
+        }
+
         $this->parent = $parent;
+
+        if (null !== $this->parent) {
+            $this->parent->addChild($this);
+        }
     }
 
     /**
@@ -93,5 +87,27 @@ class MyEntity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return MyEntity[]
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+    public function addChild(MyEntity $entity)
+    {
+        if ($this->children->contains($entity)) {
+            $this->children->removeElement($entity);
+        }
+    }
+
+    public function removeChild(MyEntity $entity)
+    {
+        if (!$this->children->contains($entity)) {
+            $this->children->add($entity);
+        }
     }
 }

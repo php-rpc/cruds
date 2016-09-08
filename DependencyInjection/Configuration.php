@@ -2,8 +2,8 @@
 
 namespace ScayTrase\Api\Cruds\DependencyInjection;
 
-use ScayTrase\Api\Cruds\Factory\ReflectionConstructorFactory;
 use ScayTrase\Api\Cruds\ObjectFactoryInterface;
+use ScayTrase\Api\Cruds\ReflectionConstructorFactory;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

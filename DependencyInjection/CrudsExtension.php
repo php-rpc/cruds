@@ -48,4 +48,11 @@ final class CrudsExtension extends Extension
             return;
         }
     }
+
+    private function registerDoctrineOrmCompatibility(ContainerBuilder $container)
+    {
+        if (!$container->has('doctrine')) {
+            return;
+        }
+    }
 }

@@ -2,20 +2,20 @@
 
 namespace ScayTrase\Api\Cruds\Adaptors\DoctrineOrm;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 final class CircularReferenceHandler
 {
-    /** @var  RegistryInterface */
+    /** @var  ManagerRegistry */
     private $registry;
 
     /**
      * CircularReferenceHandler constructor.
      *
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      */
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         $this->registry = $registry;
     }

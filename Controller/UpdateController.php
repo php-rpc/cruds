@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use ScayTrase\Api\Cruds\EntityProcessorInterface;
 use ScayTrase\Api\Cruds\Event\CrudEvents;
-use ScayTrase\Api\Cruds\Event\EntityCrudEvent;
+use ScayTrase\Api\Cruds\Event\CollectionCrudEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -48,9 +48,9 @@ final class UpdateController
     {
         $entity = $this->repository->find($identifier);
 
-        $this->evm->dispatch(CrudEvents::PRE_UPDATE, new EntityCrudEvent([$entity]));
+        $this->evm->dispatch(CrudEvents::PRE_UPDATE, new CollectionCrudEvent([$entity]));
         $entity = $this->processor->updateEntity($entity, $data);
-        $this->evm->dispatch(CrudEvents::POST_UPDATE, new EntityCrudEvent([$entity]));
+        $this->evm->dispatch(CrudEvents::POST_UPDATE, new CollectionCrudEvent([$entity]));
         $this->manager->flush();
 
         return $entity;

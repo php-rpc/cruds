@@ -31,14 +31,5 @@ final class SymfonySerializerCompilerPass implements CompilerPassInterface
 
             return;
         }
-
-        $handler = new Definition(CircularReferenceHandler::class);
-        $handler->setArguments([new Reference('doctrine')]);
-
-        $normalizer = new DefinitionDecorator('serializer.normalizer.object');
-        $normalizer->addTag('serializer.normalizer', ['priority' => -100]);
-        $normalizer->addMethodCall('setCircularReferenceHandler', [[$handler, 'handle']]);
-
-        $container->setDefinition('cruds.object_normalizer', $normalizer);
     }
 }

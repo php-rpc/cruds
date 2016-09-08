@@ -5,7 +5,10 @@ namespace ScayTrase\Api\Cruds\Controller;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Selectable;
 use ScayTrase\Api\Cruds\CriteriaConfiguratorInterface;
+use ScayTrase\Api\Cruds\Event\CollectionCrudEvent;
+use ScayTrase\Api\Cruds\Event\CrudEvents;
 use ScayTrase\Api\Cruds\Exception\CriteriaConfigurationException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class SearchController
 {
@@ -17,6 +20,8 @@ final class SearchController
     private $filters = [];
     /** @var  Selectable */
     private $repository;
+    /** @var EventDispatcherInterface */
+    private $evm;
 
     /**
      * ReadController constructor.
@@ -24,12 +29,14 @@ final class SearchController
      * @param string                          $fqcn
      * @param Selectable                      $repository
      * @param CriteriaConfiguratorInterface[] $filters
+     * @param EventDispatcherInterface        $evm
      */
-    public function __construct($fqcn, Selectable $repository, array $filters)
+    public function __construct($fqcn, Selectable $repository, array $filters, EventDispatcherInterface $evm)
     {
         $this->fqcn       = $fqcn;
         $this->filters    = $filters;
         $this->repository = $repository;
+        $this->evm        = $evm;
     }
 
     /**
@@ -57,6 +64,10 @@ final class SearchController
             $this->filters[$filter]->configure($this->fqcn, $queryCriteria, $item);
         }
 
-        return $this->repository->matching($queryCriteria);
+        $entities = $this->repository->matching($queryCriteria);
+
+        $this->evm->dispatch(CrudEvents::READ, new CollectionCrudEvent($entities));
+
+        return $entities;
     }
 }

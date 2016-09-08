@@ -8,8 +8,11 @@ services:
     abstract: true
 
   cruds.factory.reflection:
-    class: ScayTrase\Api\Cruds\Factory\ReflectionConstructorFactory
+    class: ScayTrase\Api\Cruds\ReflectionConstructorFactory
     abstract: true
+
+  cruds.processor.property_access:
+    class: ScayTrase\Api\Cruds\PropertyAccessProcessor
 
   cruds.api.router_loader:
     class: ScayTrase\Api\Cruds\Routing\EntityRouteLoader

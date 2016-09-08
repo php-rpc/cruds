@@ -1,0 +1,18 @@
+ScayTrase\Api\Cruds\Tests\Fixtures\Common\Entity\MyEntity:
+  type: entity
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    publicApiField: {type: string}
+    privateField: {type: string}
+  manyToOne:
+    parent:
+      targetEntity: ScayTrase\Api\Cruds\Tests\Fixtures\Common\Entity\MyEntity
+      inversedBy: children
+  oneToMany:
+    children:
+      targetEntity: ScayTrase\Api\Cruds\Tests\Fixtures\Common\Entity\MyEntity
+      mappedBy: parent

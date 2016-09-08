@@ -5,7 +5,7 @@ namespace ScayTrase\Api\Cruds\Controller;
 use Doctrine\Common\Persistence\ObjectManager;
 use ScayTrase\Api\Cruds\EntityProcessorInterface;
 use ScayTrase\Api\Cruds\Event\CrudEvents;
-use ScayTrase\Api\Cruds\Event\EntityCrudEvent;
+use ScayTrase\Api\Cruds\Event\CollectionCrudEvent;
 use ScayTrase\Api\Cruds\Exception\EntityProcessingException;
 use ScayTrase\Api\Cruds\ObjectFactoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -56,7 +56,7 @@ final class CreateController
         $object = $this->factory->createObject($data);
         $entity = $this->processor->updateEntity($object, $data);
 
-        $this->evm->dispatch(CrudEvents::READ, new EntityCrudEvent([$entity]));
+        $this->evm->dispatch(CrudEvents::READ, new CollectionCrudEvent([$entity]));
         $this->manager->persist($entity);
         $this->manager->flush();
 

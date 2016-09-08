@@ -1,8 +1,6 @@
 <?php
 
-namespace ScayTrase\Api\Cruds\Factory;
-
-use ScayTrase\Api\Cruds\ObjectFactoryInterface;
+namespace ScayTrase\Api\Cruds;
 
 final class ReflectionConstructorFactory implements ObjectFactoryInterface
 {

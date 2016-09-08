@@ -5,13 +5,13 @@ namespace ScayTrase\Api\Cruds\Event;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-class EntityCrudEvent extends CrudEvent
+class CollectionCrudEvent extends CrudEvent
 {
     /** @var Collection */
     private $entities = [];
 
     /**
-     * EntityCrudEvent constructor.
+     * CollectionCrudEvent constructor.
      *
      * @param array $entities
      */

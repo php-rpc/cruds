@@ -4,17 +4,15 @@ namespace ScayTrase\Api\Cruds\DependencyInjection;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
-use ScayTrase\Api\Cruds\Adaptors\DoctrineOrm\DoctrineReflectionFactory;
-use ScayTrase\Api\Cruds\Adaptors\DoctrineOrm\RelationAwareProcessorDecorator;
-use ScayTrase\Api\Cruds\Adaptors\Symfony\PropertyAccessProcessor;
 use ScayTrase\Api\Cruds\Controller\CreateController;
 use ScayTrase\Api\Cruds\Controller\DeleteController;
 use ScayTrase\Api\Cruds\Controller\ReadController;
 use ScayTrase\Api\Cruds\Controller\SearchController;
 use ScayTrase\Api\Cruds\Controller\UpdateController;
-use ScayTrase\Api\Cruds\Factory\ReflectionConstructorFactory;
+use ScayTrase\Api\Cruds\PropertyAccessProcessor;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 
 final class CrudsEntitiesConfigurator
@@ -56,9 +54,9 @@ final class CrudsEntitiesConfigurator
             $actionConfig['name']       = $name;
             $actionConfig['class']      = $class;
             $actionConfig['repository'] = $repositoryDefinition;
-            $actionConfig['path']       = $prefix.$actionConfig['path'];
+            $actionConfig['path']       = $prefix . $actionConfig['path'];
             $actionConfig['manager']    = $manager;
-            $function                   = new \ReflectionMethod($this, 'register'.ucfirst($action).'Action');
+            $function                   = new \ReflectionMethod($this, 'register' . ucfirst($action) . 'Action');
             $args                       = [];
 
             foreach ($function->getParameters() as $parameter) {
@@ -75,38 +73,14 @@ final class CrudsEntitiesConfigurator
     public function registerCreateAction($name, $class, $factory, $processor, $path, $manager)
     {
         if (null === $factory) {
-            $factory = new Definition(ReflectionConstructorFactory::class);
-            $factory->setArguments([$class]);
-
-            //todo: try to recognize services before configuration
-            if (true || $this->container->has('doctrine')) {
-                $factory = new Definition(DoctrineReflectionFactory::class);
-                $factory->setArguments(
-                    [
-                        new Reference('doctrine'),
-                        $class,
-                        [],
-                    ]
-                );
-            }
+            $factory = new DefinitionDecorator('cruds.factory.reflection');
+            $factory->setArguments([$class, []]);
         } else {
             $factory = new Reference($this->filterReference($factory));
         }
 
         if (null === $processor) {
-            $processor = new Definition(PropertyAccessProcessor::class);
-
-            //todo: try to recognize services before configuration
-            if (true || $this->container->has('doctrine')) {
-                $decorated = $processor;
-                $processor = new Definition(RelationAwareProcessorDecorator::class);
-                $processor->setArguments(
-                    [
-                        $decorated,
-                        new Reference('doctrine'),
-                    ]
-                );
-            }
+            $processor = new Reference('cruds.processor.property_access');
         } else {
             $processor = new Reference($this->filterReference($processor));
         }
@@ -122,15 +96,15 @@ final class CrudsEntitiesConfigurator
         );
         $definition->setPublic(true);
 
-        $controllerId = $this->normalize('cruds.api.generated.'.$name.'.create_controller');
+        $controllerId = $this->normalize('cruds.api.generated.' . $name . '.create_controller');
         $this->container->setDefinition($controllerId, $definition);
 
         $this->getLoaderDefinition()->addMethodCall(
             'addRoute',
             [
-                $this->normalize('cruds_api_'.$name.'_create'),
+                $this->normalize('cruds_api_' . $name . '_create'),
                 $path,
-                $controllerId.':'.CreateController::ACTION,
+                $controllerId . ':' . CreateController::ACTION,
                 ['POST'],
             ]
         );
@@ -146,15 +120,15 @@ final class CrudsEntitiesConfigurator
             ]
         );
 
-        $controllerId = $this->normalize('cruds_api_'.$name.'_read_controller');
+        $controllerId = $this->normalize('cruds_api_' . $name . '_read_controller');
         $this->container->setDefinition($controllerId, $definition);
 
         $this->getLoaderDefinition()->addMethodCall(
             'addRoute',
             [
-                $this->normalize('cruds_api_'.$name.'_read'),
+                $this->normalize('cruds_api_' . $name . '_read'),
                 $path,
-                $controllerId.':'.ReadController::ACTION,
+                $controllerId . ':' . ReadController::ACTION,
                 ['GET'],
             ]
         );
@@ -163,19 +137,7 @@ final class CrudsEntitiesConfigurator
     public function registerUpdateAction($name, $path, $repository, $processor, $manager)
     {
         if (null === $processor) {
-            $processor = new Definition(PropertyAccessProcessor::class);
-
-            //todo: try to recognize services before configuration
-            if (true || $this->container->has('doctrine')) {
-                $decorated = $processor;
-                $processor = new Definition(RelationAwareProcessorDecorator::class);
-                $processor->setArguments(
-                    [
-                        $decorated,
-                        new Reference('doctrine'),
-                    ]
-                );
-            }
+            $processor = new Reference('cruds.processor.property_access');
         } else {
             $processor = new Reference($this->filterReference($processor));
         }
@@ -190,15 +152,15 @@ final class CrudsEntitiesConfigurator
             ]
         );
 
-        $controllerId = $this->normalize('cruds_api_'.$name.'_update_controller');
+        $controllerId = $this->normalize('cruds_api_' . $name . '_update_controller');
         $this->container->setDefinition($controllerId, $definition);
 
         $this->getLoaderDefinition()->addMethodCall(
             'addRoute',
             [
-                $this->normalize('cruds_api_'.$name.'_update'),
+                $this->normalize('cruds_api_' . $name . '_update'),
                 $path,
-                $controllerId.':'.UpdateController::ACTION,
+                $controllerId . ':' . UpdateController::ACTION,
                 ['POST'],
             ]
         );
@@ -215,21 +177,21 @@ final class CrudsEntitiesConfigurator
             ]
         );
 
-        $controllerId = $this->normalize('cruds_api_'.$name.'_delete_controller');
+        $controllerId = $this->normalize('cruds_api_' . $name . '_delete_controller');
         $this->container->setDefinition($controllerId, $definition);
 
         $this->getLoaderDefinition()->addMethodCall(
             'addRoute',
             [
-                $this->normalize('cruds_api_'.$name.'_delete'),
+                $this->normalize('cruds_api_' . $name . '_delete'),
                 $path,
-                $controllerId.':'.DeleteController::ACTION,
+                $controllerId . ':' . DeleteController::ACTION,
                 ['POST'],
             ]
         );
     }
 
-    public function registerSearchAction($name, $path, $repository, array $filters = [])
+    public function registerSearchAction($name, $path, $class, $repository, array $filters = [])
     {
         $filterArray = [];
         foreach ($filters as $reference) {
@@ -239,21 +201,22 @@ final class CrudsEntitiesConfigurator
         $definition = new Definition(SearchController::class);
         $definition->setArguments(
             [
+                $class,
                 $repository,
                 $filterArray,
                 new Reference('event_dispatcher'),
             ]
         );
 
-        $controllerId = $this->normalize('cruds_api_'.$name.'_search_controller');
+        $controllerId = $this->normalize('cruds_api_' . $name . '_search_controller');
         $this->container->setDefinition($controllerId, $definition);
 
         $this->getLoaderDefinition()->addMethodCall(
             'addRoute',
             [
-                $this->normalize('cruds_api_'.$name.'_search'),
+                $this->normalize('cruds_api_' . $name . '_search'),
                 $path,
-                $controllerId.':'.SearchController::ACTION,
+                $controllerId . ':' . SearchController::ACTION,
                 ['GET', 'POST'],
             ]
         );

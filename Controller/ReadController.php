@@ -4,7 +4,7 @@ namespace ScayTrase\Api\Cruds\Controller;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use ScayTrase\Api\Cruds\Event\CrudEvents;
-use ScayTrase\Api\Cruds\Event\EntityCrudEvent;
+use ScayTrase\Api\Cruds\Event\CollectionCrudEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -40,7 +40,7 @@ final class ReadController
     {
         $entity = $this->repository->find($identifier);
 
-        $this->evm->dispatch(CrudEvents::READ, new EntityCrudEvent([$entity]));
+        $this->evm->dispatch(CrudEvents::READ, new CollectionCrudEvent([$entity]));
 
         return $entity;
     }

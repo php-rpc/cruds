@@ -1,7 +1,8 @@
-imports:
-  - { resource: './../Common/config.yml' }
-
 framework:
   router:
     resource: '%kernel.root_dir%/../Common/routing.yml'
-  serializer: ~
+  serializer:
+    enabled: true
+    enable_annotations: true
+    name_converter: serializer.name_converter.camel_case_to_snake_case
+

@@ -1,4 +1,12 @@
 services:
-  cruds.factory.doctrine_reflection:
+  cruds.factory.doctrine_reflection_factory:
     class: ScayTrase\Api\Cruds\Adaptors\DoctrineOrm\DoctrineReflectionFactoryFactory
     arguments: ["@doctrine"]
+
+  cruds.processor.doctrine_relation_decorator:
+    class: ScayTrase\Api\Cruds\Adaptors\DoctrineOrm\RelationAwareProcessorDecorator
+    decorates: cruds.processor.property_access
+    arguments:
+    - "@cruds.processor.doctrine_relation_decorator.inner"
+    - "@doctrine"
+    public: false

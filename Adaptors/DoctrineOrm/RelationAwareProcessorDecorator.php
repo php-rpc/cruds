@@ -2,13 +2,13 @@
 
 namespace ScayTrase\Api\Cruds\Adaptors\DoctrineOrm;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
 use ScayTrase\Api\Cruds\EntityProcessorInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 final class RelationAwareProcessorDecorator implements EntityProcessorInterface
 {
-    /** @var  RegistryInterface */
+    /** @var  ManagerRegistry */
     private $registry;
     /** @var  EntityProcessorInterface */
     private $processor;
@@ -17,9 +17,9 @@ final class RelationAwareProcessorDecorator implements EntityProcessorInterface
      * RelationAwareProcessorDecorator constructor.
      *
      * @param EntityProcessorInterface $processor
-     * @param RegistryInterface        $registry
+     * @param ManagerRegistry          $registry
      */
-    public function __construct(EntityProcessorInterface $processor, RegistryInterface $registry)
+    public function __construct(EntityProcessorInterface $processor, ManagerRegistry $registry)
     {
         $this->registry  = $registry;
         $this->processor = $processor;
@@ -30,17 +30,24 @@ final class RelationAwareProcessorDecorator implements EntityProcessorInterface
     {
         $class = get_class($entity);
 
-        $manager  = $this->registry->getManagerForClass($class);
-        $metadata = $manager->getClassMetadata($class);
+        $manager = $this->registry->getManagerForClass($class);
 
-        foreach ($data as $property => &$value) {
-            if ($metadata->hasAssociation($property)) {
-                $assoc = $metadata->getAssociationTargetClass($property);
+        if (null !== $manager) {
+            $metadata = $manager->getClassMetadata($class);
 
-                if ($manager instanceof EntityManagerInterface) {
-                    $value = $manager->getReference($assoc, $value);
-                } else {
-                    $value = $manager->find($assoc, $value);
+            foreach ($data as $property => &$value) {
+                if (null === $value) {
+                    continue;
+                }
+
+                if ($metadata->hasAssociation($property)) {
+                    $assoc = $metadata->getAssociationTargetClass($property);
+
+                    if ($manager instanceof EntityManagerInterface) {
+                        $value = $manager->getReference($assoc, $value);
+                    } else {
+                        $value = $manager->find($assoc, $value);
+                    }
                 }
             }
         }

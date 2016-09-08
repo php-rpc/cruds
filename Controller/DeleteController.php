@@ -5,7 +5,7 @@ namespace ScayTrase\Api\Cruds\Controller;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use ScayTrase\Api\Cruds\Event\CrudEvents;
-use ScayTrase\Api\Cruds\Event\EntityCrudEvent;
+use ScayTrase\Api\Cruds\Event\CollectionCrudEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -47,7 +47,7 @@ final class DeleteController
         $entity = $this->repository->find($identifier);
         $this->manager->remove($entity);
 
-        $this->evm->dispatch(CrudEvents::DELETE, new EntityCrudEvent([$entity]));
+        $this->evm->dispatch(CrudEvents::DELETE, new CollectionCrudEvent([$entity]));
         $this->manager->flush();
     }
 }

@@ -1,0 +1,18 @@
+ScayTrase\Api\Cruds\Tests\Fixtures\Common\Entity\ReferenceEntity:
+  type: entity
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  manyToOne:
+    reference:
+      targetEntity: ScayTrase\Api\Cruds\Tests\Fixtures\Common\Entity\MyEntity
+    parent:
+      targetEntity: ScayTrase\Api\Cruds\Tests\Fixtures\Common\Entity\ReferenceEntity
+      inversedBy: children
+  oneToMany:
+    children:
+      targetEntity: ScayTrase\Api\Cruds\Tests\Fixtures\Common\Entity\ReferenceEntity
+      mappedBy: parent
+

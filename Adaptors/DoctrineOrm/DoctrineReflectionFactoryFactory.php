@@ -2,19 +2,19 @@
 
 namespace ScayTrase\Api\Cruds\Adaptors\DoctrineOrm;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
-use ScayTrase\Api\Cruds\Factory\ReflectionConstructorFactory;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use ScayTrase\Api\Cruds\ObjectFactoryInterface;
+use ScayTrase\Api\Cruds\ReflectionConstructorFactory;
 
 final class DoctrineReflectionFactoryFactory
 {
-    /** @var  Registry */
+    /** @var  ManagerRegistry */
     private $registry;
 
     /**
-     * @param Registry $registry
+     * @param ManagerRegistry $registry
      */
-    public function __construct(Registry $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         $this->registry = $registry;
     }

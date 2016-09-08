@@ -3,7 +3,7 @@
 namespace ScayTrase\Api\Cruds\Tests\Fixtures\JmsSerializer;
 
 use JMS\SerializerBundle\JMSSerializerBundle;
-use ScayTrase\Api\Cruds\Tests\CrudsTestKernel;
+use ScayTrase\Api\Cruds\Tests\Fixtures\Common\CrudsTestKernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
 
@@ -12,6 +12,8 @@ class JmsTestKernel extends CrudsTestKernel
     /** {@inheritdoc} */
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
+        parent::registerContainerConfiguration($loader);
+
         return $loader->load(__DIR__ . '/config.yml');
     }
 
