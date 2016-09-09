@@ -10,3 +10,10 @@ services:
     - "@cruds.processor.doctrine_relation_decorator.inner"
     - "@doctrine"
     public: false
+
+  cruds.property_mapper.doctrine_decorator:
+    class: ScayTrase\Api\Cruds\Adaptors\DoctrineOrm\DoctrineAwarePropertyMapperDecorator
+    decorates: cruds.property_mapper
+    arguments:
+    - "@cruds.property_mapper.doctrine_decorator.inner"
+    - "@doctrine"

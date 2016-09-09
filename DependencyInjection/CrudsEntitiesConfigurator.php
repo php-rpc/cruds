@@ -191,11 +191,11 @@ final class CrudsEntitiesConfigurator
         );
     }
 
-    public function registerSearchAction($name, $path, $class, $repository, array $filters = [])
+    public function registerSearchAction($name, $path, $class, $repository, array $criteria = [])
     {
         $filterArray = [];
-        foreach ($filters as $reference) {
-            $filterArray[] = new Reference($this->filterReference($reference));
+        foreach ($criteria as $filter => $reference) {
+            $filterArray[$filter] = new Reference($this->filterReference($reference));
         }
 
         $definition = new Definition(SearchController::class);

@@ -1,0 +1,9 @@
+services:
+  cruds.property_mapper.symfony:
+    class: ScayTrase\Api\Cruds\Adaptors\Symfony\SymfonyPropertyMapper
+    arguments:
+    - "@serializer.mapping.class_metadata_factory"
+    - "@serializer.normalizer.object.name_converter"
+
+  cruds.property_mapper:
+    alias: cruds.property_mapper.symfony

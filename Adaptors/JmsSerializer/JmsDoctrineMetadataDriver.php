@@ -9,6 +9,7 @@ use JMS\Serializer\Metadata\PropertyMetadata;
 
 final class JmsDoctrineMetadataDriver extends AbstractDoctrineTypeDriver
 {
+    /** {@inheritdoc} */
     public function loadMetadataForClass(\ReflectionClass $class)
     {
         /** @var $classMetadata ClassMetadata */

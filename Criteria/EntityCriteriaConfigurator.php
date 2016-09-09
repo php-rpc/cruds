@@ -39,10 +39,12 @@ final class EntityCriteriaConfigurator implements CriteriaConfiguratorInterface
             foreach ((array)$arguments as $apiProperty => $value) {
                 $mappedProperty = $this->mapper->getObjectProperty($fqcn, $apiProperty);
 
-                if (null !== $mappedProperty) {
-                    $this->filterDoctrineProperty($criteria, $mappedProperty, $value);
-                    unset($arguments[$apiProperty]);
+                if (null === $mappedProperty) {
+                    throw CriteriaConfigurationException::invalidCriteriaConfiguration($apiProperty);
                 }
+
+                $this->filterDoctrineProperty($criteria, $mappedProperty, $value);
+                unset($arguments[$apiProperty]);
             }
         } catch (MapperException $e) {
             throw new CriteriaConfigurationException(sprintf('Error getting object property: %s', $e->getMessage()));
@@ -58,6 +60,8 @@ final class EntityCriteriaConfigurator implements CriteriaConfiguratorInterface
      */
     private function filterDoctrineProperty(Criteria $criteria, $property, $value)
     {
+        var_dump($property, $value);
+
         switch (true) {
             case is_array($value):
                 $criteria->andWhere(Criteria::expr()->in($property, $value));

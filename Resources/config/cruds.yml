@@ -1,11 +1,8 @@
 services:
-  cruds.api.criteria.chain:
-    class: ScayTrase\Api\Cruds\Criteria\ChainCriteriaConfigurator
-    abstract: true
-
-  cruds.api.criteria.default_data:
-    class: ScayTrase\Api\Cruds\Criteria\DefaultCriteriaConfigurator
-    abstract: true
+  cruds.criteria.entity:
+    class: ScayTrase\Api\Cruds\Criteria\EntityCriteriaConfigurator
+    arguments:
+    - "@cruds.property_mapper"
 
   cruds.factory.reflection:
     class: ScayTrase\Api\Cruds\ReflectionConstructorFactory

@@ -21,4 +21,6 @@ cruds:
         read: ~
         update: ~
         delete: ~
-        search: ~
+        search:
+          criteria:
+            doctrine: '@cruds.criteria.entity'

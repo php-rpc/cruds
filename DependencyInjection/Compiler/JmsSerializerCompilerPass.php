@@ -26,8 +26,8 @@ final class JmsSerializerCompilerPass implements CompilerPassInterface
             $container->removeDefinition('jms_serializer.form_error_handler');
         }
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../../Resources/config'));
-        $loader->load('jms.yml');
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../../Resources/config'));
+        $loader->load('jms_serializer.yml');
 
         if ($container->has('validator')) {
             $definition = $container->register('cruds.api.jms_serializer.validator', JmsValidatorSubscriber::class);

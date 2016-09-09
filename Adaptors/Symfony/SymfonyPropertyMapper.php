@@ -16,6 +16,18 @@ final class SymfonyPropertyMapper implements PropertyMapperInterface
     private $strategy;
 
     /**
+     * SymfonyPropertyMapper constructor.
+     *
+     * @param ClassMetadataFactoryInterface $factory
+     * @param NameConverterInterface        $strategy
+     */
+    public function __construct(ClassMetadataFactoryInterface $factory, NameConverterInterface $strategy)
+    {
+        $this->factory  = $factory;
+        $this->strategy = $strategy;
+    }
+
+    /**
      * @param string $className
      * @param string $apiProperty
      *

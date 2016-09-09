@@ -1,5 +1,5 @@
 services:
-  cruds.api.jms.property_mapper:
+  cruds.property_mapper.jms:
     class: ScayTrase\Api\Cruds\Adaptors\JmsSerializer\JmsPropertyMapper
     arguments:
     - "@jms_serializer.metadata_factory"
@@ -8,3 +8,6 @@ services:
     class: ScayTrase\Api\Cruds\Adaptors\JmsSerializer\JmsSerializerAdapter
     arguments:
     - "@jms_serializer.serializer"
+
+  cruds.property_mapper:
+    alias: cruds.property_mapper.jms

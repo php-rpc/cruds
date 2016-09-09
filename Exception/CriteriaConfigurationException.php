@@ -20,4 +20,11 @@ class CriteriaConfigurationException extends \InvalidArgumentException implement
             sprintf('Invalid data format passed to criteria configurator: %s expected, %s given', $expected, $actual)
         );
     }
+
+    public static function invalidCriteriaConfiguration($field)
+    {
+        return new self(
+            sprintf('Invalid data passed to criteria configurator: %s', $field)
+        );
+    }
 }
