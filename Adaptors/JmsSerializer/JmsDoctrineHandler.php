@@ -3,9 +3,9 @@
 namespace ScayTrase\Api\Cruds\Adaptors\JmsSerializer;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\Mapping\ClassMetadata;
 use JMS\Serializer\Context;
 use JMS\Serializer\VisitorInterface;
+use ScayTrase\Api\Cruds\Adaptors\DoctrineOrm\EntityToIdConverter;
 
 final class JmsDoctrineHandler
 {
@@ -13,6 +13,8 @@ final class JmsDoctrineHandler
 
     /** @var  ManagerRegistry */
     private $registry;
+    /** @var  EntityToIdConverter */
+    private $converter;
 
     /**
      * JmsDoctrineHandler constructor.
@@ -21,7 +23,8 @@ final class JmsDoctrineHandler
      */
     public function __construct(ManagerRegistry $registry)
     {
-        $this->registry = $registry;
+        $this->registry  = $registry;
+        $this->converter = new EntityToIdConverter($this->registry);
     }
 
     public function serializeRelation(VisitorInterface $visitor, $relation, array $type, Context $context)
@@ -34,26 +37,12 @@ final class JmsDoctrineHandler
             return array_map([$this, 'convertEntityToIds'], $relation);
         }
 
-        return $this->convertEntityToIds($relation);
+        return $this->converter->convert($relation);
     }
 
     public function deserializeRelation(VisitorInterface $visitor, $data, array $type, Context $context)
     {
         // fixme
         throw new \BadMethodCallException('Not supported at the moment');
-    }
-
-    private function convertEntityToIds($entity)
-    {
-        $class    = get_class($entity);
-        $metadata = $this->registry->getManagerForClass($class)->getClassMetadata($class);
-
-        $ids = $metadata->getIdentifierValues($entity);
-
-        if (!$metadata instanceof ClassMetadata || $metadata->isIdentifierComposite) {
-            return $ids;
-        }
-
-        return array_shift($ids);
     }
 }

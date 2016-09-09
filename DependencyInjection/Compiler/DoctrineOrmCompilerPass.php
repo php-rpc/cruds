@@ -2,8 +2,8 @@
 
 namespace ScayTrase\Api\Cruds\DependencyInjection\Compiler;
 
-use ScayTrase\Api\Cruds\Adaptors\DoctrineOrm\CircularReferenceHandler;
 use ScayTrase\Api\Cruds\Adaptors\DoctrineOrm\DoctrineObjectNormalizer;
+use ScayTrase\Api\Cruds\Adaptors\DoctrineOrm\EntityToIdConverter;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -29,11 +29,11 @@ final class DoctrineOrmCompilerPass implements CompilerPassInterface
 
         if ($container->has('serializer.normalizer.object')) {
 
-            $handler = new Definition(CircularReferenceHandler::class);
-            $handler->setArguments([new Reference('doctrine')]);
+            $converter = new Definition(EntityToIdConverter::class);
+            $converter->setArguments([new Reference('doctrine')]);
 
             $container->getDefinition('serializer.normalizer.object')
-                ->addMethodCall('setCircularReferenceHandler', [[$handler, 'handle']]);
+                ->addMethodCall('setCircularReferenceHandler', [[$converter, 'convert']]);
 
             $normalizer = new DefinitionDecorator('serializer.normalizer.object');
             $normalizer->setClass(DoctrineObjectNormalizer::class);
