@@ -14,27 +14,27 @@ services:
   cruds.api.router_loader:
     class: ScayTrase\Api\Cruds\Routing\EntityRouteLoader
     tags:
-      - { name: routing.loader }
+    - { name: routing.loader }
 
   cruds.api.param_converter:
     class: ScayTrase\Api\Cruds\Listener\CrudsParamConverter
     arguments:
-      - "@router"
+    - "@router"
     tags:
-      - { name: kernel.event_listener, event: kernel.request, method: onCrudRequest }
+    - { name: kernel.event_listener, event: kernel.request, method: onCrudRequest }
 
   cruds.api.response_normalizer_listener:
     class: ScayTrase\Api\Cruds\Listener\ResponseNormalizerListener
     arguments:
-      - "@serializer"
-      - "@router"
+    - "@serializer"
+    - "@router"
     tags:
-      - { name: kernel.event_listener, event: kernel.view, method: filterResponse, priority: -100 }
+    - { name: kernel.event_listener, event: kernel.view, method: filterResponse, priority: -100 }
 
   cruds.api.response_serializer_listener:
     class: ScayTrase\Api\Cruds\Listener\ResponseFormatterListener
     arguments:
-      - "@serializer"
-      - "@router"
+    - "@serializer"
+    - "@router"
     tags:
-      - { name: kernel.event_listener, event: kernel.view, method: filterResponse, priority: -101 }
+    - { name: kernel.event_listener, event: kernel.view, method: filterResponse, priority: -101 }
