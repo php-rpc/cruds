@@ -3,6 +3,7 @@ services:
     class: ScayTrase\Api\Cruds\Adaptors\JmsSerializer\JmsPropertyMapper
     arguments:
     - "@jms_serializer.metadata_factory"
+    - "@jms_serializer.naming_strategy"
 
   cruds.jms_serializer:
     class: ScayTrase\Api\Cruds\Adaptors\JmsSerializer\JmsSerializerAdapter

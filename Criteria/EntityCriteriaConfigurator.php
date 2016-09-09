@@ -60,8 +60,6 @@ final class EntityCriteriaConfigurator implements CriteriaConfiguratorInterface
      */
     private function filterDoctrineProperty(Criteria $criteria, $property, $value)
     {
-        var_dump($property, $value);
-
         switch (true) {
             case is_array($value):
                 $criteria->andWhere(Criteria::expr()->in($property, $value));

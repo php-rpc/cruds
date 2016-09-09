@@ -27,16 +27,10 @@ final class SymfonyPropertyMapper implements PropertyMapperInterface
         $this->strategy = $strategy;
     }
 
-    /**
-     * @param string $className
-     * @param string $apiProperty
-     *
-     * @return null|string
-     * @throws MapperException
-     */
+    /** {@inheritdoc} */
     public function getObjectProperty($className, $apiProperty)
     {
-        if ($this->factory->hasMetadataFor($className)) {
+        if (!$this->factory->hasMetadataFor($className)) {
             return null;
         }
 
@@ -47,16 +41,10 @@ final class SymfonyPropertyMapper implements PropertyMapperInterface
         return $this->strategy->denormalize($apiProperty);
     }
 
-    /**
-     * @param string $className
-     * @param string $objectProperty
-     *
-     * @return null|string
-     * @throws MapperException
-     */
+    /** {@inheritdoc} */
     public function getApiProperty($className, $objectProperty)
     {
-        if ($this->factory->hasMetadataFor($className)) {
+        if (!$this->factory->hasMetadataFor($className)) {
             return null;
         }
 
@@ -67,12 +55,7 @@ final class SymfonyPropertyMapper implements PropertyMapperInterface
         return $this->strategy->normalize($objectProperty);
     }
 
-    /**
-     * @param string $className
-     *
-     * @return string[]
-     * @throws MapperException
-     */
+    /** {@inheritdoc} */
     public function getApiProperties($className)
     {
         $properties = [];
@@ -83,12 +66,7 @@ final class SymfonyPropertyMapper implements PropertyMapperInterface
         return $properties;
     }
 
-    /**
-     * @param string $className
-     *
-     * @return string[]
-     * @throws MapperException
-     */
+    /** {@inheritdoc} */
     public function getObjectProperties($className)
     {
         $properties = [];
@@ -106,6 +84,10 @@ final class SymfonyPropertyMapper implements PropertyMapperInterface
      */
     private function getMetadata($className)
     {
-        return $this->factory->getMetadataFor($className)->getAttributesMetadata();
+        try {
+            return $this->factory->getMetadataFor($className)->getAttributesMetadata();
+        } catch (\InvalidArgumentException $exception) {
+            throw MapperException::unsupportedClass($className);
+        }
     }
 }

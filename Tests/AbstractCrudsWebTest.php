@@ -11,14 +11,6 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 abstract class AbstractCrudsWebTest extends WebTestCase
 {
-    public function getKernelClasses()
-    {
-        return [
-            'kernel with jms serializer'     => [JmsTestKernel::class],
-            'kernel with symfony serializer' => [SymfonyTestKernel::class],
-        ];
-    }
-
     protected static function createAndBootKernel($class)
     {
         self::$class = $class;
@@ -69,5 +61,13 @@ abstract class AbstractCrudsWebTest extends WebTestCase
     protected static function getEntityManager()
     {
         return self::$kernel->getContainer()->get('doctrine.orm.entity_manager');
+    }
+
+    public function getKernelClasses()
+    {
+        return [
+            'JMS Serializer Kernel'     => [JmsTestKernel::class],
+            'Symfony Serializer Kernel' => [SymfonyTestKernel::class],
+        ];
     }
 }

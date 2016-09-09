@@ -3,6 +3,7 @@
 namespace ScayTrase\Api\Cruds\Adaptors\JmsSerializer;
 
 use JMS\Serializer\Metadata\PropertyMetadata;
+use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
 use Metadata\MetadataFactoryInterface;
 use ScayTrase\Api\Cruds\Exception\MapperException;
 use ScayTrase\Api\Cruds\PropertyMapperInterface;
@@ -11,15 +12,19 @@ final class JmsPropertyMapper implements PropertyMapperInterface
 {
     /** @var MetadataFactoryInterface */
     private $factory;
+    /** @var  PropertyNamingStrategyInterface */
+    private $strategy;
 
     /**
      * JmsPropertyMapper constructor.
      *
-     * @param MetadataFactoryInterface $factory
+     * @param MetadataFactoryInterface        $factory
+     * @param PropertyNamingStrategyInterface $strategy
      */
-    public function __construct(MetadataFactoryInterface $factory)
+    public function __construct(MetadataFactoryInterface $factory, PropertyNamingStrategyInterface $strategy)
     {
-        $this->factory = $factory;
+        $this->factory  = $factory;
+        $this->strategy = $strategy;
     }
 
     /** {@inheritdoc} */
@@ -29,7 +34,7 @@ final class JmsPropertyMapper implements PropertyMapperInterface
 
         foreach ($metadata->propertyMetadata as $propertyMetadata) {
             /** @var PropertyMetadata $propertyMetadata */
-            if ($propertyMetadata->serializedName === $apiProperty) {
+            if ($this->getPropertyName($propertyMetadata) === $apiProperty) {
                 return $propertyMetadata->reflection ? $propertyMetadata->reflection->getName() : null;
             }
         }
@@ -58,7 +63,7 @@ final class JmsPropertyMapper implements PropertyMapperInterface
 
         foreach ($metadata->propertyMetadata as $propertyMetadata) {
             /** @var PropertyMetadata $propertyMetadata */
-            $apiProperties[] = $propertyMetadata->serializedName;
+            $apiProperties[] = $this->getPropertyName($propertyMetadata);
         }
 
         return $apiProperties;
@@ -96,5 +101,15 @@ final class JmsPropertyMapper implements PropertyMapperInterface
         }
 
         return $metadata;
+    }
+
+    /**
+     * @param PropertyMetadata $propertyMetadata
+     *
+     * @return string
+     */
+    private function getPropertyName(PropertyMetadata $propertyMetadata)
+    {
+        return $this->strategy->translateName($propertyMetadata);
     }
 }
