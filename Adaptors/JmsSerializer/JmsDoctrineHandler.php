@@ -46,8 +46,7 @@ final class JmsDoctrineHandler
         throw new \BadMethodCallException('Not supported at the moment');
 
         // obtain params from deeps
-        $class = $type['params'][0]['name'];
-
-        return $this->converter->denormalize($data, $class);
+        // $class = $type['params'][0]['name'];
+        // return $this->converter->denormalize($data, $class);
     }
 }
