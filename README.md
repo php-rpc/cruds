@@ -1,5 +1,9 @@
 # PHP Cruds bundle [WIP]
 
+[![Build Status](https://travis-ci.org/php-rpc/cruds.svg?branch=master)](https://travis-ci.org/php-rpc/cruds)
+[![Code Coverage](https://scrutinizer-ci.com/g/php-rpc/cruds/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/php-rpc/cruds/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/php-rpc/cruds/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/php-rpc/cruds/?branch=master)
+
 ## Goal
 
 The main purpose of this library it to create easy configurarle and extensible
