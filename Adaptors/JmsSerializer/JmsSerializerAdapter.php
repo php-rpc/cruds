@@ -1,6 +1,6 @@
 <?php
 
-namespace ScayTrase\Api\Cruds\Adaptors\Jms;
+namespace ScayTrase\Api\Cruds\Adaptors\JmsSerializer;
 
 use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;

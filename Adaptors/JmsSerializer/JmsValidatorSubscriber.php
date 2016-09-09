@@ -1,6 +1,6 @@
 <?php
 
-namespace ScayTrase\Api\Cruds\Adaptors\Jms;
+namespace ScayTrase\Api\Cruds\Adaptors\JmsSerializer;
 
 use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use JMS\Serializer\EventDispatcher\ObjectEvent;

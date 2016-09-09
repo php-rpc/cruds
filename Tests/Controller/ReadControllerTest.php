@@ -2,7 +2,6 @@
 
 namespace ScayTrase\Api\Cruds\Tests\Controller;
 
-use JMS\Serializer\Serializer;
 use ScayTrase\Api\Cruds\Tests\AbstractCrudsWebTest;
 use ScayTrase\Api\Cruds\Tests\Fixtures\Common\Entity\MyEntity;
 

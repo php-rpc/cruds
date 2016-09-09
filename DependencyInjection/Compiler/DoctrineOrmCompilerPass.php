@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
 
-class DoctrineOrmCompilerPass implements CompilerPassInterface
+final class DoctrineOrmCompilerPass implements CompilerPassInterface
 {
     /** {@inheritdoc} */
     public function process(ContainerBuilder $container)

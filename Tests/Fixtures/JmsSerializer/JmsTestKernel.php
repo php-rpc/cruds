@@ -20,12 +20,10 @@ class JmsTestKernel extends CrudsTestKernel
     /** {@inheritdoc} */
     public function registerBundles()
     {
-        return array_merge(
-            parent::registerBundles(),
-            [
-                new JMSSerializerBundle(),
-            ]
-        );
+        $bundles   = parent::registerBundles();
+        $bundles[] = new JMSSerializerBundle();
+
+        return $bundles;
     }
 
     /** {@inheritdoc} */

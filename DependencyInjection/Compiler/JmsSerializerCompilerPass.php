@@ -2,7 +2,7 @@
 
 namespace ScayTrase\Api\Cruds\DependencyInjection\Compiler;
 
-use ScayTrase\Api\Cruds\Adaptors\Jms\JmsValidatorSubscriber;
+use ScayTrase\Api\Cruds\Adaptors\JmsSerializer\JmsValidatorSubscriber;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

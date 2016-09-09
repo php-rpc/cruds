@@ -1,3 +1,7 @@
 ScayTrase\Api\Cruds\Tests\Fixtures\Common\Entity\MyEntity:
   exclusion_policy: NONE
   access_type: public_method
+  properties:
+    privateField:
+      exclude: true
+      access_type: property
