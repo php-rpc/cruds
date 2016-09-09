@@ -42,11 +42,11 @@ final class JmsDoctrineHandler
 
     public function deserializeRelation(VisitorInterface $visitor, $data, array $type, Context $context)
     {
-        // fixme
-        throw new \BadMethodCallException('Not supported at the moment');
-
         // obtain params from deeps
         // $class = $type['params'][0]['name'];
         // return $this->converter->denormalize($data, $class);
+
+        // fixme
+        throw new \BadMethodCallException('Not supported at the moment');
     }
 }
