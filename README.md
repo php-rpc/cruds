@@ -1,8 +1,13 @@
 # PHP Cruds bundle [WIP]
 
+[![License](https://poser.pugx.org/php-rpc/cruds/license)](https://packagist.org/packages/php-rpc/cruds)
 [![Build Status](https://travis-ci.org/php-rpc/cruds.svg?branch=master)](https://travis-ci.org/php-rpc/cruds)
 [![Code Coverage](https://scrutinizer-ci.com/g/php-rpc/cruds/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/php-rpc/cruds/?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/php-rpc/cruds/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/php-rpc/cruds/?branch=master)
+
+[![Latest Stable Version](https://poser.pugx.org/php-rpc/cruds/cruds)](https://packagist.org/packages/php-rpc/cruds)
+[![Latest Unstable Version](https://poser.pugx.org/php-rpc/cruds/v/unstable)](//packagist.org/packages/php-rpc/cruds)
+[![Total Downloads](https://poser.pugx.org/php-rpc/cruds/downloads)](https://packagist.org/packages/php-rpc/cruds)
 
 ## Goal
 

@@ -12,7 +12,7 @@ class UpdateControllerTest extends AbstractCrudsWebTest
      *
      * @param $kernel
      */
-    public function testCreateAction($kernel)
+    public function testDeleteAction($kernel)
     {
         self::createAndBootKernel($kernel);
         self::configureDb();

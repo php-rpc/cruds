@@ -12,7 +12,7 @@ class DeleteControllerTest extends AbstractCrudsWebTest
      *
      * @param $kernel
      */
-    public function testGetAction($kernel)
+    public function testDeleteAction($kernel)
     {
         self::createAndBootKernel($kernel);
         self::configureDb();
