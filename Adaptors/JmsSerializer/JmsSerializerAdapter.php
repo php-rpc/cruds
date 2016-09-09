@@ -2,8 +2,6 @@
 
 namespace ScayTrase\Api\Cruds\Adaptors\JmsSerializer;
 
-use JMS\Serializer\DeserializationContext;
-use JMS\Serializer\SerializationContext;
 use JMS\Serializer\Serializer;
 use JMS\Serializer\SerializerInterface as JmsSerializer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -27,35 +25,19 @@ final class JmsSerializerAdapter implements SerializerInterface, NormalizerInter
     /** {@inheritdoc} */
     public function serialize($data, $format, array $context = [])
     {
-        $jmsContext = SerializationContext::create();
-        if (array_key_exists('groups', $context)) {
-            $jmsContext->setGroups($context['groups']);
-        }
-        $jmsContext->setSerializeNull(true);
-
-        return $this->serializer->serialize($data, $format, $jmsContext);
+        return $this->serializer->serialize($data, $format, JmsContextFactory::serialization($context));
     }
 
     /** {@inheritdoc} */
     public function deserialize($data, $type, $format, array $context = [])
     {
-        $jmsContext = DeserializationContext::create();
-        if (array_key_exists('groups', $context)) {
-            $jmsContext->setGroups($context['groups']);
-        }
-        $jmsContext->setSerializeNull(true);
-
-        $this->serializer->deserialize($data, $type, $format, $jmsContext);
+        $this->serializer->deserialize($data, $type, $format, JmsContextFactory::deserialization($context));
     }
 
     /** {@inheritdoc} */
     public function normalize($object, $format = null, array $context = [])
     {
-        $jmsContext = SerializationContext::create();
-        if (array_key_exists('groups', $context)) {
-            $jmsContext->setGroups($context['groups']);
-        }
-        $jmsContext->setSerializeNull(true);
+        $jmsContext = JmsContextFactory::serialization($context);
 
         if ($this->serializer instanceof Serializer) {
             return $this->serializer->toArray($object, $jmsContext);

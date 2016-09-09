@@ -5,7 +5,7 @@ namespace ScayTrase\Api\Cruds\Adaptors\JmsSerializer;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use JMS\Serializer\Context;
 use JMS\Serializer\VisitorInterface;
-use ScayTrase\Api\Cruds\Adaptors\DoctrineOrm\EntityToIdConverter;
+use ScayTrase\Api\Cruds\Adaptors\DoctrineOrm\EntityToIdNormalizer;
 
 final class JmsDoctrineHandler
 {
@@ -13,7 +13,7 @@ final class JmsDoctrineHandler
 
     /** @var  ManagerRegistry */
     private $registry;
-    /** @var  EntityToIdConverter */
+    /** @var  EntityToIdNormalizer */
     private $converter;
 
     /**
@@ -24,7 +24,7 @@ final class JmsDoctrineHandler
     public function __construct(ManagerRegistry $registry)
     {
         $this->registry  = $registry;
-        $this->converter = new EntityToIdConverter($this->registry);
+        $this->converter = new EntityToIdNormalizer($this->registry);
     }
 
     public function serializeRelation(VisitorInterface $visitor, $relation, array $type, Context $context)
@@ -34,15 +34,20 @@ final class JmsDoctrineHandler
         }
 
         if (is_array($relation)) {
-            return array_map([$this, 'convertEntityToIds'], $relation);
+            return array_map([$this->converter, 'normalize'], $relation);
         }
 
-        return $this->converter->convert($relation);
+        return $this->converter->normalize($relation);
     }
 
     public function deserializeRelation(VisitorInterface $visitor, $data, array $type, Context $context)
     {
         // fixme
         throw new \BadMethodCallException('Not supported at the moment');
+
+        // obtain params from deeps
+        $class = $type['params'][0]['name'];
+
+        return $this->converter->denormalize($data, $class);
     }
 }

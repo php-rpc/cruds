@@ -3,9 +3,10 @@
 namespace ScayTrase\Api\Cruds\Adaptors\DoctrineOrm;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 
-final class EntityToIdConverter
+final class EntityToIdNormalizer
 {
     /** @var  ManagerRegistry */
     private $registry;
@@ -25,7 +26,7 @@ final class EntityToIdConverter
      *
      * @return mixed|array
      */
-    public function convert($entity)
+    public function normalize($entity)
     {
         $class    = get_class($entity);
         $metadata = $this->registry->getManagerForClass($class)->getClassMetadata($class);
@@ -37,5 +38,26 @@ final class EntityToIdConverter
         }
 
         return array_shift($ids);
+    }
+
+    /**
+     * @param mixed|array $identifier
+     * @param string      $class
+     *
+     * @return object
+     */
+    public function denormalize($identifier, $class)
+    {
+        $manager = $this->registry->getManagerForClass($class);
+
+        if (null === $manager) {
+            throw new \RuntimeException('Not supported class '.$class);
+        }
+
+        if ($manager instanceof EntityManagerInterface) {
+            return $manager->getReference($class, $identifier);
+        }
+
+        return $manager->find($class, $identifier);
     }
 }

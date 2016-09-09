@@ -3,7 +3,7 @@
 namespace ScayTrase\Api\Cruds\DependencyInjection\Compiler;
 
 use ScayTrase\Api\Cruds\Adaptors\DoctrineOrm\DoctrineObjectNormalizer;
-use ScayTrase\Api\Cruds\Adaptors\DoctrineOrm\EntityToIdConverter;
+use ScayTrase\Api\Cruds\Adaptors\DoctrineOrm\EntityToIdNormalizer;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -29,7 +29,7 @@ final class DoctrineOrmCompilerPass implements CompilerPassInterface
 
         if ($container->has('serializer.normalizer.object')) {
 
-            $converter = new Definition(EntityToIdConverter::class);
+            $converter = new Definition(EntityToIdNormalizer::class);
             $converter->setArguments([new Reference('doctrine')]);
 
             $container->getDefinition('serializer.normalizer.object')
