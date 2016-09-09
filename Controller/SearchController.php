@@ -16,7 +16,7 @@ final class SearchController
 
     /** @var string */
     private $fqcn;
-    /** @var CriteriaConfiguratorInterface */
+    /** @var CriteriaConfiguratorInterface[] */
     private $filters = [];
     /** @var  Selectable */
     private $repository;

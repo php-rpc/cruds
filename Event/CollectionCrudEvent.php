@@ -13,7 +13,7 @@ class CollectionCrudEvent extends CrudEvent
     /**
      * CollectionCrudEvent constructor.
      *
-     * @param array $entities
+     * @param object|object[]|Collection $entities
      */
     public function __construct($entities)
     {

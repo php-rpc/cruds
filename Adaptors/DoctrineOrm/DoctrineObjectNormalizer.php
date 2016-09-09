@@ -68,6 +68,10 @@ class DoctrineObjectNormalizer extends ObjectNormalizer
         $assocMetadata = $this->getAssocMetadata($metadata, $attribute);
 
         $manager = $this->registry->getManagerForClass($assocMetadata->getName());
+        if (null === $manager) {
+            throw new \LogicException('Unsupported class '.$assocMetadata->getName());
+        }
+
         if ($metadata->isSingleValuedAssociation($attribute)) {
             $value = $this->getObjectByValue($manager, $assocMetadata, $rawValue);
 
