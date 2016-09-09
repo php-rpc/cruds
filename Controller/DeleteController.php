@@ -4,8 +4,8 @@ namespace ScayTrase\Api\Cruds\Controller;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
-use ScayTrase\Api\Cruds\Event\CrudEvents;
 use ScayTrase\Api\Cruds\Event\CollectionCrudEvent;
+use ScayTrase\Api\Cruds\Event\CrudEvents;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

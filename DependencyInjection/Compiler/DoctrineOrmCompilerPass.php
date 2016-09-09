@@ -21,7 +21,7 @@ final class DoctrineOrmCompilerPass implements CompilerPassInterface
             return;
         }
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../../Resources/config'));
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../../Resources/config'));
         $loader->load('doctrine.yml');
 
         $factory = $container->getDefinition('cruds.factory.reflection');
@@ -33,7 +33,7 @@ final class DoctrineOrmCompilerPass implements CompilerPassInterface
             $handler->setArguments([new Reference('doctrine')]);
 
             $container->getDefinition('serializer.normalizer.object')
-                      ->addMethodCall('setCircularReferenceHandler', [[$handler, 'handle']]);
+                ->addMethodCall('setCircularReferenceHandler', [[$handler, 'handle']]);
 
             $normalizer = new DefinitionDecorator('serializer.normalizer.object');
             $normalizer->setClass(DoctrineObjectNormalizer::class);

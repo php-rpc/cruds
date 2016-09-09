@@ -15,10 +15,6 @@ final class CrudsExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('cruds.yml');
 
-        $this->registerSymfonyFormsCompatibility($container);
-        $this->registerJmsSerializerCompatibility($container);
-        $this->registerSymfonySerializerCompatibility($container);
-
         $config = $this->processConfiguration($this->getConfiguration([], $container), $configs);
 
         $configurator = new CrudsEntitiesConfigurator($container);
@@ -28,31 +24,6 @@ final class CrudsExtension extends Extension
             $entityConfig['prefix'] = $entityConfig['prefix'] ?: '/'.$name;
             $entityConfig['prefix'] = $prefix.$entityConfig['prefix'];
             $configurator->processEntityConfiguration($name, $entityConfig);
-        }
-    }
-
-    private function registerSymfonyFormsCompatibility(ContainerBuilder $container)
-    {
-        if (!$container->has('form.registry')) {
-            return;
-        }
-    }
-
-    private function registerJmsSerializerCompatibility(ContainerBuilder $container)
-    {
-    }
-
-    private function registerSymfonySerializerCompatibility(ContainerBuilder $container)
-    {
-        if (!$container->has('serializer')) {
-            return;
-        }
-    }
-
-    private function registerDoctrineOrmCompatibility(ContainerBuilder $container)
-    {
-        if (!$container->has('doctrine')) {
-            return;
         }
     }
 }

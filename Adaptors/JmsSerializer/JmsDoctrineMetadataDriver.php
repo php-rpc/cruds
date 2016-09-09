@@ -16,7 +16,7 @@ final class JmsDoctrineMetadataDriver extends AbstractDoctrineTypeDriver
         $classMetadata = $this->delegate->loadMetadataForClass($class);
 
         // Abort if the given class is not a mapped entity
-        if ( ! $doctrineMetadata = $this->tryLoadingDoctrineMetadata($class->name)) {
+        if (!$doctrineMetadata = $this->tryLoadingDoctrineMetadata($class->name)) {
             return $classMetadata;
         }
 

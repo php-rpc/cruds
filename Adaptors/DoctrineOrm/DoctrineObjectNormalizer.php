@@ -138,10 +138,12 @@ class DoctrineObjectNormalizer extends ObjectNormalizer
         $assocManager = $this->registry->getManagerForClass($assoc);
 
         if (null === $assocManager) {
-            throw new \LogicException($metadata->getName() .
-                                      '::$' .
-                                      $attribute .
-                                      ' references non-existent managed entity');
+            throw new \LogicException(
+                $metadata->getName().
+                '::$'.
+                $attribute.
+                ' references non-existent managed entity'
+            );
         }
 
         return $assocManager->getClassMetadata($assoc);

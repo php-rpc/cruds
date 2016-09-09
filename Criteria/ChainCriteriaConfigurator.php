@@ -2,6 +2,7 @@
 
 namespace ScayTrase\Api\Cruds\Criteria;
 
+use Doctrine\Common\Collections\Criteria;
 use ScayTrase\Api\Cruds\CriteriaConfiguratorInterface;
 
 final class ChainCriteriaConfigurator implements CriteriaConfiguratorInterface

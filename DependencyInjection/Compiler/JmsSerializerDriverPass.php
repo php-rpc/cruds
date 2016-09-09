@@ -23,10 +23,12 @@ final class JmsSerializerDriverPass implements CompilerPassInterface
 
         $definition = $container
             ->register('cruds.jms.doctrine_metadata_driver', JmsDoctrineMetadataDriver::class)
-            ->setArguments([
-                $driver,
-                new Reference('doctrine'),
-            ]);
+            ->setArguments(
+                [
+                    $driver,
+                    new Reference('doctrine'),
+                ]
+            );
 
         $factory->replaceArgument(0, $definition);
 
