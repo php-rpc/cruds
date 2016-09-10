@@ -7,6 +7,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 use Symfony\Component\Serializer\SerializerInterface;
 
 final class SymfonySerializerCompilerPass implements CompilerPassInterface
@@ -34,8 +35,17 @@ final class SymfonySerializerCompilerPass implements CompilerPassInterface
         $loader->load('symfony_serializer.yml');
 
         /** @var Reference $converter */
-        $converter = $container->getDefinition('serializer.normalizer.object')->getArgument(1);
+        $objectNormalizer = $container->getDefinition('serializer.normalizer.object');
 
-        $container->setAlias('serializer.normalizer.object.name_converter', (string)$converter);
+        try {
+            $converter = $objectNormalizer->getArgument(1);
+
+            $container->setAlias('serializer.normalizer.object.name_converter', (string)$converter);
+        } catch (\OutOfBoundsException $exception) {
+            $container->register(
+                'serializer.normalizer.object.name_converter',
+                CamelCaseToSnakeCaseNameConverter::class
+            );
+        }
     }
 }
