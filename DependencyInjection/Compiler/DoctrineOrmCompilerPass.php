@@ -33,7 +33,7 @@ final class DoctrineOrmCompilerPass implements CompilerPassInterface
             $converter->setArguments([new Reference('doctrine')]);
 
             $container->getDefinition('serializer.normalizer.object')
-                ->addMethodCall('setCircularReferenceHandler', [[$converter, 'convert']]);
+                ->addMethodCall('setCircularReferenceHandler', [[$converter, 'normalize']]);
 
             $normalizer = new DefinitionDecorator('serializer.normalizer.object');
             $normalizer->setClass(DoctrineObjectNormalizer::class);
