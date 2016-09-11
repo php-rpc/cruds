@@ -5,7 +5,6 @@ namespace ScayTrase\Api\Cruds\Tests\Fixtures\SymfonySerializer;
 use ScayTrase\Api\Cruds\Tests\Fixtures\Common\CrudsTestKernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
-use Symfony\Component\HttpKernel\Kernel;
 
 class SymfonyTestKernel extends CrudsTestKernel
 {
@@ -14,8 +13,8 @@ class SymfonyTestKernel extends CrudsTestKernel
     {
         parent::registerContainerConfiguration($loader);
 
-        if ((int)Kernel::MAJOR_VERSION > 2) {
-            $loader->load(__DIR__.'/config_3.0.yml');
+        if (self::MAJOR_VERSION === '3' || (self::MAJOR_VERSION === '2' && self::MINOR_VERSION === '8')) {
+            $loader->load(__DIR__.'/config_2.8.yml');
         }
 
         return $loader->load(__DIR__.'/config.yml');

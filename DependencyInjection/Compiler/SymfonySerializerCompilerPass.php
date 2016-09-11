@@ -7,6 +7,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -37,15 +38,36 @@ final class SymfonySerializerCompilerPass implements CompilerPassInterface
         /** @var Reference $converter */
         $objectNormalizer = $container->getDefinition('serializer.normalizer.object');
 
-        try {
+        $kernel = $container->getDefinition('kernel')->getClass();
+        if (
+            $kernel instanceof Kernel &&
+            (
+                $kernel::MAJOR_VERSION === '3' ||
+                (
+                    $kernel::MAJOR_VERSION === '2'
+                    && $kernel::MINOR_VERSION === '8'
+                )
+            )
+        ) {
             $converter = $objectNormalizer->getArgument(1);
-
-            $container->setAlias('serializer.normalizer.object.name_converter', (string)$converter);
-        } catch (\OutOfBoundsException $exception) {
+        } elseif ($container->has('serializer.name_converter.camel_case_to_snake_case')) {
+            $converter = new Reference('serializer.name_converter.camel_case_to_snake_case');
+        } else {
             $container->register(
-                'serializer.normalizer.object.name_converter',
+                'serializer.name_converter.camel_case_to_snake_case',
                 CamelCaseToSnakeCaseNameConverter::class
             );
+            $converter = new Reference('serializer.name_converter.camel_case_to_snake_case');
+            $objectNormalizer->setArguments(
+                array_replace(
+                    $objectNormalizer->getArguments(),
+                    [
+                        1 => $converter,
+                    ]
+                )
+            );
         }
+
+        $container->setAlias('serializer.normalizer.object.name_converter', (string)$converter);
     }
 }

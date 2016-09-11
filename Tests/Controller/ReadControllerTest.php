@@ -43,6 +43,7 @@ class ReadControllerTest extends AbstractCrudsWebTest
 
         self::assertInstanceOf(\stdClass::class, $data);
         self::assertSame($entity->getId(), $data->id);
+        self::assertObjectHasAttribute('public_api_field', $data);
         self::assertSame('defaults', $data->public_api_field);
         self::assertObjectNotHasAttribute('private_field', $data);
         self::assertSame($parent->getId(), $data->parent);
