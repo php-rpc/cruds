@@ -2,6 +2,7 @@
 
 namespace ScayTrase\Api\Cruds\DependencyInjection\Compiler;
 
+use ScayTrase\Api\Cruds\Adaptors\DoctrineOrm\DoctrineLegacyObjectNormalizer;
 use ScayTrase\Api\Cruds\Adaptors\DoctrineOrm\DoctrineObjectNormalizer;
 use ScayTrase\Api\Cruds\Adaptors\DoctrineOrm\EntityToIdNormalizer;
 use Symfony\Component\Config\FileLocator;
@@ -35,12 +36,38 @@ final class DoctrineOrmCompilerPass implements CompilerPassInterface
             $container->getDefinition('serializer.normalizer.object')
                 ->addMethodCall('setCircularReferenceHandler', [[$converter, 'normalize']]);
 
-            $normalizer = new DefinitionDecorator('serializer.normalizer.object');
-            $normalizer->setClass(DoctrineObjectNormalizer::class);
-            $normalizer->addMethodCall('setRegistry', [new Reference('doctrine')]);
-            $normalizer->addTag('serializer.normalizer', ['priority' => -800]);
-
-            $container->setDefinition('cruds.serializer.doctrine_object_normalizer', $normalizer);
+            if (class_exists('\Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer')) {
+                $this->registerModernNormalizer($container);
+            } else {
+                $this->registerLegacyNormalizer($container);
+            }
         }
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     */
+    private function registerModernNormalizer(ContainerBuilder $container)
+    {
+        $normalizer = new DefinitionDecorator('serializer.normalizer.object');
+        $normalizer->setClass(DoctrineObjectNormalizer::class);
+        $normalizer->addMethodCall('setRegistry', [new Reference('doctrine')]);
+        $normalizer->addTag('serializer.normalizer', ['priority' => -800]);
+
+        $container->setDefinition('cruds.serializer.doctrine_object_normalizer', $normalizer);
+    }
+
+
+    /**
+     * @param ContainerBuilder $container
+     */
+    private function registerLegacyNormalizer(ContainerBuilder $container)
+    {
+        $normalizer = new DefinitionDecorator('serializer.normalizer.object');
+        $normalizer->setClass(DoctrineLegacyObjectNormalizer::class);
+        $normalizer->addMethodCall('setRegistry', [new Reference('doctrine')]);
+        $normalizer->addTag('serializer.normalizer', ['priority' => -800]);
+
+        $container->setDefinition('cruds.serializer.doctrine_object_normalizer', $normalizer);
     }
 }

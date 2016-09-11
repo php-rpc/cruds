@@ -28,6 +28,7 @@
     "doctrine/doctrine-bundle": "~1.6",
     "symfony/doctrine-bridge": "~2.7 || ~3.0",
     "symfony/security": "~2.7 || ~3.0",
+    "symfony/property-info": "~2.8 || ~3.0",
     "symfony/form": "~2.7 || ~3.0",
     "symfony/serializer": "^2.7.7 || ~3.0",
     "symfony/validator": "~2.7 || ~3.0",
