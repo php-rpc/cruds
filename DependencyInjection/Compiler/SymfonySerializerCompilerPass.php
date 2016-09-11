@@ -38,17 +38,8 @@ final class SymfonySerializerCompilerPass implements CompilerPassInterface
         /** @var Reference $converter */
         $objectNormalizer = $container->getDefinition('serializer.normalizer.object');
 
-        $kernel = $container->getDefinition('kernel')->getClass();
-        if (
-            $kernel instanceof Kernel &&
-            (
-                $kernel::MAJOR_VERSION === '3' ||
-                (
-                    $kernel::MAJOR_VERSION === '2'
-                    && $kernel::MINOR_VERSION === '8'
-                )
-            )
-        ) {
+
+        if ($this->shouldHaveNormalizerConfigured($container)) {
             $converter = $objectNormalizer->getArgument(1);
         } elseif ($container->has('serializer.name_converter.camel_case_to_snake_case')) {
             $converter = new Reference('serializer.name_converter.camel_case_to_snake_case');
@@ -69,5 +60,24 @@ final class SymfonySerializerCompilerPass implements CompilerPassInterface
         }
 
         $container->setAlias('serializer.normalizer.object.name_converter', (string)$converter);
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     *
+     * @return bool
+     */
+    private function shouldHaveNormalizerConfigured(ContainerBuilder $container)
+    {
+        $kernel = $container->getDefinition('kernel')->getClass();
+
+        return $kernel instanceof Kernel &&
+        (
+            $kernel::MAJOR_VERSION === '3' ||
+            (
+                $kernel::MAJOR_VERSION === '2'
+                && $kernel::MINOR_VERSION === '8'
+            )
+        );
     }
 }
