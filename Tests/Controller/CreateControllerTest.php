@@ -43,6 +43,7 @@ class CreateControllerTest extends AbstractCrudsWebTest
 
         self::assertInstanceOf(\stdClass::class, $data);
         self::assertSame($parent->getId(), $data->id);
+        self::assertObjectHasAttribute('public_api_field', $data);
         self::assertSame('my-data', $data->public_api_field);
         self::assertObjectNotHasAttribute('private_field', $data);
         self::assertNull($data->parent);

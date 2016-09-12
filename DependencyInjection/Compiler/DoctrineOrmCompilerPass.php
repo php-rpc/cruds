@@ -2,6 +2,7 @@
 
 namespace ScayTrase\Api\Cruds\DependencyInjection\Compiler;
 
+use ScayTrase\Api\Cruds\Adaptors\DoctrineOrm\AssociationPropertyAccessor;
 use ScayTrase\Api\Cruds\Adaptors\DoctrineOrm\DoctrineObjectNormalizer;
 use ScayTrase\Api\Cruds\Adaptors\DoctrineOrm\EntityToIdNormalizer;
 use Symfony\Component\Config\FileLocator;
@@ -21,7 +22,7 @@ final class DoctrineOrmCompilerPass implements CompilerPassInterface
             return;
         }
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../../Resources/config'));
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../../Resources/config'));
         $loader->load('doctrine.yml');
 
         $factory = $container->getDefinition('cruds.factory.reflection');
@@ -33,14 +34,30 @@ final class DoctrineOrmCompilerPass implements CompilerPassInterface
             $converter->setArguments([new Reference('doctrine')]);
 
             $container->getDefinition('serializer.normalizer.object')
-                ->addMethodCall('setCircularReferenceHandler', [[$converter, 'normalize']]);
+                      ->addMethodCall('setCircularReferenceHandler', [[$converter, 'normalize']]);
 
-            $normalizer = new DefinitionDecorator('serializer.normalizer.object');
-            $normalizer->setClass(DoctrineObjectNormalizer::class);
-            $normalizer->addMethodCall('setRegistry', [new Reference('doctrine')]);
-            $normalizer->addTag('serializer.normalizer', ['priority' => -800]);
-
-            $container->setDefinition('cruds.serializer.doctrine_object_normalizer', $normalizer);
+            $this->registerModernNormalizer($container);
         }
+    }
+
+    /**
+     * @param ContainerBuilder $container
+     */
+    private function registerModernNormalizer(ContainerBuilder $container)
+    {
+        $accessor          = new Reference('property_accessor');
+        $registry          = new Reference('doctrine');
+        $decoratedAccessor = new Definition(AssociationPropertyAccessor::class, [$accessor, $registry]);
+
+        $container->setDefinition('cruds.doctrine.property_accessor', $decoratedAccessor);
+
+        $normalizer = new DefinitionDecorator('serializer.normalizer.object');
+        $normalizer->setClass(DoctrineObjectNormalizer::class);
+        $normalizer->addMethodCall('setRegistry', [$registry]);
+        $normalizer->replaceArgument(2, new Reference('cruds.doctrine.property_accessor'));
+
+        $normalizer->addTag('serializer.normalizer', ['priority' => -800]);
+
+        $container->setDefinition('cruds.serializer.doctrine_object_normalizer', $normalizer);
     }
 }
