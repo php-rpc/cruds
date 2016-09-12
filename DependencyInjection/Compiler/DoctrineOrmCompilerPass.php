@@ -29,12 +29,12 @@ final class DoctrineOrmCompilerPass implements CompilerPassInterface
         $factory->setFactory([new Reference('cruds.factory.doctrine_reflection_factory'), 'create']);
 
         if ($container->has('serializer.normalizer.object')) {
-
             $converter = new Definition(EntityToIdNormalizer::class);
             $converter->setArguments([new Reference('doctrine')]);
 
-            $container->getDefinition('serializer.normalizer.object')
-                      ->addMethodCall('setCircularReferenceHandler', [[$converter, 'normalize']]);
+            $container
+                ->getDefinition('serializer.normalizer.object')
+                ->addMethodCall('setCircularReferenceHandler', [[$converter, 'normalize']]);
 
             $this->registerModernNormalizer($container);
         }
