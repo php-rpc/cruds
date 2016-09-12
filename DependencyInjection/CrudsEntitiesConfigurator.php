@@ -225,6 +225,11 @@ final class CrudsEntitiesConfigurator
         return $this->container->getDefinition('cruds.api.router_loader');
     }
 
+    /**
+     * @param string $name
+     *
+     * @return string
+     */
     private function normalize($name)
     {
         return str_replace('-', '_', $name);

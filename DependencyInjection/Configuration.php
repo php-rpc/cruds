@@ -57,7 +57,6 @@ final class Configuration implements ConfigurationInterface
             ->info('Entity repository. service reference, default to factory-acquired doctrine repository')
             ->example('@my_entity.repository');
 
-
         $actions = $parent
             ->children()
             ->arrayNode('actions');
@@ -110,9 +109,9 @@ final class Configuration implements ConfigurationInterface
             ->defaultNull()
             ->example('@my_entity.factory')
             ->info(
-                'Service ID implementing '.PHP_EOL.
-                ObjectFactoryInterface::class.PHP_EOL.
-                'Defaults to '.ReflectionConstructorFactory::class
+                'Service ID implementing ' . PHP_EOL .
+                ObjectFactoryInterface::class . PHP_EOL .
+                'Defaults to ' . ReflectionConstructorFactory::class
             );
 
         $create
@@ -121,9 +120,9 @@ final class Configuration implements ConfigurationInterface
             ->defaultNull()
             ->example('@my_entity.factory')
             ->info(
-                'Service ID implementing '.PHP_EOL.
-                ObjectFactoryInterface::class.PHP_EOL.
-                'Defaults to '.ReflectionConstructorFactory::class
+                'Service ID implementing ' . PHP_EOL .
+                ObjectFactoryInterface::class . PHP_EOL .
+                'Defaults to ' . ReflectionConstructorFactory::class
             );
 
         $this->configureActionNode($create, 'create');
@@ -157,7 +156,6 @@ final class Configuration implements ConfigurationInterface
         );
     }
 
-
     private function configureReadAction(ArrayNodeDefinition $parent)
     {
         $read = $parent
@@ -178,9 +176,9 @@ final class Configuration implements ConfigurationInterface
             ->defaultNull()
             ->example('@my_entity.factory')
             ->info(
-                'Service ID implementing '.PHP_EOL.
-                ObjectFactoryInterface::class.PHP_EOL.
-                'Defaults to '.ReflectionConstructorFactory::class
+                'Service ID implementing ' . PHP_EOL .
+                ObjectFactoryInterface::class . PHP_EOL .
+                'Defaults to ' . ReflectionConstructorFactory::class
             );
 
         $this->configureActionNode($update, 'update');
@@ -201,8 +199,8 @@ final class Configuration implements ConfigurationInterface
         $parent
             ->children()
             ->scalarNode('path')
-            ->example('/'.$action)
+            ->example('/' . $action)
             ->info('Action path (prefixed)')
-            ->defaultValue('/'.$action);
+            ->defaultValue('/' . $action);
     }
 }
