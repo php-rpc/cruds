@@ -22,7 +22,7 @@ final class DoctrineOrmCompilerPass implements CompilerPassInterface
             return;
         }
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../../Resources/config'));
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../../Resources/config'));
         $loader->load('doctrine.yml');
 
         $factory = $container->getDefinition('cruds.factory.reflection');
@@ -34,7 +34,7 @@ final class DoctrineOrmCompilerPass implements CompilerPassInterface
             $converter->setArguments([new Reference('doctrine')]);
 
             $container->getDefinition('serializer.normalizer.object')
-                ->addMethodCall('setCircularReferenceHandler', [[$converter, 'normalize']]);
+                      ->addMethodCall('setCircularReferenceHandler', [[$converter, 'normalize']]);
 
             $this->registerModernNormalizer($container);
         }
@@ -49,17 +49,13 @@ final class DoctrineOrmCompilerPass implements CompilerPassInterface
         $registry          = new Reference('doctrine');
         $decoratedAccessor = new Definition(AssociationPropertyAccessor::class, [$accessor, $registry]);
 
+        $container->setDefinition('cruds.doctrine.property_accessor', $decoratedAccessor);
+
         $normalizer = new DefinitionDecorator('serializer.normalizer.object');
         $normalizer->setClass(DoctrineObjectNormalizer::class);
         $normalizer->addMethodCall('setRegistry', [$registry]);
-        $normalizer->setArguments(
-            array_replace(
-                $normalizer->getArguments(),
-                [
-                    2 => $decoratedAccessor,
-                ]
-            )
-        );
+        $normalizer->replaceArgument(2, new Reference('cruds.doctrine.property_accessor'));
+
         $normalizer->addTag('serializer.normalizer', ['priority' => -800]);
 
         $container->setDefinition('cruds.serializer.doctrine_object_normalizer', $normalizer);

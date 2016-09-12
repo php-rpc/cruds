@@ -28,7 +28,6 @@ final class AssociationPropertyAccessor implements PropertyAccessorInterface
         $this->normalizer = new AssociationNormalizer($this->registry);
     }
 
-
     /** {@inheritdoc} */
     public function setValue(&$objectOrArray, $propertyPath, $value)
     {
