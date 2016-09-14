@@ -35,6 +35,7 @@ final class CrudsEntitiesConfigurator
         $actions    = $config['actions'];
         $prefix     = $config['prefix'];
         $repository = $config['repository'];
+        $mount      = $config['mount'];
 
         if (null === $repository) {
             $repositoryDefinition = new Definition(EntityRepository::class);
@@ -55,6 +56,7 @@ final class CrudsEntitiesConfigurator
 
             $actionConfig['name']       = $name;
             $actionConfig['class']      = $class;
+            $actionConfig['mount']      = $mount;
             $actionConfig['repository'] = $repositoryDefinition;
             $actionConfig['path']       = $prefix.$actionConfig['path'];
             $actionConfig['manager']    = $manager;
@@ -72,7 +74,7 @@ final class CrudsEntitiesConfigurator
         }
     }
 
-    public function registerCreateAction($name, $class, $factory, $processor, $path, $manager)
+    public function registerCreateAction($mount, $name, $class, $factory, $processor, $path, $manager)
     {
         if (null === $factory) {
             $factory = new DefinitionDecorator('cruds.factory.reflection');
@@ -93,50 +95,38 @@ final class CrudsEntitiesConfigurator
                 $processor,
                 $manager,
                 $factory,
-                new Reference('event_dispatcher'),
+                $this->getEvm(),
             ]
         );
         $definition->setPublic(true);
 
-        $controllerId = $this->normalize('cruds.api.generated.'.$name.'.create_controller');
+        $actionName   = 'create';
+        $controllerId = $this->generateControllerId($name, $actionName);
         $this->container->setDefinition($controllerId, $definition);
 
-        $this->getLoaderDefinition()->addMethodCall(
-            'addRoute',
-            [
-                $this->normalize('cruds.api_'.$name.'_create'),
-                $path,
-                $controllerId.':'.CreateController::ACTION,
-                ['POST'],
-            ]
-        );
+        $action = $controllerId.':'.CreateController::ACTION;
+        $this->registerRoute($mount, $name, $actionName, $path, $action, ['POST'], ['class' => $class]);
     }
 
-    public function registerReadAction($name, $path, $repository)
+    public function registerReadAction($mount, $name, $path, $repository, $class)
     {
         $definition = new Definition(ReadController::class);
         $definition->setArguments(
             [
                 $repository,
-                new Reference('event_dispatcher'),
+                $this->getEvm(),
             ]
         );
 
-        $controllerId = $this->normalize('cruds.api_'.$name.'_read_controller');
+        $actionName   = 'read';
+        $controllerId = $this->generateControllerId($name, $actionName);
         $this->container->setDefinition($controllerId, $definition);
 
-        $this->getLoaderDefinition()->addMethodCall(
-            'addRoute',
-            [
-                $this->normalize('cruds.api_'.$name.'_read'),
-                $path,
-                $controllerId.':'.ReadController::ACTION,
-                ['GET'],
-            ]
-        );
+        $action = $controllerId.':'.ReadController::ACTION;
+        $this->registerRoute($mount, $name, $actionName, $path, $action, ['GET', 'POST'], ['class' => $class]);
     }
 
-    public function registerUpdateAction($name, $path, $repository, $processor, $manager)
+    public function registerUpdateAction($mount, $name, $path, $repository, $processor, $manager, $class)
     {
         if (null === $processor) {
             $processor = new Reference('cruds.processor.property_access');
@@ -150,50 +140,38 @@ final class CrudsEntitiesConfigurator
                 $repository,
                 $processor,
                 $manager,
-                new Reference('event_dispatcher'),
+                $this->getEvm(),
             ]
         );
 
-        $controllerId = $this->normalize('cruds.api_'.$name.'_update_controller');
+        $actionName   = 'update';
+        $controllerId = $this->generateControllerId($name, $actionName);
         $this->container->setDefinition($controllerId, $definition);
 
-        $this->getLoaderDefinition()->addMethodCall(
-            'addRoute',
-            [
-                $this->normalize('cruds.api_'.$name.'_update'),
-                $path,
-                $controllerId.':'.UpdateController::ACTION,
-                ['POST'],
-            ]
-        );
+        $action = $controllerId.':'.UpdateController::ACTION;
+        $this->registerRoute($mount, $name, $actionName, $path, $action, ['POST'], ['class' => $class]);
     }
 
-    public function registerDeleteAction($name, $path, $repository, $manager)
+    public function registerDeleteAction($mount, $name, $path, $repository, $manager, $class)
     {
         $definition = new Definition(DeleteController::class);
         $definition->setArguments(
             [
                 $repository,
                 $manager,
-                new Reference('event_dispatcher'),
+                $this->getEvm(),
             ]
         );
 
-        $controllerId = $this->normalize('cruds.api_'.$name.'_delete_controller');
+        $actionName   = 'delete';
+        $controllerId = $controllerId = $this->generateControllerId($name, $actionName);
         $this->container->setDefinition($controllerId, $definition);
 
-        $this->getLoaderDefinition()->addMethodCall(
-            'addRoute',
-            [
-                $this->normalize('cruds.api_'.$name.'_delete'),
-                $path,
-                $controllerId.':'.DeleteController::ACTION,
-                ['POST'],
-            ]
-        );
+        $action = $controllerId.':'.DeleteController::ACTION;
+        $this->registerRoute($mount, $name, $actionName, $path, $action, ['POST'], ['class' => $class]);
     }
 
-    public function registerSearchAction($name, $path, $class, $repository, array $criteria = [])
+    public function registerSearchAction($mount, $name, $path, $class, $repository, array $criteria = [])
     {
         $filterArray = [];
         foreach ($criteria as $filter => $reference) {
@@ -206,22 +184,16 @@ final class CrudsEntitiesConfigurator
                 $class,
                 $repository,
                 $filterArray,
-                new Reference('event_dispatcher'),
+                $this->getEvm(),
             ]
         );
 
-        $controllerId = $this->normalize('cruds.api_'.$name.'_search_controller');
+        $actionName   = 'search';
+        $controllerId = $this->generateControllerId($name, $actionName);
         $this->container->setDefinition($controllerId, $definition);
 
-        $this->getLoaderDefinition()->addMethodCall(
-            'addRoute',
-            [
-                $this->normalize('cruds.api_'.$name.'_search'),
-                $path,
-                $controllerId.':'.SearchController::ACTION,
-                ['GET', 'POST'],
-            ]
-        );
+        $action = $controllerId.':'.SearchController::ACTION;
+        $this->registerRoute($mount, $name, $actionName, $path, $action, ['GET', 'POST'], ['class' => $class]);
     }
 
     private function getLoaderDefinition()
@@ -247,5 +219,57 @@ final class CrudsEntitiesConfigurator
     private function filterReference($reference)
     {
         return ltrim($reference, '@');
+    }
+
+    /**
+     * @param string $mount
+     * @param string $name
+     * @param string $actionName
+     * @param string $path
+     * @param string $action
+     * @param array  $methods
+     * @param array  $options
+     *
+     * @return Definition
+     * @throws \InvalidArgumentException
+     */
+    private function registerRoute($mount, $name, $actionName, $path, $action, array $methods, array $options = [])
+    {
+        return $this->getLoaderDefinition()->addMethodCall(
+            'addRoute',
+            [
+                $mount,
+                $this->normalize('cruds.routing.'.$name.'.'.$actionName),
+                $path,
+                $action,
+                $methods,
+                array_replace(
+                    [
+                        'action' => $actionName,
+                        'mount'  => $mount,
+                    ],
+                    $options
+                ),
+            ]
+        );
+    }
+
+    /**
+     * @param string $name
+     * @param string $actionName
+     *
+     * @return string
+     */
+    private function generateControllerId($name, $actionName)
+    {
+        return $this->normalize('cruds.generated_controller.'.$name.'.'.$actionName);
+    }
+
+    /**
+     * @return Reference
+     */
+    private function getEvm()
+    {
+        return new Reference('event_dispatcher');
     }
 }

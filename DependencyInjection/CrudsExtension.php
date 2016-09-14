@@ -19,10 +19,8 @@ final class CrudsExtension extends Extension
 
         $configurator = new CrudsEntitiesConfigurator($container);
         $container->addObjectResource($configurator);
-        $prefix = $config['prefix'];
         foreach ($config['entities'] as $name => $entityConfig) {
             $entityConfig['prefix'] = $entityConfig['prefix'] ?: '/'.$name;
-            $entityConfig['prefix'] = $prefix.$entityConfig['prefix'];
             $configurator->processEntityConfiguration($name, $entityConfig);
         }
     }

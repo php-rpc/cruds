@@ -8,20 +8,23 @@ use Symfony\Component\Routing\RouteCollection;
 
 class EntityRouteLoader extends Loader
 {
-    /** @var  Route[] */
+    const RESOURCE_TYPE = 'cruds_mount';
+    /** @var  Route[][] */
     private $routes = [];
-
-    private $loaded = false;
+    /** @var bool[] */
+    private $loaded = [];
 
     /** {@inheritdoc} */
-    public function load($resource, $type = null)
+    public function load($mount, $type = null)
     {
-        if ($this->loaded) {
-            throw new \LogicException('Already loaded');
-        }
+        $this->assertLoaded($mount);
 
         $collection = new RouteCollection();
-        foreach ($this->routes as $name => $route) {
+        if (!array_key_exists($mount, $this->routes)) {
+            throw new \LogicException(sprintf('No routes configured for %s CRUDS mount point', $mount));
+        }
+
+        foreach ($this->routes[$mount] as $name => $route) {
             $collection->add($name, $route);
         }
 
@@ -31,30 +34,25 @@ class EntityRouteLoader extends Loader
     }
 
     /** {@inheritdoc} */
-    public function supports($resource, $type = null)
+    public function supports($mount, $type = null)
     {
-        return 'cruds' === $type;
+        return self::RESOURCE_TYPE === $type;
     }
 
-    public function addRoute($name, $path, $controller, array $methods)
+    public function addRoute($mount, $name, $path, $controller, array $methods, array $options = [])
     {
-        if ($this->loaded) {
+        $this->assertLoaded($mount);
+
+        $this->routes[$mount][$name] = CrudsRoute::create($path, $controller, $methods, $options);
+    }
+
+    /**
+     * @param $resource
+     */
+    private function assertLoaded($resource)
+    {
+        if (array_key_exists($resource, $this->loaded) && $this->loaded[$resource]) {
             throw new \LogicException('Already loaded');
         }
-
-        $this->routes[$name] = new Route(
-            $path,
-            [
-                '_controller' => $controller,
-            ],
-            [],
-            [
-                'cruds_api' => true,
-            ],
-            '',
-            [],
-            $methods,
-            ''
-        );
     }
 }

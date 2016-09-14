@@ -11,11 +11,11 @@ doctrine:
     path: '%kernel.cache_dir%/test.db'
 
 cruds:
-  prefix: /api/entity
   entities:
     my-entity-0:
       class: MyBundle:MyEntity
       prefix: /my-entity
+      mount: test_mount
       actions:
         create: ~
         read: ~

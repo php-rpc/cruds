@@ -1,3 +1,4 @@
 cruds:
-  resource: .
-  type: cruds
+  resource: test_mount
+  prefix: /api/entity
+  type: cruds_mount

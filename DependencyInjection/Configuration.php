@@ -16,13 +16,6 @@ final class Configuration implements ConfigurationInterface
         $builder = new TreeBuilder();
         $root    = $builder->root('cruds');
 
-        $root
-            ->children()
-            ->scalarNode('prefix')
-            ->defaultNull()
-            ->info('Route prefix')
-            ->example('/api');
-
         $entities = $root->children()->arrayNode('entities');
         $entities->useAttributeAsKey('name');
         $entities->normalizeKeys(false);
@@ -49,6 +42,16 @@ final class Configuration implements ConfigurationInterface
             ->defaultNull()
             ->info('Route prefix. Defaults to entity key if not set')
             ->example('/my-entity');
+
+        $parent
+            ->children()
+            ->scalarNode('mount')
+            ->defaultValue('api')
+            ->info(
+                'Route mount. You can create different entries '.
+                'with different mounts. You can use this value when loading routes'
+            )
+            ->example('my-mount-name');
 
         $parent
             ->children()
@@ -109,9 +112,9 @@ final class Configuration implements ConfigurationInterface
             ->defaultNull()
             ->example('@my_entity.factory')
             ->info(
-                'Service ID implementing ' . PHP_EOL .
-                ObjectFactoryInterface::class . PHP_EOL .
-                'Defaults to ' . ReflectionConstructorFactory::class
+                'Service ID implementing '.PHP_EOL.
+                ObjectFactoryInterface::class.PHP_EOL.
+                'Defaults to '.ReflectionConstructorFactory::class
             );
 
         $create
@@ -120,9 +123,9 @@ final class Configuration implements ConfigurationInterface
             ->defaultNull()
             ->example('@my_entity.factory')
             ->info(
-                'Service ID implementing ' . PHP_EOL .
-                ObjectFactoryInterface::class . PHP_EOL .
-                'Defaults to ' . ReflectionConstructorFactory::class
+                'Service ID implementing '.PHP_EOL.
+                ObjectFactoryInterface::class.PHP_EOL.
+                'Defaults to '.ReflectionConstructorFactory::class
             );
 
         $this->configureActionNode($create, 'create');
@@ -176,9 +179,9 @@ final class Configuration implements ConfigurationInterface
             ->defaultNull()
             ->example('@my_entity.factory')
             ->info(
-                'Service ID implementing ' . PHP_EOL .
-                ObjectFactoryInterface::class . PHP_EOL .
-                'Defaults to ' . ReflectionConstructorFactory::class
+                'Service ID implementing '.PHP_EOL.
+                ObjectFactoryInterface::class.PHP_EOL.
+                'Defaults to '.ReflectionConstructorFactory::class
             );
 
         $this->configureActionNode($update, 'update');
@@ -199,8 +202,8 @@ final class Configuration implements ConfigurationInterface
         $parent
             ->children()
             ->scalarNode('path')
-            ->example('/' . $action)
+            ->example('/'.$action)
             ->info('Action path (prefixed)')
-            ->defaultValue('/' . $action);
+            ->defaultValue('/'.$action);
     }
 }
