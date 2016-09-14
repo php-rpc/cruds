@@ -29,7 +29,7 @@ class ReadControllerTest extends AbstractCrudsWebTest
         $client = self::createClient();
         $client->request(
             'GET',
-            '/api/entity/my-entity/read',
+            '/api/entity/my-entity/get',
             ['identifier' => $entity->getId()],
             [],
             ['HTTP_CONTENT_TYPE' => 'application/json']
@@ -51,7 +51,7 @@ class ReadControllerTest extends AbstractCrudsWebTest
 
         $client->request(
             'GET',
-            '/api/entity/my-entity/read',
+            '/api/entity/my-entity/get',
             ['identifier' => $parent->getId()],
             [],
             ['HTTP_CONTENT_TYPE' => 'application/json']

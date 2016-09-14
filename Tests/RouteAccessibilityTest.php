@@ -15,7 +15,7 @@ class RouteAccessibilityTest extends AbstractCrudsWebTest
         self::configureDb();
 
         $this->doRequest('/api/entity/my-entity/create', 'POST', ['data' => ['publicApiField' => 'my-value']]);
-        $this->doRequest('/api/entity/my-entity/read', 'GET', ['identifier' => 1]);
+        $this->doRequest('/api/entity/my-entity/get', 'GET', ['identifier' => 1]);
         $this->doRequest(
             '/api/entity/my-entity/update',
             'POST',

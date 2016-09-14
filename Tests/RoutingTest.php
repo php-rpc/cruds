@@ -20,8 +20,8 @@ class RoutingTest extends AbstractCrudsWebTest
 
         $this->matchPath('/api/entity/my-entity/create', 'POST');
         $this->matchPath('/api/entity/my-entity/create', 'GET', true);
-        $this->matchPath('/api/entity/my-entity/read', 'GET');
-        $this->matchPath('/api/entity/my-entity/read', 'POST', true);
+        $this->matchPath('/api/entity/my-entity/get', 'GET');
+        $this->matchPath('/api/entity/my-entity/get', 'POST', true);
         $this->matchPath('/api/entity/my-entity/update', 'POST');
         $this->matchPath('/api/entity/my-entity/update', 'GET', true);
         $this->matchPath('/api/entity/my-entity/delete', 'POST');

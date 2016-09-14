@@ -161,7 +161,7 @@ final class Configuration implements ConfigurationInterface
         $read = $parent
             ->children()
             ->arrayNode('read');
-        $this->configureActionNode($read, 'read');
+        $this->configureActionNode($read, 'get');
     }
 
     private function configureUpdateAction(ArrayNodeDefinition $parent)

@@ -49,6 +49,10 @@ final class CrudsEntitiesConfigurator
         $manager->setArguments([$class]);
 
         foreach ($actions as $action => $actionConfig) {
+            if (!$actionConfig['enabled']) {
+                continue;
+            }
+
             $actionConfig['name']       = $name;
             $actionConfig['class']      = $class;
             $actionConfig['repository'] = $repositoryDefinition;
