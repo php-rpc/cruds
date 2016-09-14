@@ -17,15 +17,7 @@ trait CrudsRequestCheckerTrait
      */
     protected function checkRequest(KernelEvent $event)
     {
-        $request = $event->getRequest();
-        $route   = $request->attributes->get('_route');
-
-        if (null === $route) {
-            return false;
-        }
-
-        $collection = $this->getRouter()->getRouteCollection();
-        $route      = $collection->get($route);
+        $route = $this->getRoute($event);
 
         if (null === $route) {
             return false;
@@ -36,5 +28,17 @@ trait CrudsRequestCheckerTrait
         }
 
         return true;
+    }
+
+    protected function getRoute(KernelEvent $event)
+    {
+        $request = $event->getRequest();
+        $route   = $request->attributes->get('_route');
+
+        if (null === $route) {
+            return null;
+        }
+
+        return $this->getRouter()->getRouteCollection()->get($route);
     }
 }

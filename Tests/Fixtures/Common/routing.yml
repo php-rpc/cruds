@@ -2,3 +2,6 @@ cruds:
   resource: test_mount
   prefix: /api/entity
   type: cruds_mount
+  options:
+    context:
+      # groups: ['Default', 'default']
