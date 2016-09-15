@@ -12,6 +12,8 @@ class ResponseFormatterListener
     private static $formatMap = [
         'json' => 'application/json',
         'xml'  => 'application/xml',
+        'yaml' => 'application/x-yaml',
+        'yml'  => 'application/x-yaml',
     ];
 
     use CrudsRequestCheckerTrait;
@@ -44,14 +46,14 @@ class ResponseFormatterListener
 
         $format = $request->get('_format', 'json');
 
-        $content = $this->serializer->serialize($response, $format);
-        $format  = array_key_exists($format, self::$formatMap) ? self::$formatMap[$format] : 'text/plain';
+        $content     = $this->serializer->serialize($response, $format);
+        $contentType = array_key_exists($format, self::$formatMap) ? self::$formatMap[$format] : 'text/plain';
         $event->setResponse(
             new Response(
                 $content,
                 Response::HTTP_OK,
                 [
-                    'Content-Type' => $format,
+                    'Content-Type' => $contentType,
                 ]
             )
         );
