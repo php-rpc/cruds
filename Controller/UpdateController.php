@@ -7,6 +7,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use ScayTrase\Api\Cruds\EntityProcessorInterface;
 use ScayTrase\Api\Cruds\Event\CollectionCrudEvent;
 use ScayTrase\Api\Cruds\Event\CrudEvents;
+use ScayTrase\Api\Cruds\Exception\EntityNotFoundException;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -43,10 +44,20 @@ final class UpdateController
         $this->evm        = $evm ?: new EventDispatcher();
     }
 
-
+    /**
+     * @param mixed $identifier
+     * @param mixed $data
+     *
+     * @return object
+     * @throws EntityNotFoundException
+     */
     public function patchAction($identifier, $data)
     {
         $entity = $this->repository->find($identifier);
+
+        if (!$entity) {
+            throw EntityNotFoundException::byIdentifier($identifier);
+        }
 
         $this->evm->dispatch(CrudEvents::PRE_UPDATE, new CollectionCrudEvent([$entity]));
         $entity = $this->processor->updateEntity($entity, $data);

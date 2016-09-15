@@ -29,9 +29,10 @@
             </exclude>
         </whitelist>
         <blacklist>
-            <directory>vendor/</directory>
-            <directory>build/</directory>
-            <directory>target/</directory>
+            <directory>./vendor/</directory>
+            <directory>./build/</directory>
+            <directory>./target/</directory>
+            <directory>./Tests/</directory>
         </blacklist>
     </filter>
 </phpunit>

@@ -5,6 +5,7 @@ namespace ScayTrase\Api\Cruds\Tests\Fixtures\Common;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use ScayTrase\Api\Cruds\CrudsBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
+use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\HttpKernel\Kernel;
@@ -56,5 +57,17 @@ abstract class CrudsTestKernel extends Kernel
         $path = explode('\\', static::class);
 
         return array_pop($path);
+    }
+
+    protected function initializeContainer()
+    {
+        $class = $this->getContainerClass();
+        $cache = new ConfigCache($this->getCacheDir().'/'.$class.'.php', $this->debug);
+
+        $container = $this->buildContainer();
+        $container->compile();
+        $this->dumpContainer($cache, $container, $class, $this->getContainerBaseClass());
+
+        parent::initializeContainer();
     }
 }

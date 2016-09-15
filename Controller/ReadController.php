@@ -5,6 +5,7 @@ namespace ScayTrase\Api\Cruds\Controller;
 use Doctrine\Common\Persistence\ObjectRepository;
 use ScayTrase\Api\Cruds\Event\CollectionCrudEvent;
 use ScayTrase\Api\Cruds\Event\CrudEvents;
+use ScayTrase\Api\Cruds\Exception\EntityNotFoundException;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -34,11 +35,16 @@ final class ReadController
      *
      * @param mixed $identifier
      *
-     * @return null|object
+     * @return object
+     * @throws EntityNotFoundException
      */
     public function getAction($identifier)
     {
         $entity = $this->repository->find($identifier);
+
+        if (!$entity) {
+            throw EntityNotFoundException::byIdentifier($identifier);
+        }
 
         $this->evm->dispatch(CrudEvents::READ, new CollectionCrudEvent([$entity]));
 

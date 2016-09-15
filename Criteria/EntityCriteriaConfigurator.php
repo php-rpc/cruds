@@ -35,19 +35,19 @@ final class EntityCriteriaConfigurator implements CriteriaConfiguratorInterface
             throw CriteriaConfigurationException::invalidType('array|null', gettype($criteria));
         }
 
-        try {
-            foreach ((array)$arguments as $apiProperty => $value) {
+        foreach ((array)$arguments as $apiProperty => $value) {
+            try {
                 $mappedProperty = $this->mapper->getEntityProperty($fqcn, $apiProperty);
 
                 if (null === $mappedProperty) {
-                    throw CriteriaConfigurationException::invalidCriteriaConfiguration($apiProperty);
+                    throw CriteriaConfigurationException::invalidData($apiProperty);
                 }
 
                 $this->filterDoctrineProperty($criteria, $mappedProperty, $value);
                 unset($arguments[$apiProperty]);
+            } catch (MapperException $e) {
+                throw CriteriaConfigurationException::invalidProperty($apiProperty, $e);
             }
-        } catch (MapperException $e) {
-            throw new CriteriaConfigurationException(sprintf('Error getting object property: %s', $e->getMessage()));
         }
     }
 
@@ -68,7 +68,11 @@ final class EntityCriteriaConfigurator implements CriteriaConfiguratorInterface
                 $criteria->andWhere(Criteria::expr()->isNull($property));
                 break;
             case !is_scalar($value):
-                throw CriteriaConfigurationException::invalid($property, $value);
+                throw CriteriaConfigurationException::invalidPropertyType(
+                    $property,
+                    'scalar|array|null',
+                    gettype($value)
+                );
             default:
                 $criteria->andWhere(Criteria::expr()->eq($property, $value));
         }

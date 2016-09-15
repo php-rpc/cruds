@@ -6,25 +6,28 @@ class CriteriaConfigurationException extends \InvalidArgumentException implement
 {
     public static function unknown(array $names)
     {
-        return new self(sprintf('Unknown criteria configurators: %s', implode(', ', $names)));
-    }
-
-    public static function invalid($name, $value)
-    {
-        return new self(sprintf('Invalid data passed to criteria configurators "%s": %s', $name, json_encode($value)));
+        return new static(sprintf('Unknown criteria: %s', implode(', ', $names)));
     }
 
     public static function invalidType($expected, $actual)
     {
-        return new self(
-            sprintf('Invalid data format passed to criteria configurator: %s expected, %s given', $expected, $actual)
+        return new static(sprintf('Invalid criteria: %s expected, %s given', $expected, $actual));
+    }
+
+    public static function invalidData($field)
+    {
+        return new static(sprintf('Invalid criteria: %s', $field));
+    }
+
+    public static function invalidPropertyType($property, $expected, $actual)
+    {
+        return new static(
+            sprintf('Invalid criteria property "%s": %s expected, %s given', $property, $expected, $actual)
         );
     }
 
-    public static function invalidCriteriaConfiguration($field)
+    public static function invalidProperty($property, \Exception $exception)
     {
-        return new self(
-            sprintf('Invalid data passed to criteria configurator: %s', $field)
-        );
+        return new static(sprintf('Invalid criteria property "%s": %s', $property, $exception->getMessage()));
     }
 }
