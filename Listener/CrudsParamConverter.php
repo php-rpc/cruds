@@ -9,15 +9,6 @@ final class CrudsParamConverter
 {
     use CrudsRequestCheckerTrait;
 
-    private static $whiteList = [
-        'identifier',
-        'data',
-        'criteria',
-        'order',
-        'limit',
-        'offset',
-    ];
-
     /** @var  RouterInterface */
     private $router;
 
@@ -37,8 +28,18 @@ final class CrudsParamConverter
             return;
         }
 
+        $route = $this->getRoute($event);
+        if (!$route->hasOption('cruds_options')) {
+            return;
+        }
+
+        $options = (array)$route->getOption('cruds_options');
+        if (!array_key_exists('arguments', $options)) {
+            return;
+        }
+
         $request = $event->getRequest();
-        foreach (self::$whiteList as $param) {
+        foreach ((array)$options['arguments'] as $param) {
             $value = $request->get($param);
             if (null !== $value) {
                 $request->attributes->set($param, $value);
