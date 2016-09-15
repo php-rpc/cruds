@@ -2,7 +2,9 @@
 
 All CRUDS events a inhereted from `CollectionCrudEvent` which contains the collection
 of entities being processed (read or write). You can hook this events to modify your 
-business logic
+business logic.
+
+Library uses built-in symfony event dispatcher.
 
 ## Access events
 

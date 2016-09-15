@@ -47,6 +47,14 @@ That's all, you are ready to go!
 
 See [Configuration reference](Resources/doc/configuration.md)
 
+## Usage
+
+See [usage manual](Resources/doc/usage.md)
+
+## Hooking (Event system)
+
+See [usage manual](Resources/doc/events.md)
+
 ## Dependencies
 
 Currently the main dependency is `doctrine/common` library which provides the 
