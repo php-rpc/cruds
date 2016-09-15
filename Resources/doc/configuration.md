@@ -1,6 +1,4 @@
-# Configuration
-
-## Full configuration reference
+# Full configuration reference
 
 ```yaml
 cruds:
