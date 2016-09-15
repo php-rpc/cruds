@@ -2,8 +2,8 @@
 
 namespace ScayTrase\Api\Cruds\DependencyInjection;
 
-use ScayTrase\Api\Cruds\EntityProcessorInterface;
 use ScayTrase\Api\Cruds\EntityFactoryInterface;
+use ScayTrase\Api\Cruds\EntityProcessorInterface;
 use ScayTrase\Api\Cruds\PropertyAccessProcessor;
 use ScayTrase\Api\Cruds\ReflectionConstructorFactory;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -23,6 +23,24 @@ final class Configuration implements ConfigurationInterface
         $entities->normalizeKeys(false);
         /** @var ArrayNodeDefinition $entitiesProto */
         $entitiesProto = $entities->prototype('array');
+
+        $events = $root->children()->arrayNode('listeners');
+        $events->addDefaultsIfNotSet();
+        $events
+            ->children()
+            ->booleanNode('param_converter')
+            ->defaultTrue()
+            ->info('Configure param converting for symfony request');
+        $events
+            ->children()
+            ->booleanNode('response_normalizer')
+            ->defaultTrue()
+            ->info('Configure normalizer view event listener');
+        $events
+            ->children()
+            ->booleanNode('response_serializer')
+            ->defaultTrue()
+            ->info('Configure serializer view event listener');
 
         $this->configureEntityProto($entitiesProto);
 
@@ -135,7 +153,9 @@ final class Configuration implements ConfigurationInterface
         $this->configureActionNode($search, 'search');
 
         $criteria = $search->children()->variableNode('criteria');
-        $criteria->info('Criteria modifiers. Array will be treated as nested criteria, allowing configuring several modifiers by key:value');
+        $criteria->info(
+            'Criteria modifiers. Array will be treated as nested criteria, allowing configuring several modifiers by key:value'
+        );
         $criteria->defaultValue('cruds.criteria.entity');
         $criteria->example('my.criteria.modifier');
         $criteria->cannotBeEmpty();

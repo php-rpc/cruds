@@ -12,7 +12,7 @@ final class CrudsExtension extends Extension
     /** {@inheritdoc} */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('cruds.yml');
 
         $config = $this->processConfiguration($this->getConfiguration([], $container), $configs);
@@ -20,8 +20,16 @@ final class CrudsExtension extends Extension
         $configurator = new CrudsEntitiesConfigurator($container);
         $container->addObjectResource($configurator);
         foreach ($config['entities'] as $name => $entityConfig) {
-            $entityConfig['prefix'] = $entityConfig['prefix'] ?: '/'.$name;
+            $entityConfig['prefix'] = $entityConfig['prefix'] ?: '/' . $name;
             $configurator->processEntityConfiguration($name, $entityConfig);
+        }
+
+        foreach ($config['listeners'] as $listener => $enabled) {
+            if ($enabled) {
+                continue;
+            }
+
+            $container->removeDefinition('cruds.api.listener.' . $listener);
         }
     }
 }

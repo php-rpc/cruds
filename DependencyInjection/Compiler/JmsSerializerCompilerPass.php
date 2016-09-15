@@ -35,10 +35,10 @@ final class JmsSerializerCompilerPass implements CompilerPassInterface
             $definition->addTag('jms_serializer.event_subscriber');
         }
 
-        $normalizer = $container->getDefinition('cruds.api.response_normalizer_listener');
+        $normalizer = $container->getDefinition('cruds.api.listener.response_normalizer');
         $normalizer->replaceArgument(0, new Reference('cruds.jms_serializer'));
 
-        $serializer = $container->getDefinition('cruds.api.response_serializer_listener');
+        $serializer = $container->getDefinition('cruds.api.listener.response_serializer');
         $serializer->replaceArgument(0, new Reference('cruds.jms_serializer'));
     }
 }

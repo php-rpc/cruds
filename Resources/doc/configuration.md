@@ -94,4 +94,14 @@ cruds:
 
                     # Criteria modifiers. Array will be treated as nested criteria, allowing configuring several modifiers by key:value
                     criteria:             cruds.criteria.entity # Example: my.criteria.modifier
+    listeners:
+
+        # Configure param converting for symfony request
+        param_converter:      true
+
+        # Configure normalizer view event listener
+        normalizer:           true
+
+        # Configure serializer view event listener
+        serializer:           true
 ```
