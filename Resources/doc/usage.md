@@ -57,7 +57,7 @@ cruds:
     my-entity-0:
       class: MyBundle:MyEntity
       prefix: /my-entity
-      mount: my_cruds_mount # must match one of routed resource (if you wish to use symfony routing) to be loaded
+      mount: my_cruds_mount 
       actions: 
         create: ~
         read: ~
@@ -69,3 +69,97 @@ cruds:
             my-logic: my_app.cruds.my_logic_criteria
 ```
 
+## Entity create/update processing
+
+### Entity factory
+
+As a part of your business logic you can create entities with `create` action.
+But as soon your entities are black box for the library you have an options to
+define your own entity factory, which instantiate entities in your special way
+(i.e. with constructor arguments) before the library populate this entity with
+data from the action arguments
+
+`EntityFactoryInterface` defines the simple interface which accepts all the
+data received by `create` action and return the new objects. As a bootstrap value
+library provide `ReflectionConstructorFactory` which can be extended to
+use data as constructor arguments in addition to some defaults.
+ 
+You can set up your factory with `create` action configuration passing it's
+service id to `factory` option:
+
+```yaml
+cruds:
+  entities:
+    my-entity-0:
+      class: MyBundle:MyEntity
+      prefix: /my-entity
+      mount: my_cruds_mount 
+      actions: 
+        create:
+          factory: my_app.cruds.entity_factory
+        read: ~
+        update: ~
+        delete: ~
+        search: ~
+```
+
+When the entity is being updated the factory is not used since `ObjectRepository`
+provides the controller with ready to use entity (basically from database using `doctrine/orm` library) 
+
+### Entity processor
+
+The next step in creating or updating your entity is to patch it with some data.
+Here the entity processor takes the action.
+
+`EntityProcessorInterface` define the simple interface that takes the entity, incoming data
+and outputs patched data. Out of the box implementation utilize the `symfony/property-access`
+component to call accessor methods on the entity to set the data. The methods name 
+are searched according the data keys.
+
+As the part of adopting the `doctrine/orm` library the `PropertyAccessor` is decorated
+with doctrine registry to automatically convert incoming relation identifiers into object 
+references.
+
+You can implement your own processor or configure some built-in ones (like 
+`FormProcessor` from symfony adapters).
+
+Create and update processors are configured separately, allowing you to
+define different handling when creating and updating entities
+
+```yaml
+cruds:
+  entities:
+    my-entity-0:
+      class: MyBundle:MyEntity
+      prefix: /my-entity
+      mount: my_cruds_mount 
+      actions: 
+        create:
+          processor: my_app.cruds.entity_processor
+        read: ~
+        update:
+          processor: my_app.cruds.entity_processor
+        delete: ~
+        search: ~
+```
+
+## Controlling the paths
+
+This library allows you to update paths for the action. The path are hierarchical
+so you cannot put `read` method path outside the configured entity or mount prefix, so
+you have to make the prefix to be empty and do full path configuration at the method node
+
+Also you can use route placeholders to benefit from routing matching having 
+substituting action arguments with placeholder data 
+
+```yaml
+cruds:
+  entities:
+    my-entity-0:
+      class: MyBundle:MyEntity
+      prefix: /my-entity
+      mount: my_cruds_mount 
+      actions: 
+        read:
+          path: /{identifier}/get
+```
