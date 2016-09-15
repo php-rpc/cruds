@@ -9,6 +9,7 @@ use ScayTrase\Api\Cruds\Controller\DeleteController;
 use ScayTrase\Api\Cruds\Controller\ReadController;
 use ScayTrase\Api\Cruds\Controller\SearchController;
 use ScayTrase\Api\Cruds\Controller\UpdateController;
+use ScayTrase\Api\Cruds\Criteria\NestedCriteriaConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
@@ -171,11 +172,18 @@ final class CrudsEntitiesConfigurator
         $this->registerRoute($mount, $name, $actionName, $path, $action, ['POST'], ['class' => $class]);
     }
 
-    public function registerSearchAction($mount, $name, $path, $class, $repository, array $criteria = [])
+    public function registerSearchAction($mount, $name, $path, $class, $repository, $criteria)
     {
-        $filterArray = [];
-        foreach ($criteria as $filter => $reference) {
-            $filterArray[$filter] = new Reference($this->filterReference($reference));
+
+        if (is_array($criteria)) {
+            $filterArray = [];
+            foreach ($criteria as $filter => $reference) {
+                $filterArray[$filter] = new Reference($this->filterReference($reference));
+            }
+            $criteriaConfigurator = new Definition(NestedCriteriaConfigurator::class);
+            $criteriaConfigurator->setArguments([$filterArray]);
+        } else {
+            $criteriaConfigurator = new Reference($this->filterReference($criteria));
         }
 
         $definition = new Definition(SearchController::class);
@@ -183,7 +191,7 @@ final class CrudsEntitiesConfigurator
             [
                 $class,
                 $repository,
-                $filterArray,
+                $criteriaConfigurator,
                 $this->getEvm(),
             ]
         );

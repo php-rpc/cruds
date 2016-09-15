@@ -16,8 +16,8 @@ final class SearchController
 
     /** @var string */
     private $fqcn;
-    /** @var CriteriaConfiguratorInterface[] */
-    private $filters = [];
+    /** @var CriteriaConfiguratorInterface */
+    private $configurator;
     /** @var  Selectable */
     private $repository;
     /** @var EventDispatcherInterface */
@@ -26,17 +26,21 @@ final class SearchController
     /**
      * ReadController constructor.
      *
-     * @param string                          $fqcn
-     * @param Selectable                      $repository
-     * @param CriteriaConfiguratorInterface[] $filters
-     * @param EventDispatcherInterface        $evm
+     * @param string                        $fqcn
+     * @param Selectable                    $repository
+     * @param CriteriaConfiguratorInterface $configurator
+     * @param EventDispatcherInterface      $evm
      */
-    public function __construct($fqcn, Selectable $repository, array $filters, EventDispatcherInterface $evm)
-    {
-        $this->fqcn       = $fqcn;
-        $this->filters    = $filters;
-        $this->repository = $repository;
-        $this->evm        = $evm;
+    public function __construct(
+        $fqcn,
+        Selectable $repository,
+        CriteriaConfiguratorInterface $configurator,
+        EventDispatcherInterface $evm
+    ) {
+        $this->fqcn         = $fqcn;
+        $this->configurator = $configurator;
+        $this->repository   = $repository;
+        $this->evm          = $evm;
     }
 
     /**
@@ -54,16 +58,7 @@ final class SearchController
     {
         $queryCriteria = new Criteria(null, $order, $offset, $limit);
 
-        $unknown = array_diff_key($criteria, $this->filters);
-
-        if (count($unknown) > 0) {
-            throw CriteriaConfigurationException::unknown(array_keys($unknown));
-        }
-
-        foreach ($criteria as $filter => $item) {
-            $this->filters[$filter]->configure($this->fqcn, $queryCriteria, $item);
-        }
-
+        $this->configurator->configure($this->fqcn, $queryCriteria, $criteria);
         $entities = $this->repository->matching($queryCriteria);
 
         $this->evm->dispatch(CrudEvents::READ, new CollectionCrudEvent($entities));

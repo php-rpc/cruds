@@ -26,9 +26,9 @@ final class DoctrineAwarePropertyMapperDecorator implements PropertyMapperInterf
     }
 
     /** {@inheritdoc} */
-    public function getObjectProperty($className, $apiProperty)
+    public function getEntityProperty($className, $apiProperty)
     {
-        return $this->decorated->getObjectProperty($this->normalizeClassName($className), $apiProperty);
+        return $this->decorated->getEntityProperty($this->normalizeClassName($className), $apiProperty);
     }
 
     /** {@inheritdoc} */
@@ -44,9 +44,9 @@ final class DoctrineAwarePropertyMapperDecorator implements PropertyMapperInterf
     }
 
     /** {@inheritdoc} */
-    public function getObjectProperties($className)
+    public function getEntityProperties($className)
     {
-        return $this->decorated->getObjectProperties($this->normalizeClassName($className));
+        return $this->decorated->getEntityProperties($this->normalizeClassName($className));
     }
 
     private function normalizeClassName($className)

@@ -7,7 +7,7 @@ use ScayTrase\Api\Cruds\EntityProcessorInterface;
 use ScayTrase\Api\Cruds\Event\CollectionCrudEvent;
 use ScayTrase\Api\Cruds\Event\CrudEvents;
 use ScayTrase\Api\Cruds\Exception\EntityProcessingException;
-use ScayTrase\Api\Cruds\ObjectFactoryInterface;
+use ScayTrase\Api\Cruds\EntityFactoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -19,7 +19,7 @@ final class CreateController
     private $manager;
     /** @var  EventDispatcherInterface */
     private $evm;
-    /** @var  ObjectFactoryInterface */
+    /** @var  EntityFactoryInterface */
     private $factory;
     /** @var  EntityProcessorInterface */
     private $processor;
@@ -29,13 +29,13 @@ final class CreateController
      *
      * @param EntityProcessorInterface $processor
      * @param ObjectManager            $manager
-     * @param ObjectFactoryInterface   $factory
+     * @param EntityFactoryInterface   $factory
      * @param EventDispatcherInterface $evm
      */
     public function __construct(
         EntityProcessorInterface $processor,
         ObjectManager $manager,
-        ObjectFactoryInterface $factory,
+        EntityFactoryInterface $factory,
         EventDispatcherInterface $evm = null
     ) {
         $this->manager   = $manager;
@@ -53,7 +53,7 @@ final class CreateController
      */
     public function createAction($data)
     {
-        $object = $this->factory->createObject($data);
+        $object = $this->factory->createEntity($data);
         $entity = $this->processor->updateEntity($object, $data);
 
         $this->evm->dispatch(CrudEvents::READ, new CollectionCrudEvent([$entity]));

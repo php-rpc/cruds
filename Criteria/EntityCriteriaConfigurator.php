@@ -37,7 +37,7 @@ final class EntityCriteriaConfigurator implements CriteriaConfiguratorInterface
 
         try {
             foreach ((array)$arguments as $apiProperty => $value) {
-                $mappedProperty = $this->mapper->getObjectProperty($fqcn, $apiProperty);
+                $mappedProperty = $this->mapper->getEntityProperty($fqcn, $apiProperty);
 
                 if (null === $mappedProperty) {
                     throw CriteriaConfigurationException::invalidCriteriaConfiguration($apiProperty);

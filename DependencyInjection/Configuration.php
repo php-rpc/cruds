@@ -2,7 +2,9 @@
 
 namespace ScayTrase\Api\Cruds\DependencyInjection;
 
-use ScayTrase\Api\Cruds\ObjectFactoryInterface;
+use ScayTrase\Api\Cruds\EntityProcessorInterface;
+use ScayTrase\Api\Cruds\EntityFactoryInterface;
+use ScayTrase\Api\Cruds\PropertyAccessProcessor;
 use ScayTrase\Api\Cruds\ReflectionConstructorFactory;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -29,6 +31,8 @@ final class Configuration implements ConfigurationInterface
 
     private function configureEntityProto(ArrayNodeDefinition $parent)
     {
+        $parent->canBeDisabled();
+
         $parent
             ->children()
             ->scalarNode('class')
@@ -47,8 +51,9 @@ final class Configuration implements ConfigurationInterface
             ->children()
             ->scalarNode('mount')
             ->defaultValue('api')
+            ->cannotBeEmpty()
             ->info(
-                'Route mount. You can create different entries '.
+                'Route mount. You can create different entries ' .
                 'with different mounts. You can use this value when loading routes'
             )
             ->example('my-mount-name');
@@ -82,16 +87,7 @@ final class Configuration implements ConfigurationInterface
                 }
             )
             ->end()
-            ->info('Action configuration')
-            ->example(
-                [
-                    'create' => ['enabled' => false],
-                    'read'   => null,
-                    'update' => null,
-                    'delete' => ['enabled' => true, 'path' => '/remove'],
-                    'search' => null,
-                ]
-            );
+            ->info('Action configuration');
 
         $this->configureCreateAction($actions);
         $this->configureReadAction($actions);
@@ -112,9 +108,9 @@ final class Configuration implements ConfigurationInterface
             ->defaultNull()
             ->example('@my_entity.factory')
             ->info(
-                'Service ID implementing '.PHP_EOL.
-                ObjectFactoryInterface::class.PHP_EOL.
-                'Defaults to '.ReflectionConstructorFactory::class
+                'Service ID implementing ' . PHP_EOL .
+                EntityFactoryInterface::class . PHP_EOL .
+                'Defaults to ' . ReflectionConstructorFactory::class
             );
 
         $create
@@ -123,9 +119,9 @@ final class Configuration implements ConfigurationInterface
             ->defaultNull()
             ->example('@my_entity.factory')
             ->info(
-                'Service ID implementing '.PHP_EOL.
-                ObjectFactoryInterface::class.PHP_EOL.
-                'Defaults to '.ReflectionConstructorFactory::class
+                'Service ID implementing ' . PHP_EOL .
+                EntityFactoryInterface::class . PHP_EOL .
+                'Defaults to ' . ReflectionConstructorFactory::class
             );
 
         $this->configureActionNode($create, 'create');
@@ -139,24 +135,10 @@ final class Configuration implements ConfigurationInterface
         $this->configureActionNode($search, 'search');
 
         $criteria = $search->children()->variableNode('criteria');
-        $criteria
-            ->defaultValue([])
-            ->beforeNormalization()
-            ->ifString()
-            ->then(
-                function ($v) {
-                    return [$v];
-                }
-            )
-            ->ifNull()
-            ->thenEmptyArray();
-
-        $criteria->info('List of prioritized criteria modifiers');
-        $criteria->example(
-            [
-                '@my.criteria.modifier',
-            ]
-        );
+        $criteria->info('Criteria modifiers. Array will be treated as nested criteria, allowing configuring several modifiers by key:value');
+        $criteria->defaultValue('cruds.criteria.entity');
+        $criteria->example('my.criteria.modifier');
+        $criteria->cannotBeEmpty();
     }
 
     private function configureReadAction(ArrayNodeDefinition $parent)
@@ -177,11 +159,11 @@ final class Configuration implements ConfigurationInterface
             ->children()
             ->variableNode('processor')
             ->defaultNull()
-            ->example('@my_entity.factory')
+            ->example('@my_entity.processor')
             ->info(
-                'Service ID implementing '.PHP_EOL.
-                ObjectFactoryInterface::class.PHP_EOL.
-                'Defaults to '.ReflectionConstructorFactory::class
+                'Service ID implementing ' . PHP_EOL .
+                EntityProcessorInterface::class . PHP_EOL .
+                'Defaults to ' . PropertyAccessProcessor::class
             );
 
         $this->configureActionNode($update, 'update');
@@ -202,8 +184,7 @@ final class Configuration implements ConfigurationInterface
         $parent
             ->children()
             ->scalarNode('path')
-            ->example('/'.$action)
-            ->info('Action path (prefixed)')
-            ->defaultValue('/'.$action);
+            ->info('Action path (will be prefixed with entity prefix)')
+            ->defaultValue('/' . $action);
     }
 }

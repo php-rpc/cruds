@@ -3,7 +3,7 @@
 namespace ScayTrase\Api\Cruds\Adaptors\DoctrineOrm;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use ScayTrase\Api\Cruds\ObjectFactoryInterface;
+use ScayTrase\Api\Cruds\EntityFactoryInterface;
 use ScayTrase\Api\Cruds\ReflectionConstructorFactory;
 
 final class DoctrineReflectionFactoryFactory
@@ -23,7 +23,7 @@ final class DoctrineReflectionFactoryFactory
      * @param string $class
      * @param array  $args
      *
-     * @return ObjectFactoryInterface
+     * @return EntityFactoryInterface
      */
     public function create($class, array $args)
     {

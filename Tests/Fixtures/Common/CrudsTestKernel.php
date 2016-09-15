@@ -6,6 +6,7 @@ use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use ScayTrase\Api\Cruds\CrudsBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\HttpKernel\Kernel;
 
 abstract class CrudsTestKernel extends Kernel
@@ -23,18 +24,28 @@ abstract class CrudsTestKernel extends Kernel
 
     public function getCacheDir()
     {
-        return __DIR__.'/../../../build/'.$this->getClassName().'/cache';
+        return __DIR__ . '/../../../build/' . $this->getClassName() . '/cache';
     }
 
     public function getLogDir()
     {
-        return __DIR__.'/../../../build/'.$this->getClassName().'/logs';
+        return __DIR__ . '/../../../build/' . $this->getClassName() . '/logs';
     }
 
     /** {@inheritdoc} */
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        return $loader->load(__DIR__.'/config.yml');
+        return $loader->load(__DIR__ . '/config.yml');
+    }
+
+    /** {@inheritdoc} */
+    protected function buildContainer()
+    {
+        $container = parent::buildContainer();
+        $container->addResource(new FileResource(__DIR__ . '/config.yml'));
+        $container->addResource(new FileResource(__DIR__ . '/routing.yml'));
+
+        return $container;
     }
 
     /**

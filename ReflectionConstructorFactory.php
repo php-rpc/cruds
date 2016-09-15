@@ -2,7 +2,7 @@
 
 namespace ScayTrase\Api\Cruds;
 
-final class ReflectionConstructorFactory implements ObjectFactoryInterface
+final class ReflectionConstructorFactory implements EntityFactoryInterface
 {
     /** @var  string */
     private $className;
@@ -22,7 +22,7 @@ final class ReflectionConstructorFactory implements ObjectFactoryInterface
     }
 
     /** {@inheritdoc} */
-    public function createObject($data)
+    public function createEntity($data)
     {
         $reflection = new \ReflectionClass($this->className);
 

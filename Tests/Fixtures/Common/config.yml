@@ -12,15 +12,8 @@ doctrine:
 
 cruds:
   entities:
-    my-entity-0:
+    my-test-entity:
       class: MyBundle:MyEntity
       prefix: /my-entity
       mount: test_mount
-      actions:
-        create: ~
-        read: ~
-        update: ~
-        delete: ~
-        search:
-          criteria:
-            doctrine: '@cruds.criteria.entity'
+      actions: [create, read, update, delete, search]

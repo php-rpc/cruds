@@ -44,7 +44,7 @@ final class MappedEntityFormFactory
                     $apiProperty,
                     $this->factory->createForProperty(
                         $className,
-                        $this->mapper->getObjectProperty($className, $apiProperty)
+                        $this->mapper->getEntityProperty($className, $apiProperty)
                     )
                 );
             }

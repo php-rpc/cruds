@@ -28,7 +28,7 @@ final class SymfonyPropertyMapper implements PropertyMapperInterface
     }
 
     /** {@inheritdoc} */
-    public function getObjectProperty($className, $apiProperty)
+    public function getEntityProperty($className, $apiProperty)
     {
         if (!$this->factory->hasMetadataFor($className)) {
             return null;
@@ -48,7 +48,7 @@ final class SymfonyPropertyMapper implements PropertyMapperInterface
             return null;
         }
 
-        if (!in_array($objectProperty, $this->getObjectProperties($className), true)) {
+        if (!in_array($objectProperty, $this->getEntityProperties($className), true)) {
             return null;
         }
 
@@ -67,7 +67,7 @@ final class SymfonyPropertyMapper implements PropertyMapperInterface
     }
 
     /** {@inheritdoc} */
-    public function getObjectProperties($className)
+    public function getEntityProperties($className)
     {
         $properties = [];
         foreach ($this->getMetadata($className) as $property) {

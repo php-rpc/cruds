@@ -28,7 +28,7 @@ final class JmsPropertyMapper implements PropertyMapperInterface
     }
 
     /** {@inheritdoc} */
-    public function getObjectProperty($className, $apiProperty)
+    public function getEntityProperty($className, $apiProperty)
     {
         $metadata = $this->getMetadata($className);
 
@@ -70,7 +70,7 @@ final class JmsPropertyMapper implements PropertyMapperInterface
     }
 
     /** {@inheritdoc} */
-    public function getObjectProperties($className)
+    public function getEntityProperties($className)
     {
         $metadata = $this->getMetadata($className);
 

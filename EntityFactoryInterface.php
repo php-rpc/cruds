@@ -2,7 +2,7 @@
 
 namespace ScayTrase\Api\Cruds;
 
-interface ObjectFactoryInterface
+interface EntityFactoryInterface
 {
     /**
      * Creates object from data
@@ -11,5 +11,5 @@ interface ObjectFactoryInterface
      *
      * @return object
      */
-    public function createObject($data);
+    public function createEntity($data);
 }

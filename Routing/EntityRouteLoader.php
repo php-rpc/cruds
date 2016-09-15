@@ -9,7 +9,7 @@ use Symfony\Component\Routing\RouteCollection;
 class EntityRouteLoader extends Loader
 {
     const RESOURCE_TYPE = 'cruds_mount';
-    /** @var  Route[][] */
+    /** @var  CrudsRoute[][] */
     private $routes = [];
     /** @var bool[] */
     private $loaded = [];
@@ -54,5 +54,27 @@ class EntityRouteLoader extends Loader
         if (array_key_exists($resource, $this->loaded) && $this->loaded[$resource]) {
             throw new \LogicException('Already loaded');
         }
+    }
+
+    /**
+     * @param string $mount
+     *
+     * @return CrudsRoute[]
+     */
+    public function getRoutes($mount)
+    {
+        if (!array_key_exists($mount, $this->routes)){
+            throw new \OutOfBoundsException('Mount does not exist');
+        }
+
+        return $this->routes[$mount];
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getMounts()
+    {
+        return array_keys($this->routes);
     }
 }

@@ -31,7 +31,7 @@ class SearchControllerTest extends AbstractCrudsWebTest
             'GET',
             '/api/entity/my-entity/search',
             [
-                'criteria' => ['doctrine' => ['id' => $entity->getId()]],
+                'criteria' => ['id' => $entity->getId()],
             ],
             [],
             ['HTTP_CONTENT_TYPE' => 'application/json']
