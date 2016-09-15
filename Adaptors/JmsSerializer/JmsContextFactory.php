@@ -35,6 +35,10 @@ final class JmsContextFactory
             $jmsContext->setGroups($context['groups']);
         }
 
+        if (array_key_exists('object_to_populate', $context)) {
+            $jmsContext->setAttribute('target', $context['object_to_populate']);
+        }
+
         return $jmsContext;
     }
 }
