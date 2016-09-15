@@ -1,32 +1,5 @@
 # Configuration
 
-## Entity configuration
-```yaml
-cruds:
-  entities:
-    my-entity-0:
-      class: MyBundle:MyEntity
-      prefix: /my-entity
-      mount: my_cruds_mount # must match one of routed resource (if you wish to use symfony routing) to be loaded
-      actions: [create, read, update, delete, search]
-```
-
-
-## Routing
-
-You should enable
-
-```yaml
-cruds:
-  resource: my_cruds_mount
-  prefix: /api/entity
-  type: cruds_mount
-  options:
-    context:
-      # groups: ['Default', 'default']
-```
-
-
 ## Full configuration reference
 
 ```yaml
