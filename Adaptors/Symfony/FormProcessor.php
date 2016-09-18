@@ -33,7 +33,7 @@ final class FormProcessor implements EntityProcessorInterface
     /** {@inheritdoc} */
     public function updateEntity($entity, $data)
     {
-        $form = $this->factory->create($this->form, $entity, $this->getOptions());
+        $form = $this->factory->create($this->form, $entity, $this->options);
 
         $form->submit($data, false);
 
@@ -42,16 +42,5 @@ final class FormProcessor implements EntityProcessorInterface
         }
 
         return $form->getData();
-    }
-
-    /**
-     * @return array
-     */
-    private function getOptions()
-    {
-        return array_replace_recursive(
-            ['csrf_protection' => false],
-            $this->options
-        );
     }
 }
