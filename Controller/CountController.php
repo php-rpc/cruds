@@ -2,18 +2,17 @@
 
 namespace ScayTrase\Api\Cruds\Controller;
 
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Common\Collections\Selectable;
 use ScayTrase\Api\Cruds\CriteriaConfiguratorInterface;
-use ScayTrase\Api\Cruds\Event\CollectionCrudEvent;
 use ScayTrase\Api\Cruds\Event\CrudEvents;
 use ScayTrase\Api\Cruds\Exception\CriteriaConfigurationException;
+use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-final class SearchController
+final class CountController
 {
-    const ACTION = 'findAction';
+    const ACTION = 'countAction';
 
     /** @var string */
     private $fqcn;
@@ -25,7 +24,7 @@ final class SearchController
     private $evm;
 
     /**
-     * ReadController constructor.
+     * CountController constructor.
      *
      * @param string                        $fqcn
      * @param Selectable                    $repository
@@ -45,25 +44,22 @@ final class SearchController
     }
 
     /**
-     * Performs search of entities and returns them
+     * Performs counting search of entities and returns count
      *
      * @param array $criteria
-     * @param array $order
-     * @param int   $limit
-     * @param int   $offset
      *
-     * @return object[]|Collection
+     * @return integer
      * @throws CriteriaConfigurationException
      */
-    public function findAction(array $criteria, array $order = [], $limit = 10, $offset = 0)
+    public function countAction(array $criteria)
     {
-        $queryCriteria = new Criteria(null, $order, $offset, $limit);
+        $queryCriteria = new Criteria();
 
         $this->configurator->configure($this->fqcn, $queryCriteria, $criteria);
-        $entities = $this->repository->matching($queryCriteria);
+        $count = $this->repository->matching($queryCriteria)->count();
 
-        $this->evm->dispatch(CrudEvents::READ, new CollectionCrudEvent($entities));
+        $this->evm->dispatch(CrudEvents::COUNT, new Event());
 
-        return $entities;
+        return $count;
     }
 }
