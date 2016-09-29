@@ -3,11 +3,12 @@
 namespace ScayTrase\Api\Cruds\Controller;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use ScayTrase\Api\Cruds\EntityFactoryInterface;
 use ScayTrase\Api\Cruds\EntityProcessorInterface;
 use ScayTrase\Api\Cruds\Event\CollectionCrudEvent;
 use ScayTrase\Api\Cruds\Event\CrudEvents;
 use ScayTrase\Api\Cruds\Exception\EntityProcessingException;
-use ScayTrase\Api\Cruds\EntityFactoryInterface;
+use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -53,6 +54,8 @@ final class CreateController
      */
     public function createAction($data)
     {
+        $this->evm->dispatch(CrudEvents::CREATE, new Event());
+
         $object = $this->factory->createEntity($data);
         $entity = $this->processor->updateEntity($object, $data);
 
