@@ -15,7 +15,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CountControllerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testSearching()
+    public function testCounting()
     {
         $collection = new ArrayCollection();
 
