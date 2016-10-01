@@ -34,7 +34,13 @@ final class ResponseNormalizerListener
             return;
         }
 
-        $entities = $event->getControllerResult();
+        $result = $event->getControllerResult();
+
+        if (is_scalar($result)) {
+            return;
+        }
+
+        $entities = $result;
 
         if (null === $entities) {
             return null;

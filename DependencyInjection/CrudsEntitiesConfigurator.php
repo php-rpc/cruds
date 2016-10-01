@@ -4,6 +4,7 @@ namespace ScayTrase\Api\Cruds\DependencyInjection;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
+use ScayTrase\Api\Cruds\Controller\CountController;
 use ScayTrase\Api\Cruds\Controller\CreateController;
 use ScayTrase\Api\Cruds\Controller\DeleteController;
 use ScayTrase\Api\Cruds\Controller\ReadController;
@@ -59,9 +60,10 @@ final class CrudsEntitiesConfigurator
             $actionConfig['class']      = $class;
             $actionConfig['mount']      = $mount;
             $actionConfig['repository'] = $repositoryDefinition;
-            $actionConfig['path']       = $prefix . $actionConfig['path'];
+            $actionConfig['path']       = $prefix.$actionConfig['path'];
             $actionConfig['manager']    = $manager;
-            $function                   = new \ReflectionMethod($this, 'register' . ucfirst($action) . 'Action');
+            $actionConfig['prefix']     = $prefix;
+            $function                   = new \ReflectionMethod($this, 'register'.ucfirst($action).'Action');
             $args                       = [];
 
             foreach ($function->getParameters() as $parameter) {
@@ -105,7 +107,7 @@ final class CrudsEntitiesConfigurator
         $controllerId = $this->generateControllerId($name, $actionName);
         $this->container->setDefinition($controllerId, $definition);
 
-        $action = $controllerId . ':' . CreateController::ACTION;
+        $action = $controllerId.':'.CreateController::ACTION;
         $this->registerRoute(
             $mount,
             $name,
@@ -131,7 +133,7 @@ final class CrudsEntitiesConfigurator
         $controllerId = $this->generateControllerId($name, $actionName);
         $this->container->setDefinition($controllerId, $definition);
 
-        $action = $controllerId . ':' . ReadController::ACTION;
+        $action = $controllerId.':'.ReadController::ACTION;
         $this->registerRoute(
             $mount,
             $name,
@@ -165,7 +167,7 @@ final class CrudsEntitiesConfigurator
         $controllerId = $this->generateControllerId($name, $actionName);
         $this->container->setDefinition($controllerId, $definition);
 
-        $action = $controllerId . ':' . UpdateController::ACTION;
+        $action = $controllerId.':'.UpdateController::ACTION;
         $this->registerRoute(
             $mount,
             $name,
@@ -192,7 +194,7 @@ final class CrudsEntitiesConfigurator
         $controllerId = $controllerId = $this->generateControllerId($name, $actionName);
         $this->container->setDefinition($controllerId, $definition);
 
-        $action = $controllerId . ':' . DeleteController::ACTION;
+        $action = $controllerId.':'.DeleteController::ACTION;
         $this->registerRoute(
             $mount,
             $name,
@@ -204,7 +206,7 @@ final class CrudsEntitiesConfigurator
         );
     }
 
-    public function registerSearchAction($mount, $name, $path, $class, $repository, $criteria)
+    public function registerSearchAction($mount, $name, $path, $class, $repository, $criteria, $count_path, $prefix)
     {
 
         if (is_array($criteria)) {
@@ -232,7 +234,7 @@ final class CrudsEntitiesConfigurator
         $controllerId = $this->generateControllerId($name, $actionName);
         $this->container->setDefinition($controllerId, $definition);
 
-        $action = $controllerId . ':' . SearchController::ACTION;
+        $action = $controllerId.':'.SearchController::ACTION;
         $this->registerRoute(
             $mount,
             $name,
@@ -241,6 +243,31 @@ final class CrudsEntitiesConfigurator
             $action,
             ['GET', 'POST'],
             ['class' => $class, 'arguments' => ['criteria', 'order', 'limit', 'offset']]
+        );
+
+        $definition = new Definition(CountController::class);
+        $definition->setArguments(
+            [
+                $class,
+                $repository,
+                $criteriaConfigurator,
+                $this->getEvm(),
+            ]
+        );
+
+        $actionName   = 'count';
+        $controllerId = $this->generateControllerId($name, $actionName);
+        $this->container->setDefinition($controllerId, $definition);
+
+        $action = $controllerId.':'.CountController::ACTION;
+        $this->registerRoute(
+            $mount,
+            $name,
+            $actionName,
+            $prefix.$count_path,
+            $action,
+            ['GET', 'POST'],
+            ['class' => $class, 'arguments' => ['criteria']]
         );
     }
 
@@ -287,7 +314,7 @@ final class CrudsEntitiesConfigurator
             'addRoute',
             [
                 $mount,
-                $this->normalize('cruds.routing.' . $name . '.' . $actionName),
+                $this->normalize('cruds.routing.'.$name.'.'.$actionName),
                 $path,
                 $action,
                 $methods,
@@ -310,7 +337,7 @@ final class CrudsEntitiesConfigurator
      */
     private function generateControllerId($name, $actionName)
     {
-        return $this->normalize('cruds.generated_controller.' . $name . '.' . $actionName);
+        return $this->normalize('cruds.generated_controller.'.$name.'.'.$actionName);
     }
 
     /**
