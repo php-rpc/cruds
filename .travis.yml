@@ -8,15 +8,15 @@ php:
   - hhvm
 
 env:
-  - SYMFONY_VERSION='2.8.*'
-  - SYMFONY_VERSION='3.0.*'
-  - SYMFONY_VERSION='3.1.*'
-  - SYMFONY_VERSION='~3.2@dev'
+  - PACKAGES='symfony/symfony=2.8.*'
+  - PACKAGES='symfony/symfony=3.0.*'
+  - PACKAGES='symfony/symfony=3.1.*'
+  - PACKAGES='symfony/symfony=~3.2@dev twig/twig:~1.26@dev'
 
 matrix:
   include:
     - php: 5.5
-      env: SYMFONY_VERSION='2.8.*' deps='low'
+      env: PACKAGES='symfony/symfony=2.8.*' deps='low'
   allow_failures:
     - php: hhvm
     - php: nightly
@@ -25,7 +25,9 @@ before_install:
   - travis_retry composer self-update
 
 install:
-  - composer require --no-update symfony/symfony=${SYMFONY_VERSION}
+  - composer require --no-update ${PACKAGES}
+  - if [ "$deps" = "no"] || [ -z "$deps" ]; then composer --prefer-source install; fi;
+  - if [ "$deps" = "low" ]; then composer --prefer-source --prefer-lowest --prefer-stable update; fi;
   - composer --prefer-source install
 
 script:
