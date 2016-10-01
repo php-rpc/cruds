@@ -59,9 +59,9 @@ final class UpdateController
             throw EntityNotFoundException::byIdentifier($identifier);
         }
 
-        $this->evm->dispatch(CrudEvents::PRE_UPDATE, new CollectionCrudEvent([$entity]));
+        $this->evm->dispatch(CrudEvents::READ, new CollectionCrudEvent([$entity]));
         $entity = $this->processor->updateEntity($entity, $data);
-        $this->evm->dispatch(CrudEvents::POST_UPDATE, new CollectionCrudEvent([$entity]));
+        $this->evm->dispatch(CrudEvents::UPDATE, new CollectionCrudEvent([$entity]));
         $this->manager->flush();
 
         return $entity;

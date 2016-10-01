@@ -4,11 +4,9 @@ namespace ScayTrase\Api\Cruds\Event;
 
 final class CrudEvents
 {
-    const COUNT  = 'count';
     const READ   = 'read';
     const CREATE = 'create';
+    const UPDATE = 'update';
     const DELETE = 'delete';
-
-    const PRE_UPDATE  = 'pre_update';
-    const POST_UPDATE = 'post_update';
+    const COUNT  = 'count';
 }
