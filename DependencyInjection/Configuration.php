@@ -71,7 +71,7 @@ final class Configuration implements ConfigurationInterface
             ->defaultValue('api')
             ->cannotBeEmpty()
             ->info(
-                'Route mount. You can create different entries ' .
+                'Route mount. You can create different entries '.
                 'with different mounts. You can use this value when loading routes'
             )
             ->example('my-mount-name');
@@ -126,9 +126,9 @@ final class Configuration implements ConfigurationInterface
             ->defaultNull()
             ->example('@my_entity.factory')
             ->info(
-                'Service ID implementing ' . PHP_EOL .
-                EntityFactoryInterface::class . PHP_EOL .
-                'Defaults to ' . ReflectionConstructorFactory::class
+                'Service ID implementing '.PHP_EOL.
+                EntityFactoryInterface::class.PHP_EOL.
+                'Defaults to '.ReflectionConstructorFactory::class
             );
 
         $create
@@ -137,9 +137,9 @@ final class Configuration implements ConfigurationInterface
             ->defaultNull()
             ->example('@my_entity.factory')
             ->info(
-                'Service ID implementing ' . PHP_EOL .
-                EntityFactoryInterface::class . PHP_EOL .
-                'Defaults to ' . ReflectionConstructorFactory::class
+                'Service ID implementing '.PHP_EOL.
+                EntityFactoryInterface::class.PHP_EOL.
+                'Defaults to '.ReflectionConstructorFactory::class
             );
 
         $this->configureActionNode($create, 'create');
@@ -151,6 +151,12 @@ final class Configuration implements ConfigurationInterface
             ->children()
             ->arrayNode('search');
         $this->configureActionNode($search, 'search');
+
+        $search
+            ->children()
+            ->scalarNode('count_path')
+            ->info('Path for count action')
+            ->defaultValue('/count');
 
         $criteria = $search->children()->variableNode('criteria');
         $criteria->info(
@@ -181,9 +187,9 @@ final class Configuration implements ConfigurationInterface
             ->defaultNull()
             ->example('@my_entity.processor')
             ->info(
-                'Service ID implementing ' . PHP_EOL .
-                EntityProcessorInterface::class . PHP_EOL .
-                'Defaults to ' . PropertyAccessProcessor::class
+                'Service ID implementing '.PHP_EOL.
+                EntityProcessorInterface::class.PHP_EOL.
+                'Defaults to '.PropertyAccessProcessor::class
             );
 
         $this->configureActionNode($update, 'update');
@@ -205,6 +211,6 @@ final class Configuration implements ConfigurationInterface
             ->children()
             ->scalarNode('path')
             ->info('Action path (will be prefixed with entity prefix)')
-            ->defaultValue('/' . $action);
+            ->defaultValue('/'.$action);
     }
 }

@@ -29,6 +29,7 @@ class RouteAccessibilityTest extends AbstractCrudsWebTest
         );
 
         $this->doRequest('/api/entity/my-entity/search', 'GET', ['criteria' => ['id' => 1]]);
+        $this->doRequest('/api/entity/my-entity/count', 'GET', ['criteria' => ['id' => 1]]);
         $this->doRequest('/api/entity/my-entity/delete', 'POST', ['identifier' => 1]);
     }
 
