@@ -36,7 +36,7 @@ class FormProcessorTest extends AbstractCrudsWebTest
 
 
         try {
-            $processor->updateEntity($entity, ['a' => ['a' => [5, 42], 7], 'b' => '5']);
+            $processor->updateEntity($entity, ['b' => ['a' => [5, 42], 7], 'a' => '5']);
 
             self::fail('Should be invalid');
         } catch (EntityProcessingException $exception) {
