@@ -36,6 +36,8 @@ cruds:
 
 Having only this you can create, read, update and delete instances of `MyBundle:MyEntity` via REST API calls.
 
+Note: configuring `search` api method will also configure `count` method for you automatically
+
 ## Search criteria configurator
 
 Out of the box the library provides you the simple way to configure search filtering - entity criteria. 

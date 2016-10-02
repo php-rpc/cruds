@@ -1,4 +1,4 @@
-# PHP Cruds bundle [WIP]
+# PHP Cruds bundle
 
 [![License](https://poser.pugx.org/php-rpc/cruds/license)](https://packagist.org/packages/php-rpc/cruds)
 [![Build Status](https://travis-ci.org/php-rpc/cruds.svg?branch=master)](https://travis-ci.org/php-rpc/cruds)

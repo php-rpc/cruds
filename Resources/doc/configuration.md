@@ -17,7 +17,8 @@ cruds:
             # Route mount. You can create different entries with different mounts. You can use this value when loading routes
             mount:                api # Example: my-mount-name
 
-            # Entity repository. service reference, default to factory-acquired doctrine repository
+            # Entity repository. service reference,
+            # default to factory-acquired doctrine repository
             repository:           null # Example: @my_entity.repository
 
             # Action configuration
@@ -63,7 +64,11 @@ cruds:
                     # Action path (will be prefixed with entity prefix)
                     path:                 /search
 
-                    # Criteria modifiers. Array will be treated as nested criteria, allowing configuring several modifiers by key:value
+                    # Path for count action (will be prefixed with entity prefix)
+                    count_path:           /count
+
+                    # Criteria modifiers. Array will be treated as nested criteria,
+                    # allowing configuring several modifiers by key:value
                     criteria:             cruds.criteria.entity # Example: my.criteria.modifier
     listeners:
 
@@ -71,8 +76,8 @@ cruds:
         param_converter:      true
 
         # Configure normalizer view event listener
-        normalizer:           true
+        response_normalizer:  true
 
         # Configure serializer view event listener
-        serializer:           true
+        response_serializer:  true
 ```
