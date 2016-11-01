@@ -6,7 +6,7 @@ use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
-class EntityRouteLoader extends Loader
+final class EntityRouteLoader extends Loader
 {
     const RESOURCE_TYPE = 'cruds_mount';
     /** @var  CrudsRoute[][] */

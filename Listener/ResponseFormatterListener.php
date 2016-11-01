@@ -7,7 +7,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class ResponseFormatterListener
+final class ResponseFormatterListener
 {
     private static $formatMap = [
         'json' => 'application/json',

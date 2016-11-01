@@ -4,7 +4,7 @@ namespace ScayTrase\Api\Cruds\Routing;
 
 use Symfony\Component\Routing\Route;
 
-class CrudsRoute extends Route
+final class CrudsRoute extends Route
 {
     public static function create($path, $controller, array $methods, array $options = [])
     {
