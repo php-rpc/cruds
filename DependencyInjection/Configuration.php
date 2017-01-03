@@ -81,10 +81,21 @@ final class Configuration implements ConfigurationInterface
             ->scalarNode('repository')
             ->defaultNull()
             ->info(
-                'Entity repository. service reference,'.PHP_EOL.
-                'default to factory-acquired doctrine repository'
+                'Object repository. service reference,'.PHP_EOL.
+                'default to factory-acquired doctrine repository for class'
             )
             ->example('@my_entity.repository');
+
+        $parent
+            ->children()
+            ->scalarNode('manager')
+            ->defaultNull()
+            ->info(
+                'Object manager. service reference,'.PHP_EOL.
+                'default to factory-acquired doctrine manager for class'
+            )
+            ->example('@my_entity.repository');
+
 
         $actions = $parent
             ->children()

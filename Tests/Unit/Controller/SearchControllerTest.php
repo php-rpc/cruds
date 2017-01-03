@@ -10,6 +10,7 @@ use ScayTrase\Api\Cruds\Criteria\EntityCriteriaConfigurator;
 use ScayTrase\Api\Cruds\Event\CollectionCrudEvent;
 use ScayTrase\Api\Cruds\Event\CrudEvents;
 use ScayTrase\Api\Cruds\PublicPropertyMapper;
+use ScayTrase\Api\Cruds\ReferenceProviderInterface;
 use ScayTrase\Api\Cruds\Tests\Fixtures\AbcClass;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -28,7 +29,10 @@ class SearchControllerTest extends \PHPUnit_Framework_TestCase
         $collection->add($f3);
         $collection->add($f4);
 
-        $configuration = new EntityCriteriaConfigurator(new PublicPropertyMapper());
+        $configuration = new EntityCriteriaConfigurator(
+            new PublicPropertyMapper(),
+            $this->getReferenceProvider()
+        );
 
         $evmProphecy = $this->prophesize(EventDispatcherInterface::class);
         $evmProphecy->dispatch(CrudEvents::READ, Argument::type(CollectionCrudEvent::class))->shouldBeCalled();
@@ -99,6 +103,18 @@ class SearchControllerTest extends \PHPUnit_Framework_TestCase
         $entity->c = $c;
 
         return $entity;
+    }
+
+    /**
+     * @return ReferenceProviderInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getReferenceProvider()
+    {
+        $mock = $this->getMockBuilder(ReferenceProviderInterface::class)->getMock();
+
+        $mock->method('getEntityReference')->willReturnArgument(2);
+
+        return $mock;
     }
 }
 

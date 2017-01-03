@@ -2,7 +2,16 @@ services:
   cruds.criteria.entity:
     class: ScayTrase\Api\Cruds\Criteria\EntityCriteriaConfigurator
     arguments:
-      - "@cruds.property_mapper"
+    - "@cruds.property_mapper"
+    - "@cruds.reference_provider"
+
+  cruds.reference_provider:
+    alias: cruds.reference_provider.reference_loader
+
+  cruds.reference_provider.reference_loader:
+    class: ScayTrase\Api\Cruds\LoadingReferenceProvider
+    arguments:
+    - "@doctrine"
 
   cruds.factory.reflection:
     class: ScayTrase\Api\Cruds\ReflectionConstructorFactory

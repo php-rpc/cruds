@@ -28,12 +28,15 @@ composer require php-rpc/cruds:~1.0
 
 2. Include bundle into your application kernel
 
+Doctrine bundle is mandatory to include too as it provides the common "@doctrine" service.
+
 ```php
 class AppKernel extends Kernel {
     public function registerBundles()
     {
         return [
             //...
+            new Doctrine\Bundle\DoctrineBundle\DoctrineBundle,
             new ScayTrase\Api\Cruds\CrudsBundle(),
             //...
         ];
@@ -58,7 +61,9 @@ See [usage manual](Resources/doc/events.md)
 ## Dependencies
 
 Currently the main dependency is `doctrine/common` library which provides the 
-`Criteria` and the `Selectable` interface as powerful tool to configure fetch the entities
+`Criteria` and the `Selectable` interface as powerful tool to configure fetch the entities. 
+Second important dependency is `doctrine/doctrine-bundle` providing the doctrine registry. 
+You can implement and override it though.
 
 ## Integrations
 

@@ -44,4 +44,44 @@ class CountControllerTest extends AbstractCrudsWebTest
         self::assertEquals(JSON_ERROR_NONE, json_last_error());
         self::assertEquals(2, $data);
     }
+
+    /**
+     * @dataProvider getKernelClasses
+     *
+     * @param $kernel
+     */
+    public function testCountWithRelation($kernel)
+    {
+        self::createAndBootKernel($kernel);
+        self::configureDb();
+
+        $em     = self::getEntityManager();
+        $entity = new MyEntity('my-test-secret');
+        $em->persist($entity);
+        $parent = new MyEntity('non-recursing-entity');
+        $em->persist($parent);
+        $entity->setParent($parent);
+        $em->flush();
+        $em->clear();
+
+        $client = self::createClient();
+        $client->request(
+            'GET',
+            '/api/entity/my-entity/count',
+            [
+                'criteria' => [
+                    'parent' => $parent->getId(),
+                ],
+            ],
+            [],
+            ['HTTP_CONTENT_TYPE' => 'application/json']
+        );
+        $response = $client->getResponse();
+
+        self::assertTrue($response->isSuccessful());
+        $data = json_decode($response->getContent());
+
+        self::assertEquals(JSON_ERROR_NONE, json_last_error());
+        self::assertEquals(1, $data);
+    }
 }
