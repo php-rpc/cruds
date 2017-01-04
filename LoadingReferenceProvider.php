@@ -2,36 +2,11 @@
 
 namespace ScayTrase\Api\Cruds;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-
-final class LoadingReferenceProvider implements ReferenceProviderInterface
+final class LoadingReferenceProvider extends AbstractReferenceProvider
 {
-    /**
-     * @var ManagerRegistry
-     */
-    private $registry;
-
-    /**
-     * PartialReferenceProvider constructor.
-     *
-     * @param ManagerRegistry $registry
-     */
-    public function __construct(ManagerRegistry $registry)
-    {
-        $this->registry = $registry;
-    }
-
     /** {@inheritdoc} */
-    public function getEntityReference($fqcn, $property, $identifier)
+    protected function getReference($fqcn, $identifier)
     {
-        $metadata = $this->registry->getManagerForClass($fqcn)->getClassMetadata($fqcn);
-
-        if (!$metadata->hasAssociation($property)) {
-            return $identifier;
-        }
-
-        $target = $metadata->getAssociationTargetClass($property);
-
-        return $this->registry->getManagerForClass($fqcn)->getPartialReference($target, $identifier);
+        return $this->getRegistry()->getManagerForClass($fqcn)->find($fqcn, $identifier);
     }
 }

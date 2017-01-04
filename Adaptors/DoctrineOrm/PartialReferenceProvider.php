@@ -2,43 +2,18 @@
 
 namespace ScayTrase\Api\Cruds\Adaptors\DoctrineOrm;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
-use ScayTrase\Api\Cruds\ReferenceProviderInterface;
+use ScayTrase\Api\Cruds\AbstractReferenceProvider;
 
-final class PartialReferenceProvider implements ReferenceProviderInterface
+final class PartialReferenceProvider extends AbstractReferenceProvider
 {
-    /**
-     * @var ManagerRegistry
-     */
-    private $registry;
-
-    /**
-     * PartialReferenceProvider constructor.
-     *
-     * @param ManagerRegistry $registry
-     */
-    public function __construct(ManagerRegistry $registry)
+    protected function getReference($fqcn, $identifier)
     {
-        $this->registry = $registry;
-    }
-
-    /** {@inheritdoc} */
-    public function getEntityReference($fqcn, $property, $identifier)
-    {
-        $metadata = $this->registry->getManagerForClass($fqcn)->getClassMetadata($fqcn);
-
-        if (!$metadata->hasAssociation($property)) {
-            return $identifier;
-        }
-
-        $target = $metadata->getAssociationTargetClass($property);
-
-        $manager = $this->registry->getManagerForClass($fqcn);
+        $manager = $this->getRegistry()->getManagerForClass($fqcn);
         if (!$manager instanceof EntityManagerInterface) {
-            return $manager->find($target, $identifier);
+            return $manager->find($fqcn, $identifier);
         }
 
-        return $manager->getPartialReference($target, $identifier);
+        return $manager->getPartialReference($fqcn, $identifier);
     }
 }
