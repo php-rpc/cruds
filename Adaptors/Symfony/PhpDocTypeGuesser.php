@@ -52,14 +52,21 @@ final class PhpDocTypeGuesser implements FormTypeGuesserInterface
 
         $type = $annotation->getType();
 
-
         if ($type instanceof Array_) {
             $entryType = TextType::class;
             if (!$type->getValueType() instanceof Mixed) {
                 $entryType = $this->replaceType((string)$type->getValueType());
             }
 
-            return new TypeGuess(CollectionType::class, ['entry_type' => $entryType], Guess::MEDIUM_CONFIDENCE);
+            return new TypeGuess(
+                CollectionType::class,
+                [
+                    'entry_type'   => $entryType,
+                    'allow_add'    => true,
+                    'allow_delete' => true,
+                ],
+                Guess::MEDIUM_CONFIDENCE
+            );
         }
 
         if (!$this->exists((string)$type)) {

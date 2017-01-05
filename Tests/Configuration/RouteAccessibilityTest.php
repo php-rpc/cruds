@@ -1,6 +1,8 @@
 <?php
 
-namespace ScayTrase\Api\Cruds\Tests;
+namespace ScayTrase\Api\Cruds\Tests\Configuration;
+
+use ScayTrase\Api\Cruds\Tests\AbstractCrudsWebTest;
 
 class RouteAccessibilityTest extends AbstractCrudsWebTest
 {

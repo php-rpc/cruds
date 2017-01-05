@@ -14,8 +14,14 @@
         bootstrap="bootstrap.php">
 
     <testsuites>
-        <testsuite name="Cruds tests">
-            <directory>./Tests/</directory>
+        <testsuite name="Unit">
+            <directory>./Tests/Unit/</directory>
+        </testsuite>
+        <testsuite name="Controller">
+            <directory>./Tests/Controller/</directory>
+        </testsuite>
+        <testsuite name="Configuration">
+            <directory>./Tests/Configuration/</directory>
         </testsuite>
     </testsuites>
 

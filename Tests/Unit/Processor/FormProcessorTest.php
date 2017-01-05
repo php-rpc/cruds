@@ -25,7 +25,7 @@ class FormProcessorTest extends AbstractCrudsWebTest
         $entity->b = null;
         $entity->a = null;
 
-        $processor = new FormProcessor($factory, TestForm::class);
+        $processor = new FormProcessor(TestForm::class, [], $factory);
         $processor->updateEntity($entity, ['a' => 'a', 'b' => 3]);
 
         self::assertSame('a', $entity->a);

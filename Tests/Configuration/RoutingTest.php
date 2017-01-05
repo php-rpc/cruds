@@ -1,7 +1,8 @@
 <?php
 
-namespace ScayTrase\Api\Cruds\Tests;
+namespace ScayTrase\Api\Cruds\Tests\Configuration;
 
+use ScayTrase\Api\Cruds\Tests\AbstractCrudsWebTest;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\RequestContext;
