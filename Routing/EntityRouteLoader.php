@@ -21,6 +21,7 @@ final class EntityRouteLoader extends Loader
 
         $collection = new RouteCollection();
         if (!array_key_exists($mount, $this->routes)) {
+            //todo: just silent return?
             throw new \LogicException(sprintf('No routes configured for %s CRUDS mount point', $mount));
         }
 
@@ -28,7 +29,8 @@ final class EntityRouteLoader extends Loader
             $collection->add($name, $route);
         }
 
-        $this->loaded = true;
+        //todo: cover this one
+        $this->loaded[$mount] = true;
 
         return $collection;
     }
@@ -60,6 +62,8 @@ final class EntityRouteLoader extends Loader
      * @param string $mount
      *
      * @return CrudsRoute[]
+     *
+     * @throws \OutOfBoundsException if mount does not exist
      */
     public function getRoutes($mount)
     {
