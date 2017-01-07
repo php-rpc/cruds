@@ -3,8 +3,8 @@
 namespace ScayTrase\Api\Cruds\Adaptors\Symfony;
 
 use ScayTrase\Api\Cruds\Exception\EntityProcessingException;
-use ScayTrase\Api\Cruds\Exception\MapperException;
 use ScayTrase\Api\Cruds\PropertyMapperInterface;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 
@@ -36,15 +36,22 @@ final class MappedEntityFormFactory
      */
     public function createFormForClass($className)
     {
-        $form = $this->factory->create();
+        $form = $this->factory->create(
+            FormType::class,
+            null,
+            [
+                'data_class' => $className,
+            ]
+        );
 
         try {
             foreach ($this->mapper->getApiProperties($className) as $apiProperty) {
                 $form->add(
-                    $apiProperty,
                     $this->factory->createForProperty(
                         $className,
-                        $this->mapper->getEntityProperty($className, $apiProperty)
+                        $this->mapper->getEntityProperty($className, $apiProperty),
+                        null,
+                        ['auto_initialize' => false]
                     )
                 );
             }

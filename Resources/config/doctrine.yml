@@ -1,7 +1,8 @@
 services:
   cruds.factory.doctrine_reflection_factory:
     class: ScayTrase\Api\Cruds\Adaptors\DoctrineOrm\DoctrineReflectionFactoryFactory
-    arguments: ["@doctrine"]
+    arguments:
+    - "@doctrine"
 
   cruds.processor.doctrine_relation_decorator:
     class: ScayTrase\Api\Cruds\Adaptors\DoctrineOrm\RelationAwareProcessorDecorator
@@ -17,3 +18,11 @@ services:
     arguments:
     - "@cruds.property_mapper.doctrine_decorator.inner"
     - "@doctrine"
+
+  cruds.reference_loader.doctrine_partial_loader:
+    class: ScayTrase\Api\Cruds\Adaptors\DoctrineOrm\PartialReferenceProvider
+    arguments:
+    - "@doctrine"
+
+  cruds.reference_provider:
+    alias: cruds.reference_loader.doctrine_partial_loader

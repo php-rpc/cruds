@@ -6,39 +6,86 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Prophecy\Argument;
 use ScayTrase\Api\Cruds\Controller\UpdateController;
+use ScayTrase\Api\Cruds\EntityProcessorInterface;
 use ScayTrase\Api\Cruds\Event\CollectionCrudEvent;
 use ScayTrase\Api\Cruds\Event\CrudEvents;
-use ScayTrase\Api\Cruds\PropertyAccessProcessor;
+use ScayTrase\Api\Cruds\ReflectionConstructorFactory;
 use ScayTrase\Api\Cruds\Tests\Fixtures\AbcClass;
+use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class UpdateControllerTest extends \PHPUnit_Framework_TestCase
+abstract class UpdateControllerTest extends \PHPUnit_Framework_TestCase
 {
     public function testUpdating()
     {
-        $id = 241;
-        $f1 = new AbcClass();
+        $id       = 241;
+        $original = new AbcClass();
 
-        $evm = $this->prophesize(EventDispatcherInterface::class);
-        $evm->dispatch(CrudEvents::READ, Argument::type(CollectionCrudEvent::class))->shouldBeCalled();
-        $evm->dispatch(CrudEvents::UPDATE, Argument::type(CollectionCrudEvent::class))->shouldBeCalled();
-
-        $repository = $this->prophesize(ObjectRepository::class);
-        $repository->find(Argument::exact($id))->willReturn($f1)->shouldBeCalled();
-
-        $processor = new PropertyAccessProcessor();
-
-        $manager = $this->prophesize(ObjectManager::class);
-        $manager->flush()->shouldBeCalled();
-
-        $controller = new UpdateController($repository->reveal(), $processor, $manager->reveal(), $evm->reveal());
+        $controller = new UpdateController(
+            $this->createRepository($id, $original),
+            $this->createProcessor(AbcClass::class),
+            $this->createEntityManager(),
+            $this->createEvm()
+        );
 
         /** @var AbcClass $entity */
         $entity = $controller->patchAction($id, ['a' => 1, 'b' => 'b', 'c' => [1, 2, 3], 'd' => null]);
-        self::assertSame($f1, $entity);
+        self::assertSame($original, $entity);
         self::assertSame(1, $entity->a);
         self::assertSame('b', $entity->b);
         self::assertSame([1, 2, 3], $entity->c);
         self::assertNull(null, $entity->d);
+    }
+
+    /**
+     * @param mixed  $id
+     * @param object $entity
+     *
+     * @return ObjectRepository
+     */
+    protected function createRepository($id, $entity)
+    {
+        $repository = $this->prophesize(ObjectRepository::class);
+        $repository->find(Argument::exact($id))->willReturn($entity)->shouldBeCalled();
+
+        return $repository->reveal();
+    }
+
+    /**
+     * @param string $fqcn
+     *
+     * @return EntityProcessorInterface
+     */
+    abstract protected function createProcessor($fqcn);
+
+    /**
+     * @return ObjectManager
+     */
+    protected function createEntityManager()
+    {
+        $manager = $this->prophesize(ObjectManager::class);
+        $manager->flush()->shouldBeCalled();
+
+        return $manager->reveal();
+    }
+
+    /**
+     * @return EventDispatcherInterface
+     */
+    protected function createEvm()
+    {
+        $evmProphecy = $this->prophesize(EventDispatcherInterface::class);
+        $evmProphecy->dispatch(CrudEvents::READ, Argument::type(CollectionCrudEvent::class))->shouldBeCalled();
+        $evmProphecy->dispatch(CrudEvents::UPDATE, Argument::type(Event::class))->shouldBeCalled();
+
+        return $evmProphecy->reveal();
+    }
+
+    /**
+     * @return ReflectionConstructorFactory
+     */
+    protected function createConstructorFactory()
+    {
+        return new ReflectionConstructorFactory(AbcClass::class);
     }
 }

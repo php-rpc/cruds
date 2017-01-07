@@ -5,7 +5,7 @@ namespace ScayTrase\Api\Cruds\Adaptors\DoctrineOrm;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
-class DoctrineObjectNormalizer extends ObjectNormalizer
+final class DoctrineObjectNormalizer extends ObjectNormalizer
 {
     /** @var ManagerRegistry */
     private $registry;

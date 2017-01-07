@@ -1,9 +1,8 @@
 <?php
 
-namespace ScayTrase\Api\Cruds\Tests;
+namespace ScayTrase\Api\Cruds\Tests\Configuration;
 
-use ScayTrase\Api\Cruds\DependencyInjection\Configuration;
-use Symfony\Component\Config\Definition\Dumper\YamlReferenceDumper;
+use ScayTrase\Api\Cruds\Tests\AbstractCrudsWebTest;
 
 class ConfigurationTest extends AbstractCrudsWebTest
 {

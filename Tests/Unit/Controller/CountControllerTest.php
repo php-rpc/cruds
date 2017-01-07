@@ -8,6 +8,7 @@ use ScayTrase\Api\Cruds\Controller\CountController;
 use ScayTrase\Api\Cruds\Criteria\EntityCriteriaConfigurator;
 use ScayTrase\Api\Cruds\Event\CrudEvents;
 use ScayTrase\Api\Cruds\PublicPropertyMapper;
+use ScayTrase\Api\Cruds\ReferenceProviderInterface;
 use ScayTrase\Api\Cruds\Tests\Fixtures\AbcClass;
 use ScayTrase\Api\Cruds\Tests\Unit\AbstractControllerTest;
 use Symfony\Component\EventDispatcher\Event;
@@ -28,7 +29,10 @@ class CountControllerTest extends \PHPUnit_Framework_TestCase
         $collection->add($f3);
         $collection->add($f4);
 
-        $configuration = new EntityCriteriaConfigurator(new PublicPropertyMapper());
+        $configuration = new EntityCriteriaConfigurator(
+            new PublicPropertyMapper(),
+            $this->getReferenceProvider()
+        );
 
         $evmProphecy = $this->prophesize(EventDispatcherInterface::class);
         $evmProphecy->dispatch(CrudEvents::COUNT, Argument::type(Event::class))->shouldBeCalled();
@@ -42,7 +46,6 @@ class CountControllerTest extends \PHPUnit_Framework_TestCase
         self::assertSame(2, $controller->countAction(['c' => null]));
         self::assertSame(4, $controller->countAction(['a' => [1, 2, 3, 4]]));
         self::assertSame(3, $controller->countAction(['a' => [1, 2, 4]]));
-
     }
 
     private function createFixture($a, $b, $c)
@@ -53,6 +56,18 @@ class CountControllerTest extends \PHPUnit_Framework_TestCase
         $entity->c = $c;
 
         return $entity;
+    }
+
+    /**
+     * @return ReferenceProviderInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getReferenceProvider()
+    {
+        $mock = $this->getMockBuilder(ReferenceProviderInterface::class)->getMock();
+
+        $mock->method('getEntityReference')->willReturnArgument(2);
+
+        return $mock;
     }
 }
 

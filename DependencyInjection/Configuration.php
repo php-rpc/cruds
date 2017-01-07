@@ -80,8 +80,22 @@ final class Configuration implements ConfigurationInterface
             ->children()
             ->scalarNode('repository')
             ->defaultNull()
-            ->info('Entity repository. service reference, default to factory-acquired doctrine repository')
+            ->info(
+                'Object repository. service reference,'.PHP_EOL.
+                'default to factory-acquired doctrine repository for class'
+            )
             ->example('@my_entity.repository');
+
+        $parent
+            ->children()
+            ->scalarNode('manager')
+            ->defaultNull()
+            ->info(
+                'Object manager. service reference,'.PHP_EOL.
+                'default to factory-acquired doctrine manager for class'
+            )
+            ->example('@my_entity.repository');
+
 
         $actions = $parent
             ->children()
@@ -155,12 +169,13 @@ final class Configuration implements ConfigurationInterface
         $search
             ->children()
             ->scalarNode('count_path')
-            ->info('Path for count action')
+            ->info('Path for count action (will be prefixed with entity prefix)')
             ->defaultValue('/count');
 
         $criteria = $search->children()->variableNode('criteria');
         $criteria->info(
-            'Criteria modifiers. Array will be treated as nested criteria, allowing configuring several modifiers by key:value'
+            'Criteria modifiers. Array will be treated as nested criteria,'.PHP_EOL.
+            'allowing configuring several modifiers by key:value'
         );
         $criteria->defaultValue('cruds.criteria.entity');
         $criteria->example('my.criteria.modifier');

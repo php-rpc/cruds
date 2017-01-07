@@ -1,5 +1,4 @@
 services:
-
   cruds.api.processor.form:
     class: ScayTrase\Api\Cruds\Adaptors\Symfony\FormProcessor
     abstract: true
@@ -17,3 +16,10 @@ services:
     arguments:
     - "@form.factory"
     - "@cruds.api.processor.mapped_entity_form_factory"
+
+  cruds.type_guesser.phpdoc:
+    class: ScayTrase\Api\Cruds\Adaptors\Symfony\PhpDocTypeGuesser
+    arguments:
+    - "@annotations.reader"
+    tags:
+    - { name: form.type_guesser }

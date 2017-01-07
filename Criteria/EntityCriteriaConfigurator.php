@@ -7,21 +7,27 @@ use ScayTrase\Api\Cruds\CriteriaConfiguratorInterface;
 use ScayTrase\Api\Cruds\Exception\CriteriaConfigurationException;
 use ScayTrase\Api\Cruds\Exception\MapperException;
 use ScayTrase\Api\Cruds\PropertyMapperInterface;
+use ScayTrase\Api\Cruds\ReferenceProviderInterface;
 
 final class EntityCriteriaConfigurator implements CriteriaConfiguratorInterface
 {
     const ALIAS_SEPARATOR = '.';
-    /** @var  PropertyMapperInterface */
+
+    /** @var PropertyMapperInterface */
     private $mapper;
+    /** @var ReferenceProviderInterface */
+    private $provider;
 
     /**
      * DoctrineCriteriaConfigurator constructor.
      *
      * @param PropertyMapperInterface $mapper
+     * @param ReferenceProviderInterface $provider
      */
-    public function __construct(PropertyMapperInterface $mapper)
+    public function __construct(PropertyMapperInterface $mapper, ReferenceProviderInterface $provider)
     {
         $this->mapper = $mapper;
+        $this->provider = $provider;
     }
 
     /** {@inheritdoc} */
@@ -43,6 +49,7 @@ final class EntityCriteriaConfigurator implements CriteriaConfiguratorInterface
                     throw CriteriaConfigurationException::invalidData($apiProperty);
                 }
 
+                $value = $this->provider->getEntityReference($fqcn, $mappedProperty, $value);
                 $this->filterDoctrineProperty($criteria, $mappedProperty, $value);
                 unset($arguments[$apiProperty]);
             } catch (MapperException $e) {
@@ -53,8 +60,8 @@ final class EntityCriteriaConfigurator implements CriteriaConfiguratorInterface
 
     /**
      * @param Criteria $criteria
-     * @param string   $property
-     * @param mixed    $value
+     * @param string $property
+     * @param mixed $value
      *
      * @throws CriteriaConfigurationException
      */
@@ -67,10 +74,10 @@ final class EntityCriteriaConfigurator implements CriteriaConfiguratorInterface
             case null === $value:
                 $criteria->andWhere(Criteria::expr()->isNull($property));
                 break;
-            case !is_scalar($value):
+            case !is_scalar($value) && !is_object($value):
                 throw CriteriaConfigurationException::invalidPropertyType(
                     $property,
-                    'scalar|array|null',
+                    'scalar|array|null|identifier',
                     gettype($value)
                 );
             default:
