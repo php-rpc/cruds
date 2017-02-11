@@ -45,6 +45,10 @@ final class JmsDoctrineMetadataDriver extends AbstractDoctrineTypeDriver
 
         $template = '%s<%s>';
 
+        if (null === $propertyMetadata->type['name']) {
+            $propertyMetadata->type['name'] = $doctrineMetadata->getAssociationTargetClass($propertyMetadata->name);
+        }
+
         // Makes the My\Ns\TargetEntity be DoctrineAssociation<My\Ns\TargetEntity>
         // And ArrayCollection<My\Ns\TargetEntity> be DoctrineAssociation<ArrayCollection<My\Ns\TargetEntity>>
         $propertyMetadata->setType(
