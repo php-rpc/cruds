@@ -9,20 +9,13 @@ php:
   - hhvm
 
 env:
-  # JMS serializer tests
-  - PACKAGES='symfony/symfony=2.8.*' SERIALZIER=jms
-  - PACKAGES='symfony/symfony=3.0.*' SERIALZIER=jms
-  - PACKAGES='symfony/symfony=3.1.*' SERIALZIER=jms
-  - PACKAGES='symfony/symfony=3.2.*' SERIALZIER=jms
-  - PACKAGES='symfony/symfony=~3.3@dev  SERIALZIER=jms
-  # Symfony serializer tests
-  - PACKAGES='symfony/symfony=2.8.*' SERIALZIER=symfony
-  - PACKAGES='symfony/symfony=3.0.*' SERIALZIER=symfony
-  - PACKAGES='symfony/symfony=3.1.*' SERIALZIER=symfony
-  - PACKAGES='symfony/symfony=3.2.*' SERIALZIER=symfony
-  - PACKAGES='symfony/symfony=~3.3@dev  SERIALZIER=symfony
+  - PACKAGES='symfony/symfony=2.8.*'
+  - PACKAGES='symfony/symfony=3.1.* "phpunit/phpunit=^4.8.35|^5.4"'
+  - PACKAGES='symfony/symfony=3.2.*'
+  - PACKAGES='symfony/symfony=~3.3@dev'
 
 matrix:
+  fast_finish: true
   allow_failures:
     - php: hhvm
     - php: nightly
@@ -38,4 +31,5 @@ install:
 
 script:
   - mkdir -p build
-  - vendor/bin/phpunit --colors -c phpunit.xml
+  - SERIALIZER=jms vendor/bin/phpunit --colors -c phpunit.xml
+  - SERIALIZER=symfony vendor/bin/phpunit --colors -c phpunit.xml
