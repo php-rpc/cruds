@@ -9,7 +9,7 @@ use Symfony\Component\Routing\RouteCollection;
 final class EntityRouteLoader extends Loader
 {
     const RESOURCE_TYPE = 'cruds_mount';
-    /** @var  CrudsRoute[][] */
+    /** @var  Route[][] */
     private $routes = [];
     /** @var bool[] */
     private $loaded = [];
@@ -21,35 +21,22 @@ final class EntityRouteLoader extends Loader
 
         $collection = new RouteCollection();
         if (!array_key_exists($mount, $this->routes)) {
-            //todo: just silent return?
-            throw new \LogicException(sprintf('No routes configured for %s CRUDS mount point', $mount));
+            return $collection;
         }
 
         foreach ($this->routes[$mount] as $name => $route) {
             $collection->add($name, $route);
         }
 
-        //todo: cover this one
         $this->loaded[$mount] = true;
 
         return $collection;
     }
 
-    /** {@inheritdoc} */
-    public function supports($mount, $type = null)
-    {
-        return self::RESOURCE_TYPE === $type;
-    }
-
-    public function addRoute($mount, $name, $path, $controller, array $methods, array $options = [])
-    {
-        $this->assertLoaded($mount);
-
-        $this->routes[$mount][$name] = CrudsRoute::create($path, $controller, $methods, $options);
-    }
-
     /**
      * @param $resource
+     *
+     * @throws \LogicException
      */
     private function assertLoaded($resource)
     {
@@ -58,16 +45,39 @@ final class EntityRouteLoader extends Loader
         }
     }
 
+    /** {@inheritdoc} */
+    public function supports($mount, $type = null)
+    {
+        return self::RESOURCE_TYPE === $type;
+    }
+
+    /**
+     * @param string $mount
+     * @param string $name
+     * @param string $path
+     * @param string $controller
+     * @param array  $methods
+     * @param array  $options
+     *
+     * @throws \LogicException
+     */
+    public function addRoute($mount, $name, $path, $controller, array $methods, array $options = [])
+    {
+        $this->assertLoaded($mount);
+
+        $this->routes[$mount][$name] = CrudsRouteFactory::create($path, $controller, $methods, $options);
+    }
+
     /**
      * @param string $mount
      *
-     * @return CrudsRoute[]
+     * @return Route[]
      *
      * @throws \OutOfBoundsException if mount does not exist
      */
     public function getRoutes($mount)
     {
-        if (!array_key_exists($mount, $this->routes)){
+        if (!array_key_exists($mount, $this->routes)) {
             throw new \OutOfBoundsException('Mount does not exist');
         }
 

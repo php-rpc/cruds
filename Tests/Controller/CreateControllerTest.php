@@ -2,21 +2,13 @@
 
 namespace ScayTrase\Api\Cruds\Tests\Controller;
 
-use ScayTrase\Api\Cruds\Tests\AbstractCrudsWebTest;
+use ScayTrase\Api\Cruds\Tests\AbstractDbAwareTest;
 use ScayTrase\Api\Cruds\Tests\Fixtures\Common\Entity\MyEntity;
 
-class CreateControllerTest extends AbstractCrudsWebTest
+class CreateControllerTest extends AbstractDbAwareTest
 {
-    /**
-     * @dataProvider getKernelClasses
-     *
-     * @param $kernel
-     */
-    public function testCreateAction($kernel)
+    public function testCreateAction()
     {
-        self::createAndBootKernel($kernel);
-        self::configureDb();
-
         $client = self::createClient();
         $client->request(
             'POST',
@@ -48,7 +40,6 @@ class CreateControllerTest extends AbstractCrudsWebTest
         self::assertObjectNotHasAttribute('private_field', $data);
         self::assertNull($data->parent);
         self::assertSame([], $data->children);
-
 
         $client->request(
             'POST',

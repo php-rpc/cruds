@@ -3,20 +3,13 @@
 namespace ScayTrase\Api\Cruds\Tests\Controller;
 
 use ScayTrase\Api\Cruds\Tests\AbstractCrudsWebTest;
+use ScayTrase\Api\Cruds\Tests\AbstractDbAwareTest;
 use ScayTrase\Api\Cruds\Tests\Fixtures\Common\Entity\MyEntity;
 
-class ReadControllerTest extends AbstractCrudsWebTest
+class ReadControllerTest extends AbstractDbAwareTest
 {
-    /**
-     * @dataProvider getKernelClasses
-     *
-     * @param $kernel
-     */
-    public function testSearchAction($kernel)
+    public function testSearchAction()
     {
-        self::createAndBootKernel($kernel);
-        self::configureDb();
-
         $em     = self::getEntityManager();
         $entity = new MyEntity('my-test-secret');
         $em->persist($entity);

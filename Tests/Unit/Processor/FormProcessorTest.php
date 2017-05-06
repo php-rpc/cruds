@@ -8,6 +8,7 @@ use ScayTrase\Api\Cruds\Exception\EntityProcessingException;
 use ScayTrase\Api\Cruds\PublicPropertyMapper;
 use ScayTrase\Api\Cruds\Tests\AbstractCrudsWebTest;
 use ScayTrase\Api\Cruds\Tests\Fixtures\SymfonySerializer\SymfonyTestKernel;
+use ScayTrase\Api\Cruds\Tests\StaticKernelTestTrait;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -16,9 +17,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class FormProcessorTest extends AbstractCrudsWebTest
 {
+    use StaticKernelTestTrait;
+
     public function testProcessor()
     {
-        self::createAndBootKernel(SymfonyTestKernel::class);
         $factory = static::$kernel->getContainer()->get('form.factory');
 
         $entity    = new SampleEntity();
@@ -46,7 +48,7 @@ class FormProcessorTest extends AbstractCrudsWebTest
 
     public function testProcessorFactory()
     {
-        self::createAndBootKernel(SymfonyTestKernel::class);
+//        self::createAndBootKernel(SymfonyTestKernel::class);
         $factory = static::$kernel->getContainer()->get('form.factory');
         $mapper  = new PublicPropertyMapper();
 

@@ -3,6 +3,7 @@
 namespace ScayTrase\Api\Cruds\Tests\Unit\Controller;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use ScayTrase\Api\Cruds\Controller\CreateController;
 use ScayTrase\Api\Cruds\EntityProcessorInterface;
@@ -13,7 +14,7 @@ use ScayTrase\Api\Cruds\Tests\Fixtures\AbcClass;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-abstract class CreateControllerTest extends \PHPUnit_Framework_TestCase
+abstract class CreateControllerTest extends TestCase
 {
     public function testEntityCreation()
     {

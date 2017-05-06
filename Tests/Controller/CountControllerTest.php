@@ -3,20 +3,13 @@
 namespace ScayTrase\Api\Cruds\Tests\Controller;
 
 use ScayTrase\Api\Cruds\Tests\AbstractCrudsWebTest;
+use ScayTrase\Api\Cruds\Tests\AbstractDbAwareTest;
 use ScayTrase\Api\Cruds\Tests\Fixtures\Common\Entity\MyEntity;
 
-class CountControllerTest extends AbstractCrudsWebTest
+class CountControllerTest extends AbstractDbAwareTest
 {
-    /**
-     * @dataProvider getKernelClasses
-     *
-     * @param $kernel
-     */
-    public function testCountAction($kernel)
+    public function testCountAction()
     {
-        self::createAndBootKernel($kernel);
-        self::configureDb();
-
         $em     = self::getEntityManager();
         $entity = new MyEntity('my-test-secret');
         $em->persist($entity);
@@ -45,16 +38,8 @@ class CountControllerTest extends AbstractCrudsWebTest
         self::assertEquals(2, $data);
     }
 
-    /**
-     * @dataProvider getKernelClasses
-     *
-     * @param $kernel
-     */
-    public function testCountWithRelation($kernel)
+    public function testCountWithRelation()
     {
-        self::createAndBootKernel($kernel);
-        self::configureDb();
-
         $em     = self::getEntityManager();
         $entity = new MyEntity('my-test-secret');
         $em->persist($entity);

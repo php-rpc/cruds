@@ -9,11 +9,18 @@ php:
   - hhvm
 
 env:
-  - PACKAGES='symfony/symfony=2.8.*'
-  - PACKAGES='symfony/symfony=3.0.*'
-  - PACKAGES='symfony/symfony=3.1.*'
-  - PACKAGES='symfony/symfony=3.2.*'
-  - PACKAGES='symfony/symfony=~3.3@dev
+  # JMS serializer tests
+  - PACKAGES='symfony/symfony=2.8.*' SERIALZIER=jms
+  - PACKAGES='symfony/symfony=3.0.*' SERIALZIER=jms
+  - PACKAGES='symfony/symfony=3.1.*' SERIALZIER=jms
+  - PACKAGES='symfony/symfony=3.2.*' SERIALZIER=jms
+  - PACKAGES='symfony/symfony=~3.3@dev  SERIALZIER=jms
+  # Symfony serializer tests
+  - PACKAGES='symfony/symfony=2.8.*' SERIALZIER=symfony
+  - PACKAGES='symfony/symfony=3.0.*' SERIALZIER=symfony
+  - PACKAGES='symfony/symfony=3.1.*' SERIALZIER=symfony
+  - PACKAGES='symfony/symfony=3.2.*' SERIALZIER=symfony
+  - PACKAGES='symfony/symfony=~3.3@dev  SERIALZIER=symfony
 
 matrix:
   allow_failures:

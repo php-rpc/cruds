@@ -4,6 +4,7 @@ namespace ScayTrase\Api\Cruds\Tests\Unit\Controller;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use ScayTrase\Api\Cruds\Controller\DeleteController;
 use ScayTrase\Api\Cruds\Event\CollectionCrudEvent;
@@ -11,7 +12,7 @@ use ScayTrase\Api\Cruds\Event\CrudEvents;
 use ScayTrase\Api\Cruds\Tests\Fixtures\AbcClass;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class DeleteControllerTest extends \PHPUnit_Framework_TestCase
+class DeleteControllerTest extends TestCase
 {
     public function testDeleting()
     {

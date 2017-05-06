@@ -11,63 +11,15 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 abstract class AbstractCrudsWebTest extends WebTestCase
 {
-    protected static function createAndBootKernel($class)
+    public static function setUpBeforeClass()
     {
-        self::$class = $class;
+        self::$class = KernelProvider::getClass();
+        parent::setUpBeforeClass();
+    }
+
+    public function setUp()
+    {
+        parent::setUp();
         self::bootKernel();
-    }
-
-    /**
-     * @throws \Doctrine\ORM\Tools\ToolsException
-     */
-    protected static function configureDb()
-    {
-        self::assertKernelBooted();
-
-        /** @var EntityManagerInterface $em */
-        $em = self::getEntityManager();
-
-        $metadata = $em->getMetadataFactory()->getAllMetadata();
-        $tool     = new SchemaTool($em);
-        $tool->dropDatabase();
-        $tool->createSchema($metadata);
-        $validator = new SchemaValidator($em);
-        $errors    = $validator->validateMapping();
-        static::assertCount(
-            0,
-            $errors,
-            implode(
-                "\n\n",
-                array_map(
-                    function ($l) {
-                        return implode("\n\n", $l);
-                    },
-                    $errors
-                )
-            )
-        );
-    }
-
-    protected static function assertKernelBooted()
-    {
-        if (null === self::$kernel || null === self::$kernel->getContainer()) {
-            self::fail('Kernel is not booted');
-        }
-    }
-
-    /**
-     * @return EntityManagerInterface|object
-     */
-    protected static function getEntityManager()
-    {
-        return self::$kernel->getContainer()->get('doctrine.orm.entity_manager');
-    }
-
-    public function getKernelClasses()
-    {
-        return [
-            'JMS Serializer Kernel'     => [JmsTestKernel::class],
-            'Symfony Serializer Kernel' => [SymfonyTestKernel::class],
-        ];
     }
 }

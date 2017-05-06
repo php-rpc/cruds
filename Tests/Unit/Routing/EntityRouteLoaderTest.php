@@ -2,7 +2,9 @@
 
 namespace ScayTrase\Api\Cruds\Tests\Unit\Routing;
 
-class EntityRouteLoaderTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class EntityRouteLoaderTest extends TestCase
 {
     public function testRouterFailsToLoadResourceTwice()
     {
@@ -16,6 +18,6 @@ class EntityRouteLoaderTest extends \PHPUnit_Framework_TestCase
 
     public function testLoadingEmptyRouterDoesNotFail()
     {
-        self::markTestSkipped();
+        self::markTestIncomplete();
     }
 }

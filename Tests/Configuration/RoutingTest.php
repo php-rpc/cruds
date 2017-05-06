@@ -3,37 +3,61 @@
 namespace ScayTrase\Api\Cruds\Tests\Configuration;
 
 use ScayTrase\Api\Cruds\Tests\AbstractCrudsWebTest;
-use Symfony\Component\Routing\Exception\MethodNotAllowedException;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use ScayTrase\Api\Cruds\Tests\StaticKernelTestTrait;
 use Symfony\Component\Routing\RequestContext;
 
 class RoutingTest extends AbstractCrudsWebTest
 {
+    use StaticKernelTestTrait;
 
-    /**
-     * @dataProvider getKernelClasses
-     *
-     * @param $kernel
-     */
-    public function testEntityRouting($kernel)
+    public function getValidRoutes()
     {
-        self::createAndBootKernel($kernel);
-
-        $this->matchPath('/api/entity/my-entity/create', 'POST');
-        $this->matchPath('/api/entity/my-entity/create', 'GET', true);
-        $this->matchPath('/api/entity/my-entity/get', 'GET');
-        $this->matchPath('/api/entity/my-entity/get', 'POST');
-        $this->matchPath('/api/entity/my-entity/update', 'POST');
-        $this->matchPath('/api/entity/my-entity/update', 'GET', true);
-        $this->matchPath('/api/entity/my-entity/delete', 'POST');
-        $this->matchPath('/api/entity/my-entity/delete', 'GET', true);
-        $this->matchPath('/api/entity/my-entity/search', 'GET');
-        $this->matchPath('/api/entity/my-entity/search', 'POST');
-        $this->matchPath('/api/entity/my-entity/count', 'GET');
-        $this->matchPath('/api/entity/my-entity/count', 'POST');
+        return [
+            'valid create POST' => ['/api/entity/my-entity/create', 'POST'],
+            'valid get GET'     => ['/api/entity/my-entity/get', 'GET'],
+            'valid get POST'    => ['/api/entity/my-entity/get', 'POST'],
+            'valid update POST' => ['/api/entity/my-entity/update', 'POST'],
+            'valid delete POST' => ['/api/entity/my-entity/delete', 'POST'],
+            'valid search GET'  => ['/api/entity/my-entity/search', 'GET'],
+            'valid search POST' => ['/api/entity/my-entity/search', 'POST'],
+            'valid count GET'   => ['/api/entity/my-entity/count', 'GET'],
+            'valid count POST'  => ['/api/entity/my-entity/count', 'POST'],
+        ];
     }
 
-    private function matchPath($path, $method = 'GET', $catch = false)
+    public function getInvalidRoutes()
+    {
+        return [
+            'invalid create GET'  => ['/api/entity/my-entity/create', 'GET'],
+            'invalid update GET'  => ['/api/entity/my-entity/update', 'GET'],
+            'invalid delete POST' => ['/api/entity/my-entity/delete', 'GET'],
+        ];
+    }
+
+    /**
+     * @dataProvider getInvalidRoutes
+     * @expectedException \Symfony\Component\Routing\Exception\MethodNotAllowedException
+     *
+     * @param $path
+     * @param $method
+     */
+    public function testPathNotMatches($path, $method)
+    {
+        $container = self::$kernel->getContainer();
+        $router    = $container->get('router');
+
+        $context = new RequestContext('', $method);
+        $router->getMatcher()->setContext($context);
+        $router->match($path);
+    }
+
+    /**
+     * @dataProvider getValidRoutes
+     *
+     * @param string $path
+     * @param string $method
+     */
+    public function testPathMatches($path, $method)
     {
         $container = self::$kernel->getContainer();
         $router    = $container->get('router');
@@ -41,22 +65,7 @@ class RoutingTest extends AbstractCrudsWebTest
         $context = new RequestContext('', $method);
         $router->getMatcher()->setContext($context);
 
-        try {
-            $router->match($path);
-        } catch (MethodNotAllowedException $exception) {
-            if (!$catch) {
-                self::fail(
-                    sprintf(
-                        'Method %s not allowed. Allowed methods are: %s',
-                        $context->getMethod(),
-                        implode(', ', $exception->getAllowedMethods())
-                    )
-                );
-            }
-        } catch (ResourceNotFoundException $exception) {
-            if (!$catch) {
-                self::fail(sprintf('Resource not found: %s', $path));
-            }
-        }
+        $match = $router->match($path);
+        self::assertNotNull($match);
     }
 }
