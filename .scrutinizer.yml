@@ -2,7 +2,17 @@ build:
   tests:
     override:
       -
-        command: phpunit --coverage-clover=build/clover.xml
+        command: SERIALIZER=jms phpunit --coverage-clover=build/clover.xml
         coverage:
           file: build/clover.xml
           format: php-clover
+      -
+        command: SERIALIZER=symfony phpunit --coverage-clover=build/clover.xml
+        coverage:
+          file: build/clover.xml
+          format: php-clover
+
+filter:
+  excluded_paths:
+    - "./Tests"
+    - "./Test"

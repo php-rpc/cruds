@@ -3,20 +3,13 @@
 namespace ScayTrase\Api\Cruds\Tests\Controller;
 
 use ScayTrase\Api\Cruds\Tests\AbstractCrudsWebTest;
+use ScayTrase\Api\Cruds\Tests\AbstractDbAwareTest;
 use ScayTrase\Api\Cruds\Tests\Fixtures\Common\Entity\MyEntity;
 
-class UpdateControllerTest extends AbstractCrudsWebTest
+class UpdateControllerTest extends AbstractDbAwareTest
 {
-    /**
-     * @dataProvider getKernelClasses
-     *
-     * @param $kernel
-     */
-    public function testDeleteAction($kernel)
+    public function testDeleteAction()
     {
-        self::createAndBootKernel($kernel);
-        self::configureDb();
-
         $client = self::createClient();
         $em     = self::getEntityManager();
 

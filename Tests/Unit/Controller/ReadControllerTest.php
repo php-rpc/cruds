@@ -3,6 +3,7 @@
 namespace ScayTrase\Api\Cruds\Tests\Unit\Controller;
 
 use Doctrine\Common\Persistence\ObjectRepository;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use ScayTrase\Api\Cruds\Controller\ReadController;
 use ScayTrase\Api\Cruds\Event\CollectionCrudEvent;
@@ -10,7 +11,7 @@ use ScayTrase\Api\Cruds\Event\CrudEvents;
 use ScayTrase\Api\Cruds\Tests\Fixtures\AbcClass;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class ReadControllerTest extends \PHPUnit_Framework_TestCase
+class ReadControllerTest extends TestCase
 {
     public function testGet()
     {

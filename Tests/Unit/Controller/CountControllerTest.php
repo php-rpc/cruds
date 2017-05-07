@@ -3,6 +3,7 @@
 namespace ScayTrase\Api\Cruds\Tests\Unit\Controller;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use ScayTrase\Api\Cruds\Controller\CountController;
 use ScayTrase\Api\Cruds\Criteria\EntityCriteriaConfigurator;
@@ -14,7 +15,7 @@ use ScayTrase\Api\Cruds\Tests\Unit\AbstractControllerTest;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class CountControllerTest extends \PHPUnit_Framework_TestCase
+class CountControllerTest extends TestCase
 {
     public function testCounting()
     {

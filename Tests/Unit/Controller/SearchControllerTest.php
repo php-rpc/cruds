@@ -4,6 +4,7 @@ namespace ScayTrase\Api\Cruds\Tests\Unit\Controller;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use ScayTrase\Api\Cruds\Controller\SearchController;
 use ScayTrase\Api\Cruds\Criteria\EntityCriteriaConfigurator;
@@ -14,7 +15,7 @@ use ScayTrase\Api\Cruds\ReferenceProviderInterface;
 use ScayTrase\Api\Cruds\Tests\Fixtures\AbcClass;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class SearchControllerTest extends \PHPUnit_Framework_TestCase
+class SearchControllerTest extends TestCase
 {
     public function testSearching()
     {

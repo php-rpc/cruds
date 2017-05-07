@@ -3,11 +3,12 @@
 namespace ScayTrase\Api\Cruds\Tests\Unit;
 
 use Doctrine\Common\Collections\Criteria;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use ScayTrase\Api\Cruds\Criteria\DefaultCriteriaConfigurator;
 use ScayTrase\Api\Cruds\CriteriaConfiguratorInterface;
 
-class DefaultCriteriaConfiguratorTest extends \PHPUnit_Framework_TestCase
+class DefaultCriteriaConfiguratorTest extends TestCase
 {
     public function testDefaultReplacesMissing()
     {

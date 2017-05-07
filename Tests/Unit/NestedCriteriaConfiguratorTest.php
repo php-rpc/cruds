@@ -3,11 +3,12 @@
 namespace ScayTrase\Api\Cruds\Tests\Unit;
 
 use Doctrine\Common\Collections\Criteria;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use ScayTrase\Api\Cruds\Criteria\NestedCriteriaConfigurator;
 use ScayTrase\Api\Cruds\CriteriaConfiguratorInterface;
 
-class NestedCriteriaConfiguratorTest extends \PHPUnit_Framework_TestCase
+class NestedCriteriaConfiguratorTest extends TestCase
 {
     public function testIteratesNestedConfigurators()
     {
@@ -79,7 +80,12 @@ class NestedCriteriaConfiguratorTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnknownException()
     {
+        $this->markTestIncomplete();
+    }
 
+    public function testNestedExceptionRethrow()
+    {
+        $this->markTestIncomplete();
     }
 
     private function createConfigurator($fqcn, Criteria $criteria, $data, $e = false)
