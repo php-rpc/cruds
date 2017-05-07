@@ -8,9 +8,6 @@ use Symfony\Component\BrowserKit\Client;
 
 class RouteAccessibilityTest extends AbstractDbAwareTest
 {
-    /** @var Client */
-    private static $client;
-
     use StaticDbTestTrait;
 
     public function getRequests()

@@ -10,7 +10,7 @@ php:
 
 env:
   - PACKAGES='symfony/symfony=2.8.*'
-  - PACKAGES='symfony/symfony=3.1.* "phpunit/phpunit=^4.8.35|^5.4"'
+  - PACKAGES='symfony/symfony=3.1.*'
   - PACKAGES='symfony/symfony=3.2.*'
   - PACKAGES='symfony/symfony=~3.3@dev'
 
