@@ -48,7 +48,6 @@ class FormProcessorTest extends AbstractCrudsWebTest
 
     public function testProcessorFactory()
     {
-//        self::createAndBootKernel(SymfonyTestKernel::class);
         $factory = static::$kernel->getContainer()->get('form.factory');
         $mapper  = new PublicPropertyMapper();
 

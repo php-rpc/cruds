@@ -43,12 +43,7 @@ class RoutingTest extends AbstractCrudsWebTest
      */
     public function testPathNotMatches($path, $method)
     {
-        $container = self::$kernel->getContainer();
-        $router    = $container->get('router');
-
-        $context = new RequestContext('', $method);
-        $router->getMatcher()->setContext($context);
-        $router->match($path);
+        $this->createRouter($method)->match($path);
     }
 
     /**
@@ -59,13 +54,22 @@ class RoutingTest extends AbstractCrudsWebTest
      */
     public function testPathMatches($path, $method)
     {
+        self::assertNotNull($this->createRouter($method)->match($path));
+    }
+
+    /**
+     * @param $method
+     *
+     * @return object|\Symfony\Bundle\FrameworkBundle\Routing\Router
+     */
+    private function createRouter($method)
+    {
         $container = self::$kernel->getContainer();
         $router    = $container->get('router');
 
         $context = new RequestContext('', $method);
         $router->getMatcher()->setContext($context);
 
-        $match = $router->match($path);
-        self::assertNotNull($match);
+        return $router;
     }
 }
