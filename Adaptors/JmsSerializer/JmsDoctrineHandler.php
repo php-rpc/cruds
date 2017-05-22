@@ -4,6 +4,8 @@ namespace ScayTrase\Api\Cruds\Adaptors\JmsSerializer;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use JMS\Serializer\Context;
+use JMS\Serializer\Metadata\ClassMetadata;
+use JMS\Serializer\Metadata\PropertyMetadata;
 use JMS\Serializer\VisitorInterface;
 use ScayTrase\Api\Cruds\Adaptors\DoctrineOrm\EntityToIdNormalizer;
 
@@ -11,10 +13,12 @@ final class JmsDoctrineHandler
 {
     const TYPE = 'DoctrineAssociation';
 
-    /** @var  ManagerRegistry */
-    private $registry;
     /** @var  EntityToIdNormalizer */
     private $converter;
+    /**
+     * @var ManagerRegistry
+     */
+    private $registry;
 
     /**
      * JmsDoctrineHandler constructor.
@@ -42,11 +46,14 @@ final class JmsDoctrineHandler
 
     public function deserializeRelation(VisitorInterface $visitor, $data, array $type, Context $context)
     {
-        // obtain params from deeps
-        // $class = $type['params'][0]['name'];
-        // return $this->converter->denormalize($data, $class);
+        $metadatas = iterator_to_array($context->getMetadataStack());
+        /** @var PropertyMetadata $property */
+        $property = array_shift($metadatas);
+        /** @var ClassMetadata $class */
+        $class = array_shift($metadatas);
 
-        // fixme
-        throw new \BadMethodCallException('Not supported at the moment');
+        $metadata = $this->registry->getManagerForClass($class->name)->getClassMetadata($class->name);
+
+        return $this->converter->denormalize($data, $metadata->getAssociationTargetClass($property->name));
     }
 }

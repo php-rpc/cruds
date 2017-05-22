@@ -7,7 +7,7 @@ use ScayTrase\Api\Cruds\Tests\Fixtures\Common\Entity\MyEntity;
 
 class UpdateControllerTest extends WebTestCase
 {
-    public function testDeleteAction()
+    public function testUpdateAction()
     {
         $client = self::createClient();
         $em     = $this->getEntityManager();

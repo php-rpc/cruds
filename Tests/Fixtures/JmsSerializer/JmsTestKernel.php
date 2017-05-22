@@ -7,7 +7,7 @@ use ScayTrase\Api\Cruds\Tests\Fixtures\Common\CrudsTestKernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
 
-class JmsTestKernel extends CrudsTestKernel
+final class JmsTestKernel extends CrudsTestKernel
 {
     /** {@inheritdoc} */
     public function registerContainerConfiguration(LoaderInterface $loader)

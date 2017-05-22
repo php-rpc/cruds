@@ -18,3 +18,13 @@ jms_serializer:
     datetime:
       default_format: "c" # ISO8601
       default_timezone: "UTC" # defaults to whatever timezone set in php.ini or via date_default_timezone_se
+
+cruds:
+  entities:
+    my-test-entity:
+      class: MyBundle:MyEntity
+      prefix: /my-entity
+      mount: test_mount
+      actions:
+        update:
+          processor: cruds.jms_processor
