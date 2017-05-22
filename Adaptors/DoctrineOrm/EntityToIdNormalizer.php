@@ -45,6 +45,8 @@ final class EntityToIdNormalizer
      * @param string      $class
      *
      * @return object
+     *
+     * @throws \Doctrine\ORM\ORMException
      */
     public function denormalize($identifier, $class)
     {

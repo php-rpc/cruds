@@ -1,7 +1,7 @@
 <?php
 namespace ScayTrase\Api\Cruds\Tests\Fixtures;
 
-class AbcClass extends \stdClass
+final class AbcClass extends \stdClass
 {
     /** @var int */
     public $a;

@@ -7,7 +7,7 @@ use ScayTrase\Api\Cruds\Tests\Fixtures\Common\Entity\MyEntity;
 
 class ReadControllerTest extends WebTestCase
 {
-    public function testSearchAction()
+    public function testReadAction()
     {
         $em     = $this->getEntityManager();
         $entity = new MyEntity('my-test-secret');

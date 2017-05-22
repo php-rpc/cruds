@@ -8,7 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class AbcFormType extends AbstractType
+final class AbcFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

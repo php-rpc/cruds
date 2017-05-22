@@ -15,12 +15,20 @@ final class JmsContextFactory
      */
     public static function serialization(array $context = null)
     {
-        return self::configureContext(SerializationContext::create(), $context);
+        $jmsContext = SerializationContext::create();
+
+        self::configureContext($jmsContext, $context);
+
+        return $jmsContext;
     }
 
-    public static function deserialization($context)
+    public static function deserialization(array $context = null)
     {
-        return self::configureContext(DeserializationContext::create(), $context);
+        $jmsContext = DeserializationContext::create();
+
+        self::configureContext($jmsContext, $context);
+
+        return $jmsContext;
     }
 
     private static function configureContext(Context $jmsContext, array $context = null)
@@ -28,7 +36,7 @@ final class JmsContextFactory
         $jmsContext->setSerializeNull(true);
 
         if (null === $context) {
-            return $jmsContext;
+            return;
         }
 
         if (array_key_exists('groups', $context)) {
@@ -38,7 +46,5 @@ final class JmsContextFactory
         if (array_key_exists('object_to_populate', $context)) {
             $jmsContext->setAttribute('target', $context['object_to_populate']);
         }
-
-        return $jmsContext;
     }
 }

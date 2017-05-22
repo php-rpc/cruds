@@ -10,5 +10,17 @@ services:
     arguments:
     - "@jms_serializer.serializer"
 
+  cruds.jms_processor:
+    class: ScayTrase\Api\Cruds\Adaptors\JmsSerializer\JmsSerializerProcessor
+    arguments:
+    - "@jms_serializer.serializer"
+
+  cruds.jms_object_constructor:
+    class: ScayTrase\Api\Cruds\Adaptors\JmsSerializer\InitializedObjectConstructor
+    public: false
+    decorates: jms_serializer.unserialize_object_constructor
+    arguments:
+    - "@cruds.jms_object_constructor.inner"
+
   cruds.property_mapper:
     alias: cruds.property_mapper.jms
