@@ -51,7 +51,7 @@ final class FormProcessor implements EntityProcessorInterface
         $form->submit($data, false);
 
         if (!$form->isValid()) {
-            throw EntityProcessingException::invalidDataSubmitted((string)$form->getErrors(true), $data);
+            throw EntityProcessingException::invalidDataSubmitted((string)$form->getErrors(true));
         }
 
         return $form->getData();
