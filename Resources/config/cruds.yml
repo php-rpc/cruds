@@ -47,3 +47,6 @@ services:
     - "@router"
     tags:
     - { name: kernel.event_listener, event: kernel.view, method: filterResponse, priority: -101 }
+
+  ScayTrase\Api\Cruds\PropertyMapperInterface:
+    alias: cruds.property_mapper
