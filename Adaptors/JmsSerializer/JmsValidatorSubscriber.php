@@ -5,7 +5,6 @@ namespace ScayTrase\Api\Cruds\Adaptors\JmsSerializer;
 use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use JMS\Serializer\EventDispatcher\ObjectEvent;
 use ScayTrase\Api\Cruds\Exception\EntityProcessingException;
-use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class JmsValidatorSubscriber implements EventSubscriberInterface
@@ -37,15 +36,7 @@ final class JmsValidatorSubscriber implements EventSubscriberInterface
         $list = $this->validator->validate($event->getObject(), $groups);
 
         if ($list->count() > 0) {
-            throw new EntityProcessingException(
-                'Data for the entity is not valid',
-                array_map(
-                    function (ConstraintViolationInterface $violation) {
-                        return $violation->getMessage();
-                    },
-                    iterator_to_array($list)
-                )
-            );
+            throw EntityProcessingException::fromViolationList($list);
         }
     }
 }
