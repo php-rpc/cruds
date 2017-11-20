@@ -12,12 +12,10 @@ final class CrudsRouteFactory
             $path,
             [
                 '_controller' => $controller,
+                '_cruds_api'  => array_replace(['enabled' => true], $options),
             ],
             [],
-            [
-                'cruds_api'     => true,
-                'cruds_options' => $options,
-            ],
+            [],
             '',
             [],
             $methods,

@@ -2,14 +2,11 @@
 
 namespace ScayTrase\Api\Cruds\Listener;
 
+use ScayTrase\Api\Cruds\CrudsBundle;
 use Symfony\Component\HttpKernel\Event\KernelEvent;
-use Symfony\Component\Routing\RouterInterface;
 
 trait CrudsRequestCheckerTrait
 {
-    /** @return RouterInterface */
-    abstract protected function getRouter();
-
     /**
      * @param KernelEvent $event
      *
@@ -17,28 +14,26 @@ trait CrudsRequestCheckerTrait
      */
     protected function checkRequest(KernelEvent $event)
     {
-        $route = $this->getRoute($event);
+        $request = $event->getRequest();
 
-        if (null === $route) {
-            return false;
-        }
-
-        if (!$route->getOption('cruds_api')) {
+        if (!$request->attributes->get(CrudsBundle::CRUDS_REQUEST_ATTRIBUTE)) {
             return false;
         }
 
         return true;
     }
 
-    protected function getRoute(KernelEvent $event)
+    protected function getNormalizedCrudApiOptions(KernelEvent $event)
     {
-        $request = $event->getRequest();
-        $route   = $request->attributes->get('_route');
-
-        if (null === $route) {
-            return null;
+        $options = $event->getRequest()->attributes->get(CrudsBundle::CRUDS_REQUEST_ATTRIBUTE);
+        if (!is_array($options)) {
+            return [
+                'enabled'   => (bool)$options,
+                'arguments' => [],
+                'context'   => [],
+            ];
         }
 
-        return $this->getRouter()->getRouteCollection()->get($route);
+        return array_merge(['enabled' => false, 'arguments' => [], 'context' => []], $options);
     }
 }

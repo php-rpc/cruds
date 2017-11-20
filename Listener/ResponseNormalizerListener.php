@@ -56,12 +56,12 @@ final class ResponseNormalizerListener
             $entities = [$entities];
         }
 
-        $route   = $this->getRoute($event);
-        $context = [];
-        if ($route->hasOption('context')) {
-            $context = (array)$route->getOption('context');
+        $options = $this->getNormalizedCrudApiOptions($event);
+        if (!$options['enabled']) {
+            return;
         }
 
+        $context = $options['context'];
         foreach ($entities as &$entity) {
             $entity = $this->normalizer->normalize($entity, null, $context);
         }
