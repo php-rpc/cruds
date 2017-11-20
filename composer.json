@@ -1,7 +1,7 @@
 {
   "name": "php-rpc/cruds",
   "description": "Symfony CRUD bundle",
-  "minimum-stability": "stable",
+  "minimum-stability": "dev",
   "license": "MIT",
   "authors": [
     {
