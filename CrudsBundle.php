@@ -12,6 +12,8 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 final class CrudsBundle extends Bundle
 {
+    const CRUDS_REQUEST_ATTRIBUTE = '_cruds_api';
+
     public function build(ContainerBuilder $container)
     {
         parent::build($container);

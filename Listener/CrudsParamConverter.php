@@ -3,24 +3,10 @@
 namespace ScayTrase\Api\Cruds\Listener;
 
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\Routing\RouterInterface;
 
 final class CrudsParamConverter
 {
     use CrudsRequestCheckerTrait;
-
-    /** @var  RouterInterface */
-    private $router;
-
-    /**
-     * CrudsParamConverter constructor.
-     *
-     * @param RouterInterface $router
-     */
-    public function __construct(RouterInterface $router)
-    {
-        $this->router = $router;
-    }
 
     public function onCrudRequest(GetResponseEvent $event)
     {
@@ -28,13 +14,8 @@ final class CrudsParamConverter
             return;
         }
 
-        $route = $this->getRoute($event);
-        if (!$route->hasOption('cruds_options')) {
-            return;
-        }
-
-        $options = (array)$route->getOption('cruds_options');
-        if (!array_key_exists('arguments', $options)) {
+        $options = $this->getNormalizedCrudApiOptions($event);
+        if (!$options['enabled']) {
             return;
         }
 
@@ -45,11 +26,5 @@ final class CrudsParamConverter
                 $request->attributes->set($param, $value);
             }
         }
-    }
-
-    /** {@inheritdoc} */
-    protected function getRouter()
-    {
-        return $this->router;
     }
 }
