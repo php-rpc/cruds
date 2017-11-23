@@ -3,6 +3,7 @@
 namespace ScayTrase\Api\Cruds\Tests\Fixtures\Common;
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
+use Liip\FunctionalTestBundle\LiipFunctionalTestBundle;
 use ScayTrase\Api\Cruds\CrudsBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Component\Config\ConfigCache;
@@ -20,33 +21,13 @@ abstract class CrudsTestKernel extends Kernel
             new DoctrineBundle(),
             new MyBundle(),
             new FrameworkBundle(),
+            new LiipFunctionalTestBundle(),
         ];
-    }
-
-    public function getCacheDir()
-    {
-        return __DIR__ . '/../../../build/' . $this->getClassName() . '/cache';
     }
 
     public function getLogDir()
     {
         return __DIR__ . '/../../../build/' . $this->getClassName() . '/logs';
-    }
-
-    /** {@inheritdoc} */
-    public function registerContainerConfiguration(LoaderInterface $loader)
-    {
-        return $loader->load(__DIR__ . '/config.yml');
-    }
-
-    /** {@inheritdoc} */
-    protected function buildContainer()
-    {
-        $container = parent::buildContainer();
-        $container->addResource(new FileResource(__DIR__ . '/config.yml'));
-        $container->addResource(new FileResource(__DIR__ . '/routing.yml'));
-
-        return $container;
     }
 
     /**
@@ -59,15 +40,36 @@ abstract class CrudsTestKernel extends Kernel
         return array_pop($path);
     }
 
+    /** {@inheritdoc} */
+    public function registerContainerConfiguration(LoaderInterface $loader)
+    {
+        return $loader->load(__DIR__ . '/config.yml');
+    }
+
     protected function initializeContainer()
     {
         $class = $this->getContainerClass();
-        $cache = new ConfigCache($this->getCacheDir().'/'.$class.'.php', $this->debug);
+        $cache = new ConfigCache($this->getCacheDir() . '/' . $class . '.php', $this->debug);
 
         $container = $this->buildContainer();
         $container->compile();
         $this->dumpContainer($cache, $container, $class, $this->getContainerBaseClass());
 
         parent::initializeContainer();
+    }
+
+    public function getCacheDir()
+    {
+        return __DIR__ . '/../../../build/' . $this->getClassName() . '/cache';
+    }
+
+    /** {@inheritdoc} */
+    protected function buildContainer()
+    {
+        $container = parent::buildContainer();
+        $container->addResource(new FileResource(__DIR__ . '/config.yml'));
+        $container->addResource(new FileResource(__DIR__ . '/routing.yml'));
+
+        return $container;
     }
 }

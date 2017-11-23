@@ -2,15 +2,14 @@
 
 namespace ScayTrase\Api\Cruds\Tests\Controller;
 
-use ScayTrase\Api\Cruds\Tests\AbstractCrudsWebTest;
-use ScayTrase\Api\Cruds\Tests\AbstractDbAwareTest;
+use ScayTrase\Api\Cruds\Tests\WebTestCase;
 use ScayTrase\Api\Cruds\Tests\Fixtures\Common\Entity\MyEntity;
 
-class SearchControllerTest extends AbstractDbAwareTest
+class SearchControllerTest extends WebTestCase
 {
     public function testSearchAction()
     {
-        $em     = self::getEntityManager();
+        $em     = $this->getEntityManager();
         $entity = new MyEntity('my-test-secret');
         $em->persist($entity);
         $parent = new MyEntity('non-recursing-entity');

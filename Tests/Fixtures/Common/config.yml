@@ -19,3 +19,6 @@ cruds:
       prefix: /my-entity
       mount: test_mount
       actions: [create, read, update, delete, search]
+
+liip_functional_test:
+  cache_sqlite_db: true

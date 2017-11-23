@@ -2,11 +2,11 @@
 
 namespace ScayTrase\Api\Cruds\Tests\Configuration;
 
-use ScayTrase\Api\Cruds\Tests\AbstractCrudsWebTest;
+use ScayTrase\Api\Cruds\Tests\WebTestCase;
 use ScayTrase\Api\Cruds\Tests\StaticKernelTestTrait;
 use Symfony\Component\Routing\RequestContext;
 
-class RoutingTest extends AbstractCrudsWebTest
+class RoutingTestCase extends WebTestCase
 {
     use StaticKernelTestTrait;
 

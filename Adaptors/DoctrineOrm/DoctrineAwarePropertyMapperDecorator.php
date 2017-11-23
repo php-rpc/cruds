@@ -17,12 +17,12 @@ final class DoctrineAwarePropertyMapperDecorator implements PropertyMapperInterf
      * DoctrineAwarePropertyMapperDecorator constructor.
      *
      * @param PropertyMapperInterface $decorated
-     * @param ManagerRegistry         $registry
+     * @param ManagerRegistry $registry
      */
     public function __construct(PropertyMapperInterface $decorated, ManagerRegistry $registry)
     {
         $this->decorated = $decorated;
-        $this->registry  = $registry;
+        $this->registry = $registry;
     }
 
     /** {@inheritdoc} */
@@ -38,18 +38,18 @@ final class DoctrineAwarePropertyMapperDecorator implements PropertyMapperInterf
     }
 
     /** {@inheritdoc} */
-    public function getApiProperties($className)
+    public function getApiProperties($className): array
     {
         return $this->decorated->getApiProperties($this->normalizeClassName($className));
     }
 
     /** {@inheritdoc} */
-    public function getEntityProperties($className)
+    public function getEntityProperties($className): array
     {
         return $this->decorated->getEntityProperties($this->normalizeClassName($className));
     }
 
-    private function normalizeClassName($className)
+    private function normalizeClassName(string $className): string
     {
         $manager = $this->registry->getManagerForClass($className);
 

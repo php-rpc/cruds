@@ -6,7 +6,7 @@ use Symfony\Component\Routing\Route;
 
 final class CrudsRouteFactory
 {
-    public static function create($path, $controller, array $methods, array $options = [])
+    public static function create($path, $controller, array $methods, array $options = []): Route
     {
         return new Route(
             $path,

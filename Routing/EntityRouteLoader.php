@@ -33,20 +33,8 @@ final class EntityRouteLoader extends Loader
         return $collection;
     }
 
-    /**
-     * @param $resource
-     *
-     * @throws \LogicException
-     */
-    private function assertLoaded($resource)
-    {
-        if (array_key_exists($resource, $this->loaded) && $this->loaded[$resource]) {
-            throw new \LogicException('Already loaded');
-        }
-    }
-
     /** {@inheritdoc} */
-    public function supports($mount, $type = null)
+    public function supports($mount, $type = null): bool
     {
         return self::RESOURCE_TYPE === $type;
     }
@@ -56,8 +44,8 @@ final class EntityRouteLoader extends Loader
      * @param string $name
      * @param string $path
      * @param string $controller
-     * @param array  $methods
-     * @param array  $options
+     * @param array $methods
+     * @param array $options
      *
      * @throws \LogicException
      */
@@ -75,7 +63,7 @@ final class EntityRouteLoader extends Loader
      *
      * @throws \OutOfBoundsException if mount does not exist
      */
-    public function getRoutes($mount)
+    public function getRoutes($mount): array
     {
         if (!array_key_exists($mount, $this->routes)) {
             throw new \OutOfBoundsException('Mount does not exist');
@@ -87,8 +75,20 @@ final class EntityRouteLoader extends Loader
     /**
      * @return string[]
      */
-    public function getMounts()
+    public function getMounts(): array
     {
         return array_keys($this->routes);
+    }
+
+    /**
+     * @param $resource
+     *
+     * @throws \LogicException
+     */
+    private function assertLoaded($resource)
+    {
+        if (array_key_exists($resource, $this->loaded) && $this->loaded[$resource]) {
+            throw new \LogicException('Already loaded');
+        }
     }
 }

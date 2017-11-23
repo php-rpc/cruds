@@ -16,5 +16,5 @@ interface CriteriaConfiguratorInterface
      *
      * @throws CriteriaConfigurationException
      */
-    public function configure($fqcn, Criteria $criteria, $arguments);
+    public function configure(string $fqcn, Criteria $criteria, $arguments);
 }

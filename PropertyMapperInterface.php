@@ -31,7 +31,7 @@ interface PropertyMapperInterface
      * @return string[]
      * @throws MapperException
      */
-    public function getApiProperties($className);
+    public function getApiProperties($className): array;
 
     /**
      * @param string $className
@@ -39,5 +39,5 @@ interface PropertyMapperInterface
      * @return string[]
      * @throws MapperException
      */
-    public function getEntityProperties($className);
+    public function getEntityProperties($className): array;
 }
