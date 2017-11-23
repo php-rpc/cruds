@@ -4,6 +4,7 @@ namespace ScayTrase\Api\Cruds\Adaptors\JmsSerializer;
 
 use JMS\Serializer\Metadata\PropertyMetadata;
 use JMS\Serializer\Naming\PropertyNamingStrategyInterface;
+use Metadata\ClassMetadata;
 use Metadata\MetadataFactoryInterface;
 use ScayTrase\Api\Cruds\Exception\MapperException;
 use ScayTrase\Api\Cruds\PropertyMapperInterface;
@@ -18,12 +19,12 @@ final class JmsPropertyMapper implements PropertyMapperInterface
     /**
      * JmsPropertyMapper constructor.
      *
-     * @param MetadataFactoryInterface        $factory
+     * @param MetadataFactoryInterface $factory
      * @param PropertyNamingStrategyInterface $strategy
      */
     public function __construct(MetadataFactoryInterface $factory, PropertyNamingStrategyInterface $strategy)
     {
-        $this->factory  = $factory;
+        $this->factory = $factory;
         $this->strategy = $strategy;
     }
 
@@ -55,7 +56,7 @@ final class JmsPropertyMapper implements PropertyMapperInterface
     }
 
     /** {@inheritdoc} */
-    public function getApiProperties($className)
+    public function getApiProperties($className): array
     {
         $metadata = $this->getMetadata($className);
 
@@ -70,7 +71,7 @@ final class JmsPropertyMapper implements PropertyMapperInterface
     }
 
     /** {@inheritdoc} */
-    public function getEntityProperties($className)
+    public function getEntityProperties($className): array
     {
         $metadata = $this->getMetadata($className);
 
@@ -89,10 +90,10 @@ final class JmsPropertyMapper implements PropertyMapperInterface
     /**
      * @param $className
      *
-     * @return \Metadata\ClassHierarchyMetadata|\Metadata\MergeableClassMetadata|null
+     * @return ClassMetadata
      * @throws MapperException
      */
-    private function getMetadata($className)
+    private function getMetadata($className): ClassMetadata
     {
         $metadata = $this->factory->getMetadataForClass($className);
 
@@ -103,12 +104,7 @@ final class JmsPropertyMapper implements PropertyMapperInterface
         return $metadata;
     }
 
-    /**
-     * @param PropertyMetadata $propertyMetadata
-     *
-     * @return string
-     */
-    private function getPropertyName(PropertyMetadata $propertyMetadata)
+    private function getPropertyName(PropertyMetadata $propertyMetadata): string
     {
         return $this->strategy->translateName($propertyMetadata);
     }

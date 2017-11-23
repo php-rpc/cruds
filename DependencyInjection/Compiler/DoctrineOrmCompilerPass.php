@@ -6,6 +6,7 @@ use ScayTrase\Api\Cruds\Adaptors\DoctrineOrm\AssociationPropertyAccessor;
 use ScayTrase\Api\Cruds\Adaptors\DoctrineOrm\DoctrineObjectNormalizer;
 use ScayTrase\Api\Cruds\Adaptors\DoctrineOrm\EntityToIdNormalizer;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -51,7 +52,7 @@ final class DoctrineOrmCompilerPass implements CompilerPassInterface
 
         $container->setDefinition('cruds.doctrine.property_accessor', $decoratedAccessor);
 
-        $normalizer = new DefinitionDecorator('serializer.normalizer.object');
+        $normalizer = new ChildDefinition('serializer.normalizer.object');
         $normalizer->setClass(DoctrineObjectNormalizer::class);
         $normalizer->addMethodCall('setRegistry', [$registry]);
         $normalizer->replaceArgument(2, new Reference('cruds.doctrine.property_accessor'));

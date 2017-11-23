@@ -10,7 +10,7 @@ use ScayTrase\Api\Cruds\Exception\NestedConfiguratorException;
 final class NestedCriteriaConfigurator implements CriteriaConfiguratorInterface
 {
     /** @var CriteriaConfiguratorInterface[] */
-    private $filters = [];
+    private $filters;
 
     /**
      * ChainFilter constructor.
@@ -23,7 +23,7 @@ final class NestedCriteriaConfigurator implements CriteriaConfiguratorInterface
     }
 
     /** {@inheritdoc} */
-    public function configure($fqcn, Criteria $criteria, $arguments)
+    public function configure(string $fqcn, Criteria $criteria, $arguments)
     {
         if (!is_array($arguments)) {
             throw NestedConfiguratorException::invalidType('array', gettype($arguments));

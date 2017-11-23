@@ -2,16 +2,15 @@
 
 namespace ScayTrase\Api\Cruds\Tests\Controller;
 
-use ScayTrase\Api\Cruds\Tests\AbstractCrudsWebTest;
-use ScayTrase\Api\Cruds\Tests\AbstractDbAwareTest;
+use ScayTrase\Api\Cruds\Tests\WebTestCase;
 use ScayTrase\Api\Cruds\Tests\Fixtures\Common\Entity\MyEntity;
 
-class UpdateControllerTest extends AbstractDbAwareTest
+class UpdateControllerTest extends WebTestCase
 {
     public function testDeleteAction()
     {
         $client = self::createClient();
-        $em     = self::getEntityManager();
+        $em     = $this->getEntityManager();
 
         $entity = new MyEntity('private-data');
         $entity->setPublicApiField('public-data');

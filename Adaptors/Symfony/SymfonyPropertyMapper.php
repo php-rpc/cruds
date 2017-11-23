@@ -19,11 +19,11 @@ final class SymfonyPropertyMapper implements PropertyMapperInterface
      * SymfonyPropertyMapper constructor.
      *
      * @param ClassMetadataFactoryInterface $factory
-     * @param NameConverterInterface        $strategy
+     * @param NameConverterInterface $strategy
      */
     public function __construct(ClassMetadataFactoryInterface $factory, NameConverterInterface $strategy)
     {
-        $this->factory  = $factory;
+        $this->factory = $factory;
         $this->strategy = $strategy;
     }
 
@@ -56,7 +56,7 @@ final class SymfonyPropertyMapper implements PropertyMapperInterface
     }
 
     /** {@inheritdoc} */
-    public function getApiProperties($className)
+    public function getApiProperties($className): array
     {
         $properties = [];
         foreach ($this->getMetadata($className) as $property) {
@@ -67,7 +67,7 @@ final class SymfonyPropertyMapper implements PropertyMapperInterface
     }
 
     /** {@inheritdoc} */
-    public function getEntityProperties($className)
+    public function getEntityProperties($className): array
     {
         $properties = [];
         foreach ($this->getMetadata($className) as $property) {
@@ -82,7 +82,7 @@ final class SymfonyPropertyMapper implements PropertyMapperInterface
      *
      * @return AttributeMetadataInterface[]
      */
-    private function getMetadata($className)
+    private function getMetadata($className): array
     {
         try {
             return $this->factory->getMetadataFor($className)->getAttributesMetadata();

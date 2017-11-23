@@ -17,41 +17,26 @@ final class JmsSerializerDriverPass implements CompilerPassInterface
             return;
         }
 
-        $factory = $container->getDefinition('jms_serializer.metadata_factory');
-
-        $driver = $factory->getArgument(0);
-
-        $definition = $container
-            ->register('cruds.jms.doctrine_metadata_driver', JmsDoctrineMetadataDriver::class)
-            ->setArguments(
-                [
-                    $driver,
-                    new Reference('doctrine'),
-                ]
-            );
-
-        $factory->replaceArgument(0, $definition);
-
         $handler = $container->register('cruds.jms.doctrine_associations_handler', JmsDoctrineHandler::class);
         $handler->addArgument(new Reference('doctrine'));
 
-        $formats    = ['json', 'xml', 'array'];
+        $formats = ['json', 'xml', 'array'];
         $directions = [
-            'serialization'   => 'serializeRelation',
+            'serialization' => 'serializeRelation',
             'deserialization' => 'deserializeRelation',
         ];
-        $type       = JmsDoctrineHandler::TYPE;
-        $name       = 'jms_serializer.handler';
+        $type = JmsDoctrineHandler::TYPE;
+        $name = 'jms_serializer.handler';
 
         foreach ($formats as $format) {
             foreach ($directions as $direction => $method) {
                 $handler->addTag(
                     $name,
                     [
-                        'type'      => $type,
+                        'type' => $type,
                         'direction' => $direction,
-                        'format'    => $format,
-                        'method'    => $method,
+                        'format' => $format,
+                        'method' => $method,
                     ]
                 );
             }

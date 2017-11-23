@@ -2,32 +2,46 @@
 
 namespace ScayTrase\Api\Cruds\Tests\Configuration;
 
-use ScayTrase\Api\Cruds\Tests\AbstractDbAwareTest;
-use ScayTrase\Api\Cruds\Tests\Unit\StaticDbTestTrait;
-use Symfony\Component\BrowserKit\Client;
+use ScayTrase\Api\Cruds\Tests\Fixtures\Common\Entity\MyEntity;
+use ScayTrase\Api\Cruds\Tests\WebTestCase;
+use Symfony\Bundle\FrameworkBundle\Client;
 
-class RouteAccessibilityTest extends AbstractDbAwareTest
+class RouteAccessibilityTest extends WebTestCase
 {
-    use StaticDbTestTrait;
+    /** @var Client */
+    private static $client;
+
+    public static function setUpBeforeClass()
+    {
+        self::$client = self::createClient();
+    }
+
+    protected function setUp()
+    {
+        $this->loadFixtures([]);
+        $entity = new MyEntity();
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
+    }
 
     public function getRequests()
     {
         return [
             'create' => ['/api/entity/my-entity/create', 'POST', ['data' => ['publicApiField' => 'my-value']]],
-            'get'    => ['/api/entity/my-entity/get', 'GET', ['identifier' => 1]],
+            'get' => ['/api/entity/my-entity/get', 'GET', ['identifier' => 1]],
             'update' => [
                 '/api/entity/my-entity/update',
                 'POST',
                 [
                     'identifier' => 1,
-                    'data'       => [
+                    'data' => [
                         'publicApiField' => 'my-updated-value',
-                        'parent'         => null,
+                        'parent' => null,
                     ],
                 ],
             ],
             'search' => ['/api/entity/my-entity/search', 'GET', ['criteria' => ['id' => 1]]],
-            'count'  => ['/api/entity/my-entity/count', 'GET', ['criteria' => ['id' => 1]]],
+            'count' => ['/api/entity/my-entity/count', 'GET', ['criteria' => ['id' => 1]]],
             'delete' => ['/api/entity/my-entity/delete', 'POST', ['identifier' => 1]],
         ];
     }
@@ -37,7 +51,7 @@ class RouteAccessibilityTest extends AbstractDbAwareTest
      *
      * @param string $path
      * @param string $method
-     * @param array  $args
+     * @param array $args
      */
     public function testRequestWasSuccessful($path, $method, array $args = [])
     {

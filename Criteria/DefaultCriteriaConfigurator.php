@@ -25,7 +25,7 @@ final class DefaultCriteriaConfigurator implements CriteriaConfiguratorInterface
     }
 
     /** {@inheritdoc} */
-    public function configure($fqcn, Criteria $criteria, $arguments)
+    public function configure(string $fqcn, Criteria $criteria, $arguments)
     {
         $arguments = array_replace($this->defaults, $arguments);
         $this->configurator->configure($fqcn, $criteria, $arguments);

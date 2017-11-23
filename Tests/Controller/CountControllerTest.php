@@ -2,13 +2,16 @@
 
 namespace ScayTrase\Api\Cruds\Tests\Controller;
 
-use ScayTrase\Api\Cruds\Tests\AbstractDbAwareTest;
+use ScayTrase\Api\Cruds\Tests\WebTestCase;
 use ScayTrase\Api\Cruds\Tests\Fixtures\Common\Entity\MyEntity;
 use ScayTrase\Api\Cruds\Tests\Unit\StaticDbTestTrait;
 
-class CountControllerTest extends AbstractDbAwareTest
+class CountControllerTest extends WebTestCase
 {
-    use StaticDbTestTrait;
+    protected function setUp()
+    {
+        $this->loadFixtures([]);
+    }
 
     public function testEmptyCriteria()
     {
@@ -61,7 +64,7 @@ class CountControllerTest extends AbstractDbAwareTest
 
     private function createEntities()
     {
-        $em     = self::getEntityManager();
+        $em     = $this->getEntityManager();
         $entity = new MyEntity('my-test-secret');
         $em->persist($entity);
         $parent = new MyEntity('non-recursing-entity');
@@ -72,5 +75,4 @@ class CountControllerTest extends AbstractDbAwareTest
 
         return $parent->getId();
     }
-
 }

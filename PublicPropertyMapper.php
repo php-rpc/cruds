@@ -28,13 +28,13 @@ final class PublicPropertyMapper implements PropertyMapperInterface
     }
 
     /** {@inheritdoc} */
-    public function getApiProperties($className)
+    public function getApiProperties($className): array
     {
         return $this->getEntityProperties($className);
     }
 
     /** {@inheritdoc} */
-    public function getEntityProperties($className)
+    public function getEntityProperties($className): array
     {
         return array_map(
             [$this, 'getPropertyName'],

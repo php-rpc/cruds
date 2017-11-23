@@ -2,10 +2,10 @@
 
 namespace ScayTrase\Api\Cruds\Tests\Controller;
 
-use ScayTrase\Api\Cruds\Tests\AbstractDbAwareTest;
+use ScayTrase\Api\Cruds\Tests\WebTestCase;
 use ScayTrase\Api\Cruds\Tests\Fixtures\Common\Entity\MyEntity;
 
-class CreateControllerTest extends AbstractDbAwareTest
+class CreateControllerTest extends WebTestCase
 {
     public function testCreateAction()
     {
@@ -25,7 +25,7 @@ class CreateControllerTest extends AbstractDbAwareTest
 
         self::assertTrue($response->isSuccessful());
 
-        $em     = self::getEntityManager();
+        $em     = $this->getEntityManager();
         $parent = $em->getRepository(MyEntity::class)->findOneBy(['publicApiField' => 'my-data']);
         self::assertNotNull($parent);
 
