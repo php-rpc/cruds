@@ -5,3 +5,8 @@ ScayTrase\Api\Cruds\Tests\Fixtures\Common\Entity\MyEntity:
     privateField:
       exclude: true
       access_type: property
+    parent:
+      type: DoctrineAssociation
+    children:
+      type: DoctrineAssociation
+      read_only: true

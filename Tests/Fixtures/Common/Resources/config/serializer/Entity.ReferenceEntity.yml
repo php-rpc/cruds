@@ -1,3 +1,10 @@
 ScayTrase\Api\Cruds\Tests\Fixtures\Common\Entity\ReferenceEntity:
   exclusion_policy: NONE
   access_type: public_method
+  properties:
+    reference:
+      type: DoctrineAssociation
+    parent:
+      type: DoctrineAssociation
+    children:
+      type: DoctrineAssociation

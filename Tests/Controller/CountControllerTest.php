@@ -8,11 +8,6 @@ use ScayTrase\Api\Cruds\Tests\Unit\StaticDbTestTrait;
 
 class CountControllerTest extends WebTestCase
 {
-    protected function setUp()
-    {
-        $this->loadFixtures([]);
-    }
-
     public function testEmptyCriteria()
     {
         $this->createEntities();
@@ -64,6 +59,7 @@ class CountControllerTest extends WebTestCase
 
     private function createEntities()
     {
+        $this->loadFixtures([]);
         $em     = $this->getEntityManager();
         $entity = new MyEntity('my-test-secret');
         $em->persist($entity);
