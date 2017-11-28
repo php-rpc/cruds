@@ -10,23 +10,23 @@ php:
 
 env:
   - PACKAGES='symfony/symfony=2.8.*'
-  - PACKAGES='symfony/symfony=3.1.*'
   - PACKAGES='symfony/symfony=3.2.*'
-  - PACKAGES='symfony/symfony=~3.3@dev'
+  - PACKAGES='symfony/symfony=3.3.*'
+  - PACKAGES='symfony/symfony=~3.4'
+  - PACKAGES='symfony/symfony=~4.0'
 
 matrix:
   fast_finish: true
   allow_failures:
     - php: hhvm
     - php: nightly
+    - env: PACKAGES='symfony/symfony=~4.0'
 
 before_install:
   - travis_retry composer self-update
 
 install:
   - composer require --no-update ${PACKAGES}
-  - if [ "$deps" = "no"] || [ -z "$deps" ]; then composer --prefer-source install; fi;
-  - if [ "$deps" = "low" ]; then composer --prefer-source --prefer-lowest --prefer-stable update; fi;
   - composer --prefer-source install
 
 script:
