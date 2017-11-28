@@ -18,6 +18,9 @@ final class JmsSerializerDriverPass implements CompilerPassInterface
         }
 
         $handler = $container->register('cruds.jms.doctrine_associations_handler', JmsDoctrineHandler::class);
+
+        //fixme: JMS utilizes only public handlers for lazyness
+        $handler->setPublic(true);
         $handler->addArgument(new Reference('doctrine'));
 
         $formats = ['json', 'xml', 'array'];
