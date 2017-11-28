@@ -14,10 +14,6 @@ class SymfonyTestKernel extends CrudsTestKernel
         parent::registerContainerConfiguration($loader);
 
         $loader->load(__DIR__.'/config.yml');
-
-        if ((int)self::MAJOR_VERSION === 3 || ((int)self::MAJOR_VERSION === 2 && (int)self::MINOR_VERSION === 8)) {
-            $loader->load(__DIR__.'/config_2.8.yml');
-        }
     }
 
     /** {@inheritdoc} */
