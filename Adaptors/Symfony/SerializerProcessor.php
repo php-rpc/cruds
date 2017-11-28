@@ -23,6 +23,6 @@ final class SerializerProcessor implements EntityProcessorInterface
     /** {@inheritdoc} */
     public function updateEntity($entity, $data)
     {
-        return $this->denormalizer->denormalize($this, get_class($entity), ['object_to_populate' => $entity]);
+        return $this->denormalizer->denormalize($data, get_class($entity), null, ['object_to_populate' => $entity]);
     }
 }

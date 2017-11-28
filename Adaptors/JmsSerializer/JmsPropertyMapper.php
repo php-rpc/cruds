@@ -51,7 +51,7 @@ final class JmsPropertyMapper implements PropertyMapperInterface
             return null;
         }
 
-        return $metadata->propertyMetadata[$objectProperty]->serializedName;
+        return $this->getPropertyName($metadata->propertyMetadata[$objectProperty]);
     }
 
     /** {@inheritdoc} */

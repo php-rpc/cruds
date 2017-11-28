@@ -9,8 +9,6 @@ final class AssociationPropertyAccessor implements PropertyAccessorInterface
 {
     /** @var  PropertyAccessorInterface */
     private $delegate;
-    /** @var  ManagerRegistry */
-    private $registry;
     /** @var  AssociationNormalizer */
     private $normalizer;
 
@@ -23,9 +21,7 @@ final class AssociationPropertyAccessor implements PropertyAccessorInterface
     public function __construct(PropertyAccessorInterface $delegate, ManagerRegistry $registry)
     {
         $this->delegate = $delegate;
-        $this->registry = $registry;
-
-        $this->normalizer = new AssociationNormalizer($this->registry);
+        $this->normalizer = new AssociationNormalizer($registry);
     }
 
     /** {@inheritdoc} */
