@@ -76,6 +76,22 @@ final class PhpDocTypeGuesser implements FormTypeGuesserInterface
         return new TypeGuess($this->replaceType((string)$type), [], Guess::MEDIUM_CONFIDENCE);
     }
 
+    /** {@inheritdoc} */
+    public function guessRequired($class, $property)
+    {
+        return new ValueGuess(false, Guess::LOW_CONFIDENCE);
+    }
+
+    /** {@inheritdoc} */
+    public function guessMaxLength($class, $property)
+    {
+    }
+
+    /** {@inheritdoc} */
+    public function guessPattern($class, $property)
+    {
+    }
+
     /**
      * @param string $class
      * @param string $property
@@ -116,21 +132,5 @@ final class PhpDocTypeGuesser implements FormTypeGuesserInterface
     private function exists($type)
     {
         return array_key_exists($type, self::$typeMap);
-    }
-
-    /** {@inheritdoc} */
-    public function guessRequired($class, $property)
-    {
-        return new ValueGuess(false, Guess::LOW_CONFIDENCE);
-    }
-
-    /** {@inheritdoc} */
-    public function guessMaxLength($class, $property)
-    {
-    }
-
-    /** {@inheritdoc} */
-    public function guessPattern($class, $property)
-    {
     }
 }

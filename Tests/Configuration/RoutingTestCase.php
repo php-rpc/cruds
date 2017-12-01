@@ -2,14 +2,12 @@
 
 namespace ScayTrase\Api\Cruds\Tests\Configuration;
 
-use ScayTrase\Api\Cruds\Tests\WebTestCase;
 use ScayTrase\Api\Cruds\Tests\StaticKernelTestTrait;
+use ScayTrase\Api\Cruds\Tests\WebTestCase;
 use Symfony\Component\Routing\RequestContext;
 
-class RoutingTestCase extends WebTestCase
+final class RoutingTestCase extends WebTestCase
 {
-    use StaticKernelTestTrait;
-
     public function getValidRoutes()
     {
         return [

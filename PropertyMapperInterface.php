@@ -24,7 +24,6 @@ interface PropertyMapperInterface
      */
     public function getApiProperty($className, $objectProperty);
 
-
     /**
      * @param string $className
      *

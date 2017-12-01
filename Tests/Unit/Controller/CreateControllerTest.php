@@ -34,10 +34,7 @@ abstract class CreateControllerTest extends TestCase
         self::assertNull(null, $entity->d);
     }
 
-    /**
-     * @return EventDispatcherInterface
-     */
-    protected function createEvm()
+    protected function createEvm(): EventDispatcherInterface
     {
         $evmProphecy = $this->prophesize(EventDispatcherInterface::class);
         $evmProphecy->dispatch(CrudEvents::READ, Argument::type(CollectionCrudEvent::class))->shouldBeCalled();
@@ -46,25 +43,14 @@ abstract class CreateControllerTest extends TestCase
         return $evmProphecy->reveal();
     }
 
-    /**
-     * @return ReflectionConstructorFactory
-     */
-    protected function createConstructorFactory()
+    protected function createConstructorFactory(): ReflectionConstructorFactory
     {
         return new ReflectionConstructorFactory(AbcClass::class);
     }
 
-    /**
-     * @param string $fqcn
-     *
-     * @return EntityProcessorInterface
-     */
-    abstract protected function createProcessor($fqcn);
+    abstract protected function createProcessor(string $fqcn): EntityProcessorInterface;
 
-    /**
-     * @return ObjectManager
-     */
-    protected function createEntityManager()
+    protected function createEntityManager(): ObjectManager
     {
         $manager = $this->prophesize(ObjectManager::class);
         $manager->persist(Argument::type(AbcClass::class))->shouldBeCalled();

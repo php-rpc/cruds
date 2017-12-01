@@ -4,7 +4,7 @@ namespace ScayTrase\Api\Cruds\Tests\Unit\Routing;
 
 use PHPUnit\Framework\TestCase;
 
-class EntityRouteLoaderTest extends TestCase
+final class EntityRouteLoaderTest extends TestCase
 {
     public function testRouterFailsToLoadResourceTwice()
     {

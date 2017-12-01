@@ -14,7 +14,7 @@ final class JmsTestKernel extends CrudsTestKernel
     {
         parent::registerContainerConfiguration($loader);
 
-        return $loader->load(__DIR__.'/config.yml');
+        return $loader->load(__DIR__ . '/config.yml');
     }
 
     /** {@inheritdoc} */
@@ -30,7 +30,7 @@ final class JmsTestKernel extends CrudsTestKernel
     protected function buildContainer()
     {
         $container = parent::buildContainer();
-        $container->addResource(new FileResource(__DIR__.'/config.yml'));
+        $container->addResource(new FileResource(__DIR__ . '/config.yml'));
 
         return $container;
     }

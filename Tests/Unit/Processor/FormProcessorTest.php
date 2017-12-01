@@ -7,15 +7,13 @@ use ScayTrase\Api\Cruds\Adaptors\Symfony\MappedEntityFormFactory;
 use ScayTrase\Api\Cruds\Exception\EntityProcessingException;
 use ScayTrase\Api\Cruds\PublicPropertyMapper;
 use ScayTrase\Api\Cruds\Tests\WebTestCase;
-use ScayTrase\Api\Cruds\Tests\Fixtures\SymfonySerializer\SymfonyTestKernel;
-use ScayTrase\Api\Cruds\Tests\StaticKernelTestTrait;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class FormProcessorTestCase extends WebTestCase
+final class FormProcessorTestCase extends WebTestCase
 {
     public function testProcessor()
     {

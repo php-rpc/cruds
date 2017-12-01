@@ -42,6 +42,7 @@ final class DeleteController
      * Removes the entity by given identifiers
      *
      * @param mixed $identifier
+     *
      * @throws EntityNotFoundException
      */
     public function deleteAction($identifier)

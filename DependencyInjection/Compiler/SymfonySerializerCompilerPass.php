@@ -32,12 +32,11 @@ final class SymfonySerializerCompilerPass implements CompilerPassInterface
             return;
         }
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../../Resources/config'));
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../../Resources/config'));
         $loader->load('symfony_serializer.yml');
 
         /** @var Reference $converter */
         $objectNormalizer = $container->getDefinition('serializer.normalizer.object');
-
 
         if ($this->shouldHaveNormalizerConfigured($container)) {
             $converter = $objectNormalizer->getArgument(1);
@@ -72,12 +71,12 @@ final class SymfonySerializerCompilerPass implements CompilerPassInterface
         $kernel = $container->getDefinition('kernel')->getClass();
 
         return $kernel instanceof Kernel &&
-        (
-            $kernel::MAJOR_VERSION === '3' ||
-            (
-                $kernel::MAJOR_VERSION === '2'
-                && $kernel::MINOR_VERSION === '8'
-            )
-        );
+               (
+                   $kernel::MAJOR_VERSION === '3' ||
+                   (
+                       $kernel::MAJOR_VERSION === '2'
+                       && $kernel::MINOR_VERSION === '8'
+                   )
+               );
     }
 }

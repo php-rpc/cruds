@@ -15,7 +15,7 @@ use ScayTrase\Api\Cruds\ReferenceProviderInterface;
 use ScayTrase\Api\Cruds\Tests\Fixtures\AbcClass;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class SearchControllerTest extends TestCase
+final class SearchControllerTest extends TestCase
 {
     public function testSearching()
     {

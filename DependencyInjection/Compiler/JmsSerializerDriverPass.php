@@ -23,23 +23,23 @@ final class JmsSerializerDriverPass implements CompilerPassInterface
         $handler->setPublic(true);
         $handler->addArgument(new Reference('doctrine'));
 
-        $formats = ['json', 'xml', 'array'];
+        $formats    = ['json', 'xml', 'array'];
         $directions = [
-            'serialization' => 'serializeRelation',
+            'serialization'   => 'serializeRelation',
             'deserialization' => 'deserializeRelation',
         ];
-        $type = JmsDoctrineHandler::TYPE;
-        $name = 'jms_serializer.handler';
+        $type       = JmsDoctrineHandler::TYPE;
+        $name       = 'jms_serializer.handler';
 
         foreach ($formats as $format) {
             foreach ($directions as $direction => $method) {
                 $handler->addTag(
                     $name,
                     [
-                        'type' => $type,
+                        'type'      => $type,
                         'direction' => $direction,
-                        'format' => $format,
-                        'method' => $method,
+                        'format'    => $format,
+                        'method'    => $method,
                     ]
                 );
             }

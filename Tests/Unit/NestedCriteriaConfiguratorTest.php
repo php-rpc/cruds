@@ -8,7 +8,7 @@ use Prophecy\Argument;
 use ScayTrase\Api\Cruds\Criteria\NestedCriteriaConfigurator;
 use ScayTrase\Api\Cruds\CriteriaConfiguratorInterface;
 
-class NestedCriteriaConfiguratorTest extends TestCase
+final class NestedCriteriaConfiguratorTest extends TestCase
 {
     public function testIteratesNestedConfigurators()
     {
@@ -27,7 +27,6 @@ class NestedCriteriaConfiguratorTest extends TestCase
 
         $nested = new NestedCriteriaConfigurator($filters);
         $nested->configure($fqcn, $crit, $criteria);
-
     }
 
     /**
@@ -74,7 +73,6 @@ class NestedCriteriaConfiguratorTest extends TestCase
         $nested->configure($fqcn, $crit, $criteria);
     }
 
-
     /**
      *
      */
@@ -88,7 +86,7 @@ class NestedCriteriaConfiguratorTest extends TestCase
         $this->markTestIncomplete();
     }
 
-    private function createConfigurator($fqcn, Criteria $criteria, $data, $e = false)
+    private function createConfigurator($fqcn, Criteria $criteria, $data, $e = false): CriteriaConfiguratorInterface
     {
         $mock   = self::prophesize(CriteriaConfiguratorInterface::class);
         $method = $mock->configure(Argument::exact($fqcn), Argument::exact($criteria), Argument::exact($data));
