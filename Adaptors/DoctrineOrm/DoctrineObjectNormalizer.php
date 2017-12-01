@@ -17,6 +17,6 @@ final class DoctrineObjectNormalizer extends ObjectNormalizer
 
     public function supportsNormalization($data, $format = null)
     {
-        return is_object($data) && null !== $this->registry->getManagerForClass(get_class($data));
+        return \is_object($data) && null !== $this->registry->getManagerForClass(\get_class($data));
     }
 }
