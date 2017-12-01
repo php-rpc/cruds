@@ -11,7 +11,9 @@ use ScayTrase\Api\Cruds\Controller\ReadController;
 use ScayTrase\Api\Cruds\Controller\SearchController;
 use ScayTrase\Api\Cruds\Controller\UpdateController;
 use ScayTrase\Api\Cruds\Criteria\NestedCriteriaConfigurator;
+use ScayTrase\Api\Cruds\ReflectionConstructorFactory;
 use Symfony\Component\DependencyInjection\ChildDefinition;
+use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
@@ -94,7 +96,13 @@ final class CrudsEntitiesConfigurator
 
         if (null === $factory) {
             $factory = $controllerId . '.entity_factory';
-            $factoryDef = new ChildDefinition('cruds.factory.reflection');
+
+            if (class_exists(ChildDefinition::class)) {
+                $factoryDef = new ChildDefinition('cruds.factory.reflection');
+            } else {
+                $factoryDef = new DefinitionDecorator('cruds.factory.reflection');
+            }
+
             $factoryDef->setArguments([$class, []]);
             $factoryDef->setPublic(false);
             $this->container->setDefinition($factory, $factoryDef);

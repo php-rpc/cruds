@@ -52,7 +52,12 @@ final class DoctrineOrmCompilerPass implements CompilerPassInterface
 
         $container->setDefinition('cruds.doctrine.property_accessor', $decoratedAccessor);
 
-        $normalizer = new ChildDefinition('serializer.normalizer.object');
+        if (class_exists(ChildDefinition::class)) {
+            $normalizer = new ChildDefinition('serializer.normalizer.object');
+        } else {
+            $normalizer = new DefinitionDecorator('serializer.normalizer.object');
+        }
+
         $normalizer->setClass(DoctrineObjectNormalizer::class);
         $normalizer->addMethodCall('setRegistry', [$registry]);
         $normalizer->replaceArgument(2, new Reference('cruds.doctrine.property_accessor'));
