@@ -42,7 +42,7 @@ final class CrudsEntitiesConfigurator
         $mount      = $config['mount'];
 
         if (null === $manager) {
-            $manager    = 'cruds.class_' . $class . '.object_manager';
+            $manager    = $this->normalize('cruds.class_' . $class . '.object_manager');
             $managerDef = new Definition(ObjectManager::class);
             $managerDef->setPublic(false);
             $managerDef->setFactory([new Reference('doctrine'), 'getManagerForClass']);
