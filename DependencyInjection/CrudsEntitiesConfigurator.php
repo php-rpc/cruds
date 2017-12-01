@@ -11,11 +11,10 @@ use ScayTrase\Api\Cruds\Controller\ReadController;
 use ScayTrase\Api\Cruds\Controller\SearchController;
 use ScayTrase\Api\Cruds\Controller\UpdateController;
 use ScayTrase\Api\Cruds\Criteria\NestedCriteriaConfigurator;
-use ScayTrase\Api\Cruds\ReflectionConstructorFactory;
 use Symfony\Component\DependencyInjection\ChildDefinition;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 
 final class CrudsEntitiesConfigurator
@@ -35,15 +34,15 @@ final class CrudsEntitiesConfigurator
 
     public function processEntityConfiguration($name, $config)
     {
-        $class = $config['class'];
-        $actions = $config['actions'];
-        $prefix = $config['prefix'];
-        $manager = $config['manager'];
+        $class      = $config['class'];
+        $actions    = $config['actions'];
+        $prefix     = $config['prefix'];
+        $manager    = $config['manager'];
         $repository = $config['repository'];
-        $mount = $config['mount'];
+        $mount      = $config['mount'];
 
         if (null === $manager) {
-            $manager = 'cruds.class_' . $class . '.object_manager';
+            $manager    = 'cruds.class_' . $class . '.object_manager';
             $managerDef = new Definition(ObjectManager::class);
             $managerDef->setPublic(false);
             $managerDef->setFactory([new Reference('doctrine'), 'getManagerForClass']);
@@ -53,7 +52,7 @@ final class CrudsEntitiesConfigurator
         $manager = new Reference($this->filterReference($manager));
 
         if (null === $repository) {
-            $repository = 'cruds.class_' . $class . '.entity_repository';
+            $repository    = $this->normalize('cruds.class_' . $class . '.entity_repository');
             $repositoryDef = new Definition(EntityRepository::class);
             $repositoryDef->setPublic(false);
             $repositoryDef->setFactory([$manager, 'getRepository']);
@@ -68,15 +67,15 @@ final class CrudsEntitiesConfigurator
                 continue;
             }
 
-            $actionConfig['name'] = $name;
-            $actionConfig['class'] = $class;
-            $actionConfig['mount'] = $mount;
+            $actionConfig['name']       = $name;
+            $actionConfig['class']      = $class;
+            $actionConfig['mount']      = $mount;
             $actionConfig['repository'] = $repository;
-            $actionConfig['path'] = $prefix . $actionConfig['path'];
-            $actionConfig['manager'] = $manager;
-            $actionConfig['prefix'] = $prefix;
-            $function = new \ReflectionMethod($this, 'register' . ucfirst($action) . 'Action');
-            $args = [];
+            $actionConfig['path']       = $prefix . $actionConfig['path'];
+            $actionConfig['manager']    = $manager;
+            $actionConfig['prefix']     = $prefix;
+            $function                   = new \ReflectionMethod($this, 'register' . ucfirst($action) . 'Action');
+            $args                       = [];
 
             foreach ($function->getParameters() as $parameter) {
                 if (array_key_exists($parameter->getName(), $actionConfig)) {
@@ -91,7 +90,7 @@ final class CrudsEntitiesConfigurator
 
     public function registerCreateAction($mount, $name, $class, $factory, $processor, $path, $manager)
     {
-        $actionName = 'create';
+        $actionName   = 'create';
         $controllerId = $this->generateControllerId($name, $actionName);
 
         if (null === $factory) {
@@ -128,7 +127,6 @@ final class CrudsEntitiesConfigurator
         );
         $definition->setPublic(true);
 
-
         $this->container->setDefinition($controllerId, $definition);
 
         $action = $controllerId . ':' . CreateController::ACTION;
@@ -154,7 +152,7 @@ final class CrudsEntitiesConfigurator
             ]
         );
 
-        $actionName = 'read';
+        $actionName   = 'read';
         $controllerId = $this->generateControllerId($name, $actionName);
         $this->container->setDefinition($controllerId, $definition);
 
@@ -189,7 +187,7 @@ final class CrudsEntitiesConfigurator
             ]
         );
 
-        $actionName = 'update';
+        $actionName   = 'update';
         $controllerId = $this->generateControllerId($name, $actionName);
         $this->container->setDefinition($controllerId, $definition);
 
@@ -218,7 +216,7 @@ final class CrudsEntitiesConfigurator
             ]
         );
 
-        $actionName = 'delete';
+        $actionName   = 'delete';
         $controllerId = $controllerId = $this->generateControllerId($name, $actionName);
         $this->container->setDefinition($controllerId, $definition);
 
@@ -268,7 +266,7 @@ final class CrudsEntitiesConfigurator
             ]
         );
 
-        $actionName = 'search';
+        $actionName   = 'search';
         $controllerId = $this->generateControllerId($name, $actionName);
         $this->container->setDefinition($controllerId, $definition);
 
@@ -294,7 +292,7 @@ final class CrudsEntitiesConfigurator
             ]
         );
 
-        $actionName = 'count';
+        $actionName   = 'count';
         $controllerId = $this->generateControllerId($name, $actionName);
         $this->container->setDefinition($controllerId, $definition);
 
@@ -335,7 +333,7 @@ final class CrudsEntitiesConfigurator
      */
     private function normalize(string $name): string
     {
-        return str_replace('-', '_', $name);
+        return str_replace(['-', ':'], '_', $name);
     }
 
     /**
@@ -344,8 +342,8 @@ final class CrudsEntitiesConfigurator
      * @param string $actionName
      * @param string $path
      * @param string $action
-     * @param array $methods
-     * @param array $options
+     * @param array  $methods
+     * @param array  $options
      *
      * @return Definition
      * @throws \InvalidArgumentException
@@ -370,7 +368,7 @@ final class CrudsEntitiesConfigurator
                 array_replace(
                     [
                         'action' => $actionName,
-                        'mount' => $mount,
+                        'mount'  => $mount,
                     ],
                     $options
                 ),
