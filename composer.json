@@ -2,6 +2,7 @@
   "name": "php-rpc/cruds",
   "description": "Symfony CRUD bundle",
   "minimum-stability": "dev",
+  "type": "symfony-bundle",
   "license": "MIT",
   "authors": [
     {
@@ -11,7 +12,12 @@
   ],
   "autoload": {
     "psr-4": {
-      "ScayTrase\\Api\\Cruds\\": "./"
+      "ScayTrase\\Api\\Cruds\\": "./src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "ScayTrase\\Api\\Cruds\\Tests\\": "./tests/"
     }
   },
   "require": {

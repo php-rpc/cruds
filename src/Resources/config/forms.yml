@@ -14,7 +14,6 @@ services:
   cruds.api.processor.auto_form:
     class: ScayTrase\Api\Cruds\Adaptors\Symfony\AutoFormProcessor
     arguments:
-    - "@form.factory"
     - "@cruds.api.processor.mapped_entity_form_factory"
 
   cruds.type_guesser.phpdoc:

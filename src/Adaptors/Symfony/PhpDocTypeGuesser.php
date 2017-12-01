@@ -5,7 +5,7 @@ namespace ScayTrase\Api\Cruds\Adaptors\Symfony;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use phpDocumentor\Reflection\DocBlockFactory;
 use phpDocumentor\Reflection\Types\Array_;
-use phpDocumentor\Reflection\Types\Mixed;
+use phpDocumentor\Reflection\Types\Mixed_;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -54,7 +54,7 @@ final class PhpDocTypeGuesser implements FormTypeGuesserInterface
 
         if ($type instanceof Array_) {
             $entryType = TextType::class;
-            if (!$type->getValueType() instanceof Mixed) {
+            if (!$type->getValueType() instanceof Mixed_) {
                 $entryType = $this->replaceType((string)$type->getValueType());
             }
 
