@@ -71,7 +71,7 @@ final class Configuration implements ConfigurationInterface
             ->defaultValue('api')
             ->cannotBeEmpty()
             ->info(
-                'Route mount. You can create different entries '.
+                'Route mount. You can create different entries ' .
                 'with different mounts. You can use this value when loading routes'
             )
             ->example('my-mount-name');
@@ -81,7 +81,7 @@ final class Configuration implements ConfigurationInterface
             ->scalarNode('repository')
             ->defaultNull()
             ->info(
-                'Object repository. service reference,'.PHP_EOL.
+                'Object repository. service reference,' . PHP_EOL .
                 'default to factory-acquired doctrine repository for class'
             )
             ->example('@my_entity.repository');
@@ -91,11 +91,10 @@ final class Configuration implements ConfigurationInterface
             ->scalarNode('manager')
             ->defaultNull()
             ->info(
-                'Object manager. service reference,'.PHP_EOL.
+                'Object manager. service reference,' . PHP_EOL .
                 'default to factory-acquired doctrine manager for class'
             )
             ->example('@my_entity.repository');
-
 
         $actions = $parent
             ->children()
@@ -140,9 +139,9 @@ final class Configuration implements ConfigurationInterface
             ->defaultNull()
             ->example('@my_entity.factory')
             ->info(
-                'Service ID implementing '.PHP_EOL.
-                EntityFactoryInterface::class.PHP_EOL.
-                'Defaults to '.ReflectionConstructorFactory::class
+                'Service ID implementing ' . PHP_EOL .
+                EntityFactoryInterface::class . PHP_EOL .
+                'Defaults to ' . ReflectionConstructorFactory::class
             );
 
         $create
@@ -151,9 +150,9 @@ final class Configuration implements ConfigurationInterface
             ->defaultNull()
             ->example('@my_entity.factory')
             ->info(
-                'Service ID implementing '.PHP_EOL.
-                EntityFactoryInterface::class.PHP_EOL.
-                'Defaults to '.ReflectionConstructorFactory::class
+                'Service ID implementing ' . PHP_EOL .
+                EntityFactoryInterface::class . PHP_EOL .
+                'Defaults to ' . ReflectionConstructorFactory::class
             );
 
         $this->configureActionNode($create, 'create');
@@ -174,7 +173,7 @@ final class Configuration implements ConfigurationInterface
 
         $criteria = $search->children()->variableNode('criteria');
         $criteria->info(
-            'Criteria modifiers. Array will be treated as nested criteria,'.PHP_EOL.
+            'Criteria modifiers. Array will be treated as nested criteria,' . PHP_EOL .
             'allowing configuring several modifiers by key:value'
         );
         $criteria->defaultValue('cruds.criteria.entity');
@@ -202,9 +201,9 @@ final class Configuration implements ConfigurationInterface
             ->defaultNull()
             ->example('@my_entity.processor')
             ->info(
-                'Service ID implementing '.PHP_EOL.
-                EntityProcessorInterface::class.PHP_EOL.
-                'Defaults to '.PropertyAccessProcessor::class
+                'Service ID implementing ' . PHP_EOL .
+                EntityProcessorInterface::class . PHP_EOL .
+                'Defaults to ' . PropertyAccessProcessor::class
             );
 
         $this->configureActionNode($update, 'update');
@@ -226,6 +225,6 @@ final class Configuration implements ConfigurationInterface
             ->children()
             ->scalarNode('path')
             ->info('Action path (will be prefixed with entity prefix)')
-            ->defaultValue('/'.$action);
+            ->defaultValue('/' . $action);
     }
 }

@@ -44,7 +44,7 @@ abstract class UpdateControllerTest extends TestCase
      *
      * @return ObjectRepository
      */
-    protected function createRepository($id, $entity)
+    protected function createRepository($id, $entity): ObjectRepository
     {
         $repository = $this->prophesize(ObjectRepository::class);
         $repository->find(Argument::exact($id))->willReturn($entity)->shouldBeCalled();
@@ -52,17 +52,9 @@ abstract class UpdateControllerTest extends TestCase
         return $repository->reveal();
     }
 
-    /**
-     * @param string $fqcn
-     *
-     * @return EntityProcessorInterface
-     */
-    abstract protected function createProcessor($fqcn);
+    abstract protected function createProcessor(string $fqcn): EntityProcessorInterface;
 
-    /**
-     * @return ObjectManager
-     */
-    protected function createEntityManager()
+    protected function createEntityManager(): ObjectManager
     {
         $manager = $this->prophesize(ObjectManager::class);
         $manager->flush()->shouldBeCalled();
@@ -70,10 +62,7 @@ abstract class UpdateControllerTest extends TestCase
         return $manager->reveal();
     }
 
-    /**
-     * @return EventDispatcherInterface
-     */
-    protected function createEvm()
+    protected function createEvm(): EventDispatcherInterface
     {
         $evmProphecy = $this->prophesize(EventDispatcherInterface::class);
         $evmProphecy->dispatch(CrudEvents::READ, Argument::type(CollectionCrudEvent::class))->shouldBeCalled();
@@ -82,10 +71,7 @@ abstract class UpdateControllerTest extends TestCase
         return $evmProphecy->reveal();
     }
 
-    /**
-     * @return ReflectionConstructorFactory
-     */
-    protected function createConstructorFactory()
+    protected function createConstructorFactory(): ReflectionConstructorFactory
     {
         return new ReflectionConstructorFactory(AbcClass::class);
     }

@@ -53,7 +53,7 @@ final class EntityToIdNormalizer
         $manager = $this->registry->getManagerForClass($class);
 
         if (null === $manager) {
-            throw new \RuntimeException('Not supported class '.$class);
+            throw new \RuntimeException('Not supported class ' . $class);
         }
 
         if ($manager instanceof EntityManagerInterface) {

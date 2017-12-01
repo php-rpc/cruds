@@ -2,10 +2,10 @@
 
 namespace ScayTrase\Api\Cruds\Tests\Controller;
 
-use ScayTrase\Api\Cruds\Tests\WebTestCase;
 use ScayTrase\Api\Cruds\Tests\Fixtures\Common\Entity\MyEntity;
+use ScayTrase\Api\Cruds\Tests\WebTestCase;
 
-class DeleteControllerTest extends WebTestCase
+final class DeleteControllerTest extends WebTestCase
 {
     public function testDeleteAction()
     {

@@ -12,7 +12,7 @@ use ScayTrase\Api\Cruds\Event\CrudEvents;
 use ScayTrase\Api\Cruds\Tests\Fixtures\AbcClass;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class DeleteControllerTest extends TestCase
+final class DeleteControllerTest extends TestCase
 {
     public function testDeleting()
     {

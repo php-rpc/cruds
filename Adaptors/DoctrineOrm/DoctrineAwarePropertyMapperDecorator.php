@@ -17,12 +17,12 @@ final class DoctrineAwarePropertyMapperDecorator implements PropertyMapperInterf
      * DoctrineAwarePropertyMapperDecorator constructor.
      *
      * @param PropertyMapperInterface $decorated
-     * @param ManagerRegistry $registry
+     * @param ManagerRegistry         $registry
      */
     public function __construct(PropertyMapperInterface $decorated, ManagerRegistry $registry)
     {
         $this->decorated = $decorated;
-        $this->registry = $registry;
+        $this->registry  = $registry;
     }
 
     /** {@inheritdoc} */

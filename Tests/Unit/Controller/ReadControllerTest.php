@@ -11,7 +11,7 @@ use ScayTrase\Api\Cruds\Event\CrudEvents;
 use ScayTrase\Api\Cruds\Tests\Fixtures\AbcClass;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class ReadControllerTest extends TestCase
+final class ReadControllerTest extends TestCase
 {
     public function testGet()
     {

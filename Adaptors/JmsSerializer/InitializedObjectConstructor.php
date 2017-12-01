@@ -2,10 +2,10 @@
 
 namespace ScayTrase\Api\Cruds\Adaptors\JmsSerializer;
 
-use JMS\Serializer\VisitorInterface;
-use JMS\Serializer\Metadata\ClassMetadata;
-use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\Construction\ObjectConstructorInterface;
+use JMS\Serializer\DeserializationContext;
+use JMS\Serializer\Metadata\ClassMetadata;
+use JMS\Serializer\VisitorInterface;
 
 /**
  * Object constructor that allows deserialization into already constructed
@@ -28,8 +28,12 @@ final class InitializedObjectConstructor implements ObjectConstructorInterface
     /**
      * {@inheritdoc}
      */
-    public function construct(VisitorInterface $visitor, ClassMetadata $metadata, $data, array $type, DeserializationContext $context)
-    {
+    public function construct(VisitorInterface $visitor,
+                              ClassMetadata $metadata,
+                              $data,
+                              array $type,
+                              DeserializationContext $context
+    ) {
         if ($context->attributes->containsKey('target') && $context->getDepth() === 1) {
             return $context->attributes->get('target')->get();
         }

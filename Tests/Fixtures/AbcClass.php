@@ -1,4 +1,5 @@
 <?php
+
 namespace ScayTrase\Api\Cruds\Tests\Fixtures;
 
 final class AbcClass extends \stdClass

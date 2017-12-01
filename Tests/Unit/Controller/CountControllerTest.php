@@ -11,11 +11,10 @@ use ScayTrase\Api\Cruds\Event\CrudEvents;
 use ScayTrase\Api\Cruds\PublicPropertyMapper;
 use ScayTrase\Api\Cruds\ReferenceProviderInterface;
 use ScayTrase\Api\Cruds\Tests\Fixtures\AbcClass;
-use ScayTrase\Api\Cruds\Tests\Unit\AbstractControllerTest;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class CountControllerTest extends TestCase
+final class CountControllerTest extends TestCase
 {
     public function testCounting()
     {
@@ -59,10 +58,7 @@ class CountControllerTest extends TestCase
         return $entity;
     }
 
-    /**
-     * @return ReferenceProviderInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
-    private function getReferenceProvider()
+    private function getReferenceProvider(): ReferenceProviderInterface
     {
         $mock = $this->getMockBuilder(ReferenceProviderInterface::class)->getMock();
 

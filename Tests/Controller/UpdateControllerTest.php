@@ -2,10 +2,10 @@
 
 namespace ScayTrase\Api\Cruds\Tests\Controller;
 
-use ScayTrase\Api\Cruds\Tests\WebTestCase;
 use ScayTrase\Api\Cruds\Tests\Fixtures\Common\Entity\MyEntity;
+use ScayTrase\Api\Cruds\Tests\WebTestCase;
 
-class UpdateControllerTest extends WebTestCase
+final class UpdateControllerTest extends WebTestCase
 {
     public function testUpdateAction()
     {
@@ -17,7 +17,6 @@ class UpdateControllerTest extends WebTestCase
         $em->persist($entity);
         $em->flush();
         $em->clear();
-
 
         $client->request(
             'POST',

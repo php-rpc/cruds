@@ -21,12 +21,12 @@ final class EntityCriteriaConfigurator implements CriteriaConfiguratorInterface
     /**
      * DoctrineCriteriaConfigurator constructor.
      *
-     * @param PropertyMapperInterface $mapper
+     * @param PropertyMapperInterface    $mapper
      * @param ReferenceProviderInterface $provider
      */
     public function __construct(PropertyMapperInterface $mapper, ReferenceProviderInterface $provider)
     {
-        $this->mapper = $mapper;
+        $this->mapper   = $mapper;
         $this->provider = $provider;
     }
 
@@ -60,8 +60,8 @@ final class EntityCriteriaConfigurator implements CriteriaConfiguratorInterface
 
     /**
      * @param Criteria $criteria
-     * @param string $property
-     * @param mixed $value
+     * @param string   $property
+     * @param mixed    $value
      *
      * @throws CriteriaConfigurationException
      */

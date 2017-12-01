@@ -44,8 +44,8 @@ final class EntityRouteLoader extends Loader
      * @param string $name
      * @param string $path
      * @param string $controller
-     * @param array $methods
-     * @param array $options
+     * @param array  $methods
+     * @param array  $options
      *
      * @throws \LogicException
      */

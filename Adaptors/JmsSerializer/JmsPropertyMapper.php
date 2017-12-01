@@ -19,12 +19,12 @@ final class JmsPropertyMapper implements PropertyMapperInterface
     /**
      * JmsPropertyMapper constructor.
      *
-     * @param MetadataFactoryInterface $factory
+     * @param MetadataFactoryInterface        $factory
      * @param PropertyNamingStrategyInterface $strategy
      */
     public function __construct(MetadataFactoryInterface $factory, PropertyNamingStrategyInterface $strategy)
     {
-        $this->factory = $factory;
+        $this->factory  = $factory;
         $this->strategy = $strategy;
     }
 

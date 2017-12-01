@@ -45,7 +45,6 @@ final class CreateController
         $this->evm       = $evm ?: new EventDispatcher();
     }
 
-
     /**
      * @param mixed $data
      *

@@ -2,10 +2,10 @@
 
 namespace ScayTrase\Api\Cruds\Tests\Controller;
 
-use ScayTrase\Api\Cruds\Tests\WebTestCase;
 use ScayTrase\Api\Cruds\Tests\Fixtures\Common\Entity\MyEntity;
+use ScayTrase\Api\Cruds\Tests\WebTestCase;
 
-class ReadControllerTest extends WebTestCase
+final class ReadControllerTest extends WebTestCase
 {
     public function testReadAction()
     {

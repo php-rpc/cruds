@@ -19,11 +19,11 @@ final class SymfonyPropertyMapper implements PropertyMapperInterface
      * SymfonyPropertyMapper constructor.
      *
      * @param ClassMetadataFactoryInterface $factory
-     * @param NameConverterInterface $strategy
+     * @param NameConverterInterface        $strategy
      */
     public function __construct(ClassMetadataFactoryInterface $factory, NameConverterInterface $strategy)
     {
-        $this->factory = $factory;
+        $this->factory  = $factory;
         $this->strategy = $strategy;
     }
 

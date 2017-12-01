@@ -2,11 +2,10 @@
 
 namespace ScayTrase\Api\Cruds\Tests\Controller;
 
-use ScayTrase\Api\Cruds\Tests\WebTestCase;
 use ScayTrase\Api\Cruds\Tests\Fixtures\Common\Entity\MyEntity;
-use ScayTrase\Api\Cruds\Tests\Unit\StaticDbTestTrait;
+use ScayTrase\Api\Cruds\Tests\WebTestCase;
 
-class CountControllerTest extends WebTestCase
+final class CountControllerTest extends WebTestCase
 {
     public function testEmptyCriteria()
     {

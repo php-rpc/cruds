@@ -30,20 +30,15 @@ abstract class CrudsTestKernel extends Kernel
         return __DIR__ . '/../../../build/' . $this->getClassName() . '/logs';
     }
 
-    /**
-     * @return array
-     */
-    private function getClassName()
-    {
-        $path = explode('\\', static::class);
-
-        return array_pop($path);
-    }
-
     /** {@inheritdoc} */
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         return $loader->load(__DIR__ . '/config.yml');
+    }
+
+    public function getCacheDir()
+    {
+        return __DIR__ . '/../../../build/' . $this->getClassName() . '/cache';
     }
 
     protected function initializeContainer()
@@ -58,11 +53,6 @@ abstract class CrudsTestKernel extends Kernel
         parent::initializeContainer();
     }
 
-    public function getCacheDir()
-    {
-        return __DIR__ . '/../../../build/' . $this->getClassName() . '/cache';
-    }
-
     /** {@inheritdoc} */
     protected function buildContainer()
     {
@@ -71,5 +61,15 @@ abstract class CrudsTestKernel extends Kernel
         $container->addResource(new FileResource(__DIR__ . '/routing.yml'));
 
         return $container;
+    }
+
+    /**
+     * @return array
+     */
+    private function getClassName()
+    {
+        $path = explode('\\', static::class);
+
+        return array_pop($path);
     }
 }
