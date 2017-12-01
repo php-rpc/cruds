@@ -2,12 +2,12 @@ build:
   tests:
     override:
       -
-        command: SERIALIZER=jms phpunit --coverage-clover=build/clover.xml
+        command: SERIALIZER=jms vendor/bin/phpunit --coverage-clover=build/clover.xml
         coverage:
           file: build/clover.xml
           format: php-clover
       -
-        command: SERIALIZER=symfony phpunit --coverage-clover=build/clover.xml
+        command: SERIALIZER=symfony vendor/bin/phpunit --coverage-clover=build/clover.xml
         coverage:
           file: build/clover.xml
           format: php-clover
