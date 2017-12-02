@@ -15,30 +15,28 @@
 
     <testsuites>
         <testsuite name="Unit">
-            <directory>./Tests/Unit/</directory>
+            <directory>./tests/Unit/</directory>
         </testsuite>
         <testsuite name="Controller">
-            <directory>./Tests/Controller/</directory>
+            <directory>./tests/Controller/</directory>
         </testsuite>
         <testsuite name="Configuration">
-            <directory>./Tests/Configuration/</directory>
+            <directory>./tests/Configuration/</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory>./</directory>
+            <directory>./src/</directory>
             <exclude>
-                <directory>./Tests/</directory>
-                <directory>./Resources/</directory>
-                <directory>./vendor/</directory>
+                <directory>./src/Resources/</directory>
             </exclude>
         </whitelist>
         <blacklist>
             <directory>./vendor/</directory>
             <directory>./build/</directory>
             <directory>./target/</directory>
-            <directory>./Tests/</directory>
+            <directory>./tests/</directory>
         </blacklist>
     </filter>
 </phpunit>
