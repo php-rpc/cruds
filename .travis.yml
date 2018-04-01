@@ -7,8 +7,6 @@ php:
 
 env:
   - PACKAGES='symfony/symfony=2.8.*'
-  - PACKAGES='symfony/symfony=3.2.*'
-  - PACKAGES='symfony/symfony=3.3.*'
   - PACKAGES='symfony/symfony=3.4.*'
   - PACKAGES='symfony/symfony=4.0.*'
   - PACKAGES='symfony/symfony=4.1.*'
@@ -17,15 +15,10 @@ matrix:
   fast_finish: true
   allow_failures:
     - php: nightly
-    - env: PACKAGES='symfony/symfony=4.1.*'
-    - env: PACKAGES='symfony/symfony=4.0.*'
+
   include:
   - php: 7
     env: PACKAGES='symfony/symfony=2.8.*'
-  - php: 7
-    env: PACKAGES='symfony/symfony=3.2.*'
-  - php: 7
-    env: PACKAGES='symfony/symfony=3.3.*'
   - php: 7
     env: PACKAGES='symfony/symfony=3.4.*'
 

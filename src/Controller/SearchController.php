@@ -55,7 +55,7 @@ final class SearchController
      * @return object[]|Collection
      * @throws CriteriaConfigurationException
      */
-    public function findAction(array $criteria, array $order = [], $limit = 10, $offset = 0)
+    public function findAction(array $criteria = [], array $order = [], $limit = 10, $offset = 0)
     {
         $queryCriteria = new Criteria(null, $order, $offset, $limit);
 

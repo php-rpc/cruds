@@ -51,7 +51,7 @@ final class CountController
      * @return integer
      * @throws CriteriaConfigurationException
      */
-    public function countAction(array $criteria)
+    public function countAction(array $criteria = [])
     {
         $queryCriteria = new Criteria();
 
